@@ -42,12 +42,14 @@
     .btn-solid::after { background: var(--gold-light); }
     .btn-solid span { color: var(--green-deep); }
 
+    /* ── NAV ── */
     .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 0 5%; display: flex; align-items: center; justify-content: space-between; height: 80px; transition: background var(--transition), box-shadow var(--transition); }
     .nav.scrolled { background: rgba(27,61,42,0.97); backdrop-filter: blur(12px); box-shadow: 0 2px 40px rgba(0,0,0,0.25); }
-    .nav-logo { display: flex; flex-direction: column; align-items: flex-start; line-height: 1; }
+    .nav-logo { display: flex; align-items: center; gap: 14px; line-height: 1; }
     .nav-logo .seps { font-family: var(--font-display); font-size: 1.9rem; font-weight: 400; color: var(--white); letter-spacing: 0.05em; }
     .nav-logo .mgmt { font-family: var(--font-body); font-size: 0.6rem; font-weight: 500; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; margin-top: 2px; }
-    .nav-links { display: flex; gap: 40px; list-style: none; }
+    .nav-logo-text { display: flex; flex-direction: column; }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
     .nav-links a { font-family: var(--font-body); font-size: 0.7rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.85); transition: color var(--transition); position: relative; }
     .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; right: 0; height: 1px; background: var(--gold); transform: scaleX(0); transition: transform var(--transition); }
     .nav-links a:hover { color: var(--gold); }
@@ -55,16 +57,22 @@
     .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
     .nav-hamburger span { display: block; width: 24px; height: 1.5px; background: var(--white); transition: var(--transition); }
 
+    /* ── HERO ── */
     .hero { position: relative; height: 100vh; min-height: 700px; display: flex; align-items: center; overflow: hidden; }
     .hero-slides { position: absolute; inset: 0; }
     .hero-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.5s ease; background-size: cover; background-position: center; }
     .hero-slide.active { opacity: 1; }
     .hero-slide::after { content: ''; position: absolute; inset: 0; background: linear-gradient(105deg, rgba(27,61,42,0.82) 0%, rgba(27,61,42,0.45) 55%, rgba(0,0,0,0.15) 100%); }
-    .hero-content { position: relative; z-index: 2; padding: 0 5%; max-width: 800px; }
-    .hero-eyebrow { font-family: var(--font-body); font-size: 0.68rem; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; opacity: 0; transform: translateY(20px); animation: fadeUp 0.9s forwards 0.3s; }
+    .hero-content { position: relative; z-index: 2; padding: 0 5%; max-width: 900px; display: flex; flex-direction: column; align-items: flex-start; }
+
+    /* ── HERO LOGO (big, centered above headline) ── */
+    .hero-logo { margin-bottom: 32px; opacity: 0; transform: translateY(20px); animation: fadeUp 0.9s forwards 0.1s; }
+    .hero-logo svg { width: 320px; height: auto; }
+
+    .hero-eyebrow { font-family: var(--font-body); font-size: 0.68rem; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem; opacity: 0; transform: translateY(20px); animation: fadeUp 0.9s forwards 0.3s; }
     .hero h1 { color: var(--white); margin-bottom: 1.5rem; opacity: 0; transform: translateY(30px); animation: fadeUp 0.9s forwards 0.55s; }
     .hero h1 em { font-style: italic; color: var(--gold-light); }
-    .hero-sub { font-size: 0.9rem; color: rgba(255,255,255,0.8); max-width: 480px; margin-bottom: 2.5rem; opacity: 0; transform: translateY(20px); animation: fadeUp 0.9s forwards 0.8s; }
+    .hero-sub { font-size: 0.9rem; color: rgba(255,255,255,0.8); max-width: 520px; margin-bottom: 2.5rem; opacity: 0; transform: translateY(20px); animation: fadeUp 0.9s forwards 0.8s; }
     .hero-cta { display: flex; gap: 16px; flex-wrap: wrap; opacity: 0; transform: translateY(20px); animation: fadeUp 0.9s forwards 1s; }
     .hero-scroll { position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%); z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 8px; color: rgba(255,255,255,0.5); font-family: var(--font-body); font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; animation: bounce 2s infinite; }
     .hero-scroll::after { content: ''; width: 1px; height: 40px; background: var(--gold); opacity: 0.6; }
@@ -75,6 +83,7 @@
     @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
     @keyframes bounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(8px); } }
 
+    /* ── STATS ── */
     .stats-bar { background: var(--green-deep); padding: 36px 5%; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; border-top: 2px solid var(--gold); }
     .stat-item { text-align: center; padding: 20px; position: relative; }
     .stat-item:not(:last-child)::after { content: ''; position: absolute; right: 0; top: 20%; bottom: 20%; width: 1px; background: rgba(184,149,42,0.3); }
@@ -84,6 +93,7 @@
     .section { padding: 100px 5%; }
     .section-inner { max-width: 1200px; margin: 0 auto; }
 
+    /* ── ABOUT ── */
     .about-intro { background: var(--cream); padding: 100px 5%; }
     .about-intro-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
     .about-intro-text h2 { color: var(--green-deep); margin-bottom: 1.5rem; }
@@ -93,6 +103,7 @@
     .about-intro-image::before { content: ''; position: absolute; top: -16px; left: -16px; right: 16px; bottom: 16px; border: 1.5px solid var(--gold); border-radius: 2px; z-index: 0; }
     .about-intro-image img { position: relative; z-index: 1; }
 
+    /* ── SERVICES ── */
     .services-section { background: var(--white); }
     .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 60px; background: var(--cream-dark); }
     .service-card { background: var(--white); padding: 48px 36px; transition: var(--transition); cursor: default; position: relative; overflow: hidden; }
@@ -105,6 +116,7 @@
     .service-card h3 { color: var(--green-deep); margin-bottom: 12px; font-size: 1.35rem; transition: color var(--transition); }
     .service-card p { font-size: 0.88rem; transition: color var(--transition); }
 
+    /* ── FLEET ── */
     .fleet-section { background: var(--green-deep); padding: 100px 5%; }
     .fleet-section .section-eyebrow { color: var(--gold); }
     .fleet-section h2 { color: var(--white); margin-bottom: 16px; }
@@ -118,19 +130,49 @@
     .fleet-card p { color: rgba(255,255,255,0.65); font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; }
     .fleet-card .gold-tag { position: absolute; top: 20px; right: 20px; background: var(--gold); color: var(--green-deep); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; padding: 5px 12px; }
 
+    /* ── WHY ── */
     .why-section { background: var(--cream); }
     .why-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 48px; margin-top: 60px; }
     .why-item { display: flex; gap: 24px; }
     .why-number { font-family: var(--font-display); font-size: 3.5rem; font-weight: 300; color: var(--gold-pale); line-height: 1; min-width: 60px; }
     .why-item h3 { color: var(--green-deep); margin-bottom: 10px; font-size: 1.25rem; }
 
+    /* ── EXPERIENCES ── */
+    .experiences-section { background: var(--white); padding: 100px 5%; }
+    .experiences-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 60px; }
+    .experience-card { position: relative; border: 1px solid var(--cream-dark); overflow: hidden; transition: var(--transition); }
+    .experience-card:hover { box-shadow: 0 12px 48px rgba(27,61,42,0.12); transform: translateY(-4px); }
+    .experience-card-img { height: 220px; overflow: hidden; }
+    .experience-card-img img { transition: transform 0.8s ease; }
+    .experience-card:hover .experience-card-img img { transform: scale(1.06); }
+    .experience-card-body { padding: 28px; }
+    .experience-tag { display: inline-block; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; padding: 4px 10px; background: var(--gold-pale); color: var(--green-deep); margin-bottom: 12px; }
+    .experience-card-body h3 { color: var(--green-deep); font-size: 1.2rem; margin-bottom: 10px; }
+    .experience-card-body p { font-size: 0.84rem; }
+
+    /* ── PARTNERS ── */
+    .partners-section { background: var(--green-deep); padding: 80px 5%; }
+    .partners-section .section-eyebrow { color: var(--gold); }
+    .partners-section h2 { color: var(--white); margin-bottom: 16px; }
+    .partners-section > .section-inner > p { color: rgba(255,255,255,0.6); max-width: 560px; margin-bottom: 56px; }
+    .partners-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .partner-card { background: rgba(255,255,255,0.06); border: 1px solid rgba(184,149,42,0.25); padding: 36px 28px; transition: var(--transition); text-align: center; }
+    .partner-card:hover { background: rgba(184,149,42,0.1); border-color: var(--gold); transform: translateY(-4px); }
+    .partner-icon { font-size: 2.2rem; color: var(--gold); margin-bottom: 16px; }
+    .partner-card h3 { color: var(--white); font-size: 1.25rem; margin-bottom: 10px; }
+    .partner-card p { color: rgba(255,255,255,0.55); font-size: 0.82rem; margin-bottom: 16px; }
+    .partner-tag { display: inline-block; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; padding: 4px 12px; border: 1px solid rgba(184,149,42,0.5); color: var(--gold); }
+
+    /* ── CONTACT ── */
     .contact-section { background: var(--white); }
     .contact-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.4fr; gap: 80px; align-items: start; }
     .contact-info h2 { color: var(--green-deep); margin-bottom: 1.5rem; }
     .contact-detail { display: flex; gap: 16px; margin-bottom: 28px; align-items: flex-start; }
     .contact-detail-icon { width: 40px; height: 40px; background: var(--green-deep); display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 1rem; flex-shrink: 0; }
     .contact-detail-text strong { display: block; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--green-deep); margin-bottom: 4px; font-family: var(--font-body); }
-    .contact-detail-text span { font-size: 0.9rem; color: var(--text-mid); }
+    .contact-detail-text span, .contact-detail-text a { font-size: 0.9rem; color: var(--text-mid); }
+    .contact-detail-text a { color: var(--green-mid); transition: color var(--transition); }
+    .contact-detail-text a:hover { color: var(--gold); }
     .contact-form { display: flex; flex-direction: column; gap: 16px; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .form-group { display: flex; flex-direction: column; gap: 6px; }
@@ -139,6 +181,13 @@
     .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--gold); }
     .form-group textarea { resize: vertical; min-height: 140px; }
 
+    /* ── WHATSAPP ── */
+    .whatsapp-btn { position: fixed; bottom: 28px; right: 28px; z-index: 999; display: flex; align-items: center; gap: 10px; background: #25D366; color: white; padding: 13px 20px; border-radius: 50px; font-family: var(--font-body); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.05em; box-shadow: 0 4px 20px rgba(37,211,102,0.4); transition: all 0.25s ease; text-decoration: none; animation: wpulse 2s infinite; }
+    .whatsapp-btn:hover { background: #128C7E; transform: scale(1.05); }
+    .whatsapp-btn i { font-size: 1.3rem; }
+    @keyframes wpulse { 0% { box-shadow: 0 0 0 0 rgba(37,211,102,0.5); } 70% { box-shadow: 0 0 0 12px rgba(37,211,102,0); } 100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); } }
+
+    /* ── FOOTER ── */
     .footer { background: var(--green-deep); border-top: 2px solid var(--gold); padding: 64px 5% 32px; }
     .footer-inner { max-width: 1200px; margin: 0 auto; }
     .footer-top { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 60px; margin-bottom: 48px; }
@@ -163,6 +212,8 @@
       .about-intro-image { height: 340px; }
       .contact-inner { grid-template-columns: 1fr; }
       .footer-top { grid-template-columns: 1fr 1fr; }
+      .experiences-grid { grid-template-columns: repeat(2,1fr); }
+      .partners-grid { grid-template-columns: repeat(2,1fr); }
     }
     @media (max-width: 768px) {
       .nav-links { display: none; }
@@ -176,21 +227,30 @@
       .form-row { grid-template-columns: 1fr; }
       .footer-top { grid-template-columns: 1fr; gap: 36px; }
       .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+      .experiences-grid { grid-template-columns: 1fr; }
+      .partners-grid { grid-template-columns: 1fr; }
+      .hero-logo svg { width: 220px; }
+      .whatsapp-btn span { display: none; }
+      .whatsapp-btn { padding: 14px; border-radius: 50%; }
     }
   </style>
 </head>
 <body>
 
+  <!-- ── NAV ── -->
   <nav class="nav">
     <a href="#home" class="nav-logo" aria-label="SEPS Management home">
-      <span class="seps">SEPS</span>
-      <span class="mgmt">Management B.V.</span>
+      <div class="nav-logo-text">
+        <span class="seps">SEPS</span>
+        <span class="mgmt">Management B.V.</span>
+      </div>
     </a>
     <ul class="nav-links" role="list">
       <li><a href="#home">Home</a></li>
       <li><a href="#about">About</a></li>
       <li><a href="#services">Services</a></li>
       <li><a href="#fleet">Fleet</a></li>
+      <li><a href="#experiences">Experiences</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
     <button class="nav-hamburger" aria-label="Open menu">
@@ -198,6 +258,7 @@
     </button>
   </nav>
 
+  <!-- ── HERO ── -->
   <section id="home" class="hero">
     <div class="hero-slides" aria-hidden="true">
       <div class="hero-slide" style="background-image:url('https://images.pexels.com/photos/813011/pexels-photo-813011.jpeg?auto=compress&cs=tinysrgb&w=1800')"></div>
@@ -205,10 +266,23 @@
       <div class="hero-slide" style="background-image:url('https://images.pexels.com/photos/1554646/pexels-photo-1554646.jpeg?auto=compress&cs=tinysrgb&w=1800')"></div>
       <div class="hero-slide" style="background-image:url('https://images.pexels.com/photos/3044616/pexels-photo-3044616.jpeg?auto=compress&cs=tinysrgb&w=1800')"></div>
     </div>
+
     <div class="hero-content">
-      <p class="hero-eyebrow">Shipping Agency · Est. Caribbean</p>
+
+      <!-- BIG LOGO ON HERO -->
+      <div class="hero-logo">
+        <svg viewBox="0 0 680 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="SEPS Management logo">
+          <text x="340" y="195" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-size="190" font-weight="400" fill="#FFFFFF" letter-spacing="-2">SEPS</text>
+          <text x="340" y="235" text-anchor="middle" font-family="'Montserrat',sans-serif" font-size="21" font-weight="400" fill="#B8952A" letter-spacing="15">MANAGEMENT</text>
+          <line x1="155" y1="252" x2="308" y2="252" stroke="#B8952A" stroke-width="2.5"/>
+          <line x1="372" y1="252" x2="525" y2="252" stroke="#B8952A" stroke-width="2.5"/>
+          <polygon points="340,243 343,250 350,252 343,254 340,261 337,254 330,252 337,250" fill="#B8952A"/>
+        </svg>
+      </div>
+
+      <p class="hero-eyebrow">Shipping Agency · St. Eustatius, Dutch Caribbean</p>
       <h1>Navigating <em>Excellence</em><br>Across Every Port</h1>
-      <p class="hero-sub">SEPS Management B.V. provides premier maritime agency services for oil tankers, super and mega yachts, and cargo vessels worldwide.</p>
+      <p class="hero-sub">SEPS Management B.V. provides premier maritime agency services for oil tankers, super and mega yachts, and cargo vessels worldwide — rooted in the Caribbean, trusted globally.</p>
       <div class="hero-cta">
         <a href="#services" class="btn"><span>Our Services</span></a>
         <a href="#contact" class="btn btn-solid"><span>Contact Us</span></a>
@@ -223,6 +297,7 @@
     </div>
   </section>
 
+  <!-- ── STATS ── -->
   <div class="stats-bar">
     <div class="stat-item reveal">
       <div class="stat-number" data-count="500" data-suffix="+">0+</div>
@@ -242,14 +317,15 @@
     </div>
   </div>
 
+  <!-- ── ABOUT ── -->
   <section id="about" class="about-intro">
     <div class="about-intro-inner">
       <div class="about-intro-text reveal">
         <p class="section-eyebrow">About SEPS Management</p>
         <h2>A Trusted Partner at Every Port of Call</h2>
         <div class="gold-rule"><span class="star">✦</span></div>
-        <p>SEPS Management B.V. is a dedicated shipping agency with deep roots in the Caribbean maritime industry. We act as the essential link between vessel owners, operators, and the complex world of port logistics — ensuring every call is handled with precision, care, and professionalism.</p>
-        <p>From coordinating the arrival of ultra-luxury superyachts to managing the operational requirements of oil tankers at the GTI Terminal in St. Eustatius, we bring expert knowledge and an unwavering commitment to excellence to every engagement.</p>
+        <p>SEPS Management B.V. is a dedicated shipping agency headquartered in St. Eustatius, Dutch Caribbean. We act as the essential link between vessel owners, operators, and the complex world of port logistics — ensuring every call is handled with precision, care, and professionalism.</p>
+        <p>From coordinating the arrival of ultra-luxury superyachts to managing the operational requirements of oil tankers at the GTI Terminal, we bring expert knowledge and an unwavering commitment to excellence to every engagement.</p>
         <p>Our team operates around the clock, across multiple jurisdictions, providing the local expertise and global standards that modern maritime operations demand.</p>
         <br/>
         <a href="#contact" class="btn"><span>Work With Us</span></a>
@@ -260,6 +336,7 @@
     </div>
   </section>
 
+  <!-- ── SERVICES ── -->
   <section id="services" class="services-section section">
     <div class="section-inner">
       <p class="section-eyebrow reveal">What We Do</p>
@@ -292,14 +369,15 @@
           <p>Expert management of all maritime documentation including port clearance, bill of lading coordination, crew immigration paperwork, and flag state compliance requirements.</p>
         </div>
         <div class="service-card reveal">
-          <div class="service-icon"><i class="fa-solid fa-headset"></i></div>
-          <h3>24/7 Operations Support</h3>
-          <p>Around-the-clock availability for vessel arrivals, emergencies, crew matters, and coordination with port authorities — because maritime operations never sleep.</p>
+          <div class="service-icon"><i class="fa-solid fa-star"></i></div>
+          <h3>Luxury Liaison & Experiences</h3>
+          <p>Exclusive concierge and liaison services for discerning guests — curating bespoke island experiences, private tours, fine dining, and connections to St. Eustatius's finest offerings.</p>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- ── FLEET ── -->
   <section id="fleet" class="fleet-section">
     <div class="section-inner">
       <p class="section-eyebrow">Vessels We Represent</p>
@@ -334,6 +412,7 @@
     </div>
   </section>
 
+  <!-- ── WHY SEPS ── -->
   <section class="why-section section">
     <div class="section-inner">
       <p class="section-eyebrow reveal">Why Choose Us</p>
@@ -342,62 +421,122 @@
       <div class="why-grid">
         <div class="why-item reveal">
           <div class="why-number">01</div>
-          <div>
-            <h3>Caribbean Expertise</h3>
-            <p>Deep-rooted knowledge of Caribbean port regulations, customs procedures, and maritime authorities built over decades of operations in the region.</p>
-          </div>
+          <div><h3>Caribbean Expertise</h3><p>Deep-rooted knowledge of Caribbean port regulations, customs procedures, and maritime authorities built over decades of operations in the region.</p></div>
         </div>
         <div class="why-item reveal">
           <div class="why-number">02</div>
-          <div>
-            <h3>GTI Terminal Specialists</h3>
-            <p>We have an established, trusted relationship with GTI Terminal in St. Eustatius, ensuring smooth tanker operations at one of the Caribbean's key energy hubs.</p>
-          </div>
+          <div><h3>GTI Terminal Specialists</h3><p>We have an established, trusted relationship with GTI Terminal in St. Eustatius, ensuring smooth tanker operations at one of the Caribbean's key energy hubs.</p></div>
         </div>
         <div class="why-item reveal">
           <div class="why-number">03</div>
-          <div>
-            <h3>Luxury Market Ready</h3>
-            <p>Our team understands the discretion and white-glove standards demanded by superyacht owners, captains, and charter managers — and delivers consistently.</p>
-          </div>
+          <div><h3>Luxury Market Ready</h3><p>Our team understands the discretion and white-glove standards demanded by superyacht owners, captains, and charter managers — and delivers consistently.</p></div>
         </div>
         <div class="why-item reveal">
           <div class="why-number">04</div>
-          <div>
-            <h3>Always Available</h3>
-            <p>Ships don't operate on business hours, and neither do we. Our team is reachable 24 hours a day, 7 days a week for any operational need or emergency.</p>
+          <div><h3>Always Available</h3><p>Ships don't operate on business hours, and neither do we. Our team is reachable 24 hours a day, 7 days a week for any operational need or emergency.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── EXPERIENCES ── -->
+  <section id="experiences" class="experiences-section">
+    <div class="section-inner">
+      <p class="section-eyebrow reveal">Luxury Liaison Services</p>
+      <h2 class="reveal" style="color:var(--green-deep);max-width:640px">Curated Experiences for Discerning Guests</h2>
+      <div class="gold-rule reveal" style="max-width:400px"><span class="star">✦</span></div>
+      <p class="reveal" style="max-width:620px">Beyond maritime operations, SEPS Management provides exclusive liaison services connecting superyacht owners, captains, and guests with the very best St. Eustatius has to offer.</p>
+      <div class="experiences-grid">
+        <div class="experience-card reveal">
+          <div class="experience-card-img">
+            <img src="https://images.pexels.com/photos/1271619/pexels-photo-1271619.jpeg?auto=compress&cs=tinysrgb&w=700" alt="Island tour" loading="lazy" />
+          </div>
+          <div class="experience-card-body">
+            <span class="experience-tag">Tours</span>
+            <h3>Private Island Tours</h3>
+            <p>Bespoke guided tours of St. Eustatius's historical sites, volcanic landscapes, and hidden beaches — tailored exclusively for yacht guests seeking an authentic Caribbean experience.</p>
+          </div>
+        </div>
+        <div class="experience-card reveal">
+          <div class="experience-card-img">
+            <img src="https://images.pexels.com/photos/1581384/pexels-photo-1581384.jpeg?auto=compress&cs=tinysrgb&w=700" alt="Fine dining" loading="lazy" />
+          </div>
+          <div class="experience-card-body">
+            <span class="experience-tag">Dining</span>
+            <h3>Fine Dining Arrangements</h3>
+            <p>Reservations at St. Eustatius's premier dining destinations, including the iconic Coffee on the Rock — a breathtaking cliffside experience overlooking the Caribbean Sea.</p>
+          </div>
+        </div>
+        <div class="experience-card reveal">
+          <div class="experience-card-img">
+            <img src="https://images.pexels.com/photos/3278215/pexels-photo-3278215.jpeg?auto=compress&cs=tinysrgb&w=700" alt="Water sports" loading="lazy" />
+          </div>
+          <div class="experience-card-body">
+            <span class="experience-tag">Activities</span>
+            <h3>Water Sports & Diving</h3>
+            <p>Access to St. Eustatius's world-class dive sites, snorkeling excursions, and water sport activities — coordinated seamlessly through SEPS Management.</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- ── PARTNERS ── -->
+  <section id="partners" class="partners-section">
+    <div class="section-inner">
+      <p class="section-eyebrow">Our Partners</p>
+      <h2>Trusted Local Partners</h2>
+      <p>We work with the finest establishments on St. Eustatius to ensure every guest enjoys an unforgettable island experience.</p>
+      <div class="partners-grid">
+        <div class="partner-card reveal">
+          <div class="partner-icon"><i class="fa-solid fa-mug-hot"></i></div>
+          <h3>Coffee on the Rock</h3>
+          <p>St. Eustatius's most iconic dining destination — perched dramatically on the cliffs of the Quill volcano with panoramic views of the Caribbean Sea. A must-visit for every guest.</p>
+          <span class="partner-tag">Dining & Experience</span>
+        </div>
+        <div class="partner-card reveal">
+          <div class="partner-icon"><i class="fa-solid fa-water"></i></div>
+          <h3>GTI Terminal Statia</h3>
+          <p>One of the Caribbean's premier oil storage and transshipment facilities. Our close operational partnership ensures seamless tanker handling and port coordination.</p>
+          <span class="partner-tag">Energy & Port</span>
+        </div>
+        <div class="partner-card reveal">
+          <div class="partner-icon"><i class="fa-solid fa-landmark"></i></div>
+          <h3>St. Eustatius Port Authority</h3>
+          <p>A key institutional partner ensuring all vessel calls meet regulatory requirements and port operations run smoothly for every class of vessel we represent.</p>
+          <span class="partner-tag">Port Authority</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CONTACT ── -->
   <section id="contact" class="contact-section section">
     <div class="contact-inner">
       <div class="contact-info">
         <p class="section-eyebrow">Get In Touch</p>
         <h2 style="color:var(--green-deep)">Let's Work Together</h2>
         <div class="gold-rule" style="max-width:340px"><span class="star">✦</span></div>
-        <p style="margin-bottom:40px">Whether you're planning a port call, need a reliable Caribbean shipping agent, or want to discuss a long-term agency relationship, we're ready to assist.</p>
+        <p style="margin-bottom:40px">Whether you're planning a port call, need a reliable Caribbean shipping agent, or want to arrange an exclusive island experience, we're ready to assist.</p>
         <div class="contact-detail">
           <div class="contact-detail-icon"><i class="fa-solid fa-location-dot"></i></div>
           <div class="contact-detail-text">
             <strong>Office Address</strong>
-            <span>SEPS Management B.V.<br/>St. Eustatius, Caribbean Netherlands</span>
+            <span>Schrupon Rd 1A<br/>St. Eustatius, Dutch Caribbean</span>
           </div>
         </div>
         <div class="contact-detail">
           <div class="contact-detail-icon"><i class="fa-solid fa-envelope"></i></div>
           <div class="contact-detail-text">
             <strong>Email</strong>
-            <span>info@sepsmanagement.com</span>
+            <a href="mailto:info@sepsmanagement.com">info@sepsmanagement.com</a>
           </div>
         </div>
         <div class="contact-detail">
-          <div class="contact-detail-icon"><i class="fa-solid fa-phone"></i></div>
+          <div class="contact-detail-icon"><i class="fa-brands fa-whatsapp"></i></div>
           <div class="contact-detail-text">
-            <strong>Phone / WhatsApp</strong>
-            <span>+1 (000) 000-0000</span>
+            <strong>WhatsApp</strong>
+            <a href="https://wa.me/+5993191609" target="_blank">+5993191609</a>
           </div>
         </div>
         <div class="contact-detail">
@@ -438,6 +577,7 @@
             <option>Superyacht / Mega Yacht Agency</option>
             <option>Cargo & Container Vessel</option>
             <option>Documentation & Clearance</option>
+            <option>Luxury Liaison & Experiences</option>
             <option>Other</option>
           </select>
         </div>
@@ -452,6 +592,7 @@
     </div>
   </section>
 
+  <!-- ── FOOTER ── -->
   <footer class="footer">
     <div class="footer-inner">
       <div class="footer-top">
@@ -459,6 +600,7 @@
           <div class="seps">SEPS</div>
           <div class="mgmt">Management B.V.</div>
           <p>Premier shipping agency services for oil tankers, super and mega yachts, and cargo vessels throughout the Caribbean and beyond.</p>
+          <p style="margin-top:8px;color:rgba(184,149,42,0.7);font-size:0.78rem"><i class="fa-solid fa-location-dot" style="margin-right:6px"></i>Schrupon Rd 1A, St. Eustatius, Dutch Caribbean</p>
         </div>
         <div class="footer-col">
           <h4>Navigation</h4>
@@ -467,6 +609,7 @@
             <li><a href="#about">About Us</a></li>
             <li><a href="#services">Services</a></li>
             <li><a href="#fleet">Fleet</a></li>
+            <li><a href="#experiences">Experiences</a></li>
             <li><a href="#contact">Contact</a></li>
           </ul>
         </div>
@@ -477,69 +620,53 @@
             <li><a href="#services">Oil Tanker Operations</a></li>
             <li><a href="#services">Superyacht Agency</a></li>
             <li><a href="#services">Cargo & Container</a></li>
+            <li><a href="#services">Luxury Liaison</a></li>
             <li><a href="#services">24/7 Support</a></li>
           </ul>
         </div>
       </div>
       <div class="footer-bottom">
         <p>&copy; 2025 SEPS Management B.V. All rights reserved.</p>
-        <p style="color:rgba(184,149,42,0.4);font-size:0.7rem;letter-spacing:0.1em">ST. EUSTATIUS · CARIBBEAN NETHERLANDS</p>
+        <p style="color:rgba(184,149,42,0.4);font-size:0.7rem;letter-spacing:0.1em">ST. EUSTATIUS · DUTCH CARIBBEAN</p>
       </div>
     </div>
   </footer>
 
+  <!-- ── WHATSAPP FLOAT ── -->
+  <a href="https://wa.me/+5993191609" target="_blank" class="whatsapp-btn" aria-label="Chat on WhatsApp">
+    <i class="fa-brands fa-whatsapp"></i>
+    <span>Chat on WhatsApp</span>
+  </a>
+
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const nav = document.querySelector('.nav');
-      window.addEventListener('scroll', () => {
-        nav.classList.toggle('scrolled', window.scrollY > 40);
-      }, { passive: true });
+      window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 40); }, { passive: true });
 
       const hamburger = document.querySelector('.nav-hamburger');
       const navLinks = document.querySelector('.nav-links');
       if (hamburger && navLinks) {
-        hamburger.addEventListener('click', () => {
-          navLinks.classList.toggle('open');
-          document.body.style.overflow = navLinks.classList.contains('open') ? 'hidden' : '';
-        });
-        navLinks.querySelectorAll('a').forEach(a => {
-          a.addEventListener('click', () => {
-            navLinks.classList.remove('open');
-            document.body.style.overflow = '';
-          });
-        });
+        hamburger.addEventListener('click', () => { navLinks.classList.toggle('open'); document.body.style.overflow = navLinks.classList.contains('open') ? 'hidden' : ''; });
+        navLinks.querySelectorAll('a').forEach(a => { a.addEventListener('click', () => { navLinks.classList.remove('open'); document.body.style.overflow = ''; }); });
       }
 
       const slides = document.querySelectorAll('.hero-slide');
       const dots = document.querySelectorAll('.hero-dot');
-      let current = 0;
-      let timer = null;
-      const goTo = (idx) => {
-        slides[current].classList.remove('active');
-        dots[current] && dots[current].classList.remove('active');
-        current = (idx + slides.length) % slides.length;
-        slides[current].classList.add('active');
-        dots[current] && dots[current].classList.add('active');
-      };
+      let current = 0, timer = null;
+      const goTo = (idx) => { slides[current].classList.remove('active'); dots[current] && dots[current].classList.remove('active'); current = (idx + slides.length) % slides.length; slides[current].classList.add('active'); dots[current] && dots[current].classList.add('active'); };
       const autoplay = () => { timer = setInterval(() => goTo(current + 1), 6000); };
-      dots.forEach((dot, i) => {
-        dot.addEventListener('click', () => { clearInterval(timer); goTo(i); autoplay(); });
-      });
+      dots.forEach((dot, i) => { dot.addEventListener('click', () => { clearInterval(timer); goTo(i); autoplay(); }); });
       if (slides.length) { slides[0].classList.add('active'); dots[0] && dots[0].classList.add('active'); autoplay(); }
 
       const revealEls = document.querySelectorAll('.reveal');
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); } });
-      }, { threshold: 0.12 });
+      const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); } }); }, { threshold: 0.12 });
       revealEls.forEach(el => observer.observe(el));
 
       const counters = document.querySelectorAll('[data-count]');
       const counterObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (!entry.isIntersecting) return;
-          const el = entry.target;
-          const end = parseInt(el.dataset.count, 10);
-          const suffix = el.dataset.suffix || '';
+          const el = entry.target, end = parseInt(el.dataset.count, 10), suffix = el.dataset.suffix || '';
           let start = 0;
           const step = Math.ceil(end / 60);
           const tick = () => { start = Math.min(start + step, end); el.textContent = start + suffix; if (start < end) requestAnimationFrame(tick); };
