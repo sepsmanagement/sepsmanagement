@@ -671,6 +671,7 @@ a   { color:inherit; text-decoration:none; }
   .footer-top      { grid-template-columns:1fr 1fr; }
   .partners-grid   { grid-template-columns:repeat(2,1fr); }
   .exp-grid        { grid-template-columns:repeat(2,1fr); }
+  .partners-section .partners-grid  { grid-template-columns:repeat(2,1fr) !important; }
   .stats-row       { grid-template-columns:repeat(3,1fr); }
 }
 @media(max-width:768px){
@@ -687,7 +688,7 @@ a   { color:inherit; text-decoration:none; }
   .vessel-tabs    { flex-direction:column; }
   .feature-grid   { grid-template-columns:1fr; }
   .exp-grid       { grid-template-columns:1fr; }
-  .partners-grid  { grid-template-columns:1fr; }
+  .partners-grid  { grid-template-columns:1fr !important; }
   .form-row       { grid-template-columns:1fr; }
   .footer-top     { grid-template-columns:1fr; gap:36px; }
   .footer-bottom  { flex-direction:column; gap:12px; text-align:center; }
@@ -744,8 +745,8 @@ a   { color:inherit; text-decoration:none; }
     <video
       autoplay muted loop playsinline
       poster="https://images.unsplash.com/photo-1605281317010-fe5ffe798166?w=1800&q=85">
+      <source src="https://videos.pexels.com/video-files/13525313/13525313-hd_1920_1080_25fps.mp4" type="video/mp4"/>
       <source src="https://videos.pexels.com/video-files/6346159/6346159-hd_1920_1080_25fps.mp4" type="video/mp4"/>
-      <source src="https://videos.pexels.com/video-files/7333913/7333913-hd_1920_1080_30fps.mp4" type="video/mp4"/>
     </video>
   </div>
  
@@ -789,7 +790,7 @@ a   { color:inherit; text-decoration:none; }
       </div>
     </button>
     <button class="vessel-tab" data-vessel="tanker"
-      data-bg="https://images.pexels.com/photos/2244829/pexels-photo-2244829.jpeg?auto=compress&cs=tinysrgb&w=1800">
+      data-bg="https://images.unsplash.com/photo-1519011926349-8bc4d3c93ce0?w=1800&q=85">
       <div class="vessel-tab-icon"><i class="fa-solid fa-oil-well"></i></div>
       <div class="vessel-tab-label">
         <strong>Oil Tankers</strong>
@@ -797,7 +798,7 @@ a   { color:inherit; text-decoration:none; }
       </div>
     </button>
     <button class="vessel-tab" data-vessel="cargo"
-      data-bg="https://images.pexels.com/photos/2254736/pexels-photo-2254736.jpeg?auto=compress&cs=tinysrgb&w=1800">
+      data-bg="https://images.unsplash.com/photo-1521215578534-07a1082f0927?w=1800&q=85">
       <div class="vessel-tab-icon"><i class="fa-solid fa-ship"></i></div>
       <div class="vessel-tab-label">
         <strong>Cargo & Container</strong>
@@ -865,7 +866,7 @@ a   { color:inherit; text-decoration:none; }
  
   <!-- ── 02 OIL TANKERS ── -->
   <div class="vessel-panel tanker-panel">
-    <div class="vessel-panel-bg" style="background-image:url('https://images.pexels.com/photos/2244829/pexels-photo-2244829.jpeg?auto=compress&cs=tinysrgb&w=1800')"></div>
+    <div class="vessel-panel-bg" style="background-image:url('https://images.unsplash.com/photo-1519011926349-8bc4d3c93ce0?w=1800&q=85')"></div>
     <div class="vessel-panel-overlay"></div>
     <div class="vessel-panel-num">02</div>
     <div class="vessel-panel-content right">
@@ -897,7 +898,7 @@ a   { color:inherit; text-decoration:none; }
  
   <!-- ── 03 CARGO ── -->
   <div class="vessel-panel cargo-panel">
-    <div class="vessel-panel-bg" style="background-image:url('https://images.pexels.com/photos/2254736/pexels-photo-2254736.jpeg?auto=compress&cs=tinysrgb&w=1800')"></div>
+    <div class="vessel-panel-bg" style="background-image:url('https://images.unsplash.com/photo-1521215578534-07a1082f0927?w=1800&q=85')"></div>
     <div class="vessel-panel-overlay"></div>
     <div class="vessel-panel-num">03</div>
     <div class="vessel-panel-content">
@@ -1048,7 +1049,7 @@ a   { color:inherit; text-decoration:none; }
       <h2 class="display-md reveal">Built on Strong Relationships</h2>
       <div class="gold-divider reveal" style="max-width:280px"><div class="gem"></div></div>
     </div>
-    <div class="partners-grid">
+    <div class="partners-grid" style="grid-template-columns:repeat(4,1fr);">
       <div class="partner-card reveal">
         <i class="fa-solid fa-mug-hot partner-icon"></i>
         <h3>Coffee on the Rock</h3>
@@ -1066,6 +1067,12 @@ a   { color:inherit; text-decoration:none; }
         <h3>St. Eustatius Port Authority</h3>
         <p>Institutional partner ensuring every vessel call meets regulatory requirements and port operations run without friction.</p>
         <span class="partner-tag">Port Authority</span>
+      </div>
+      <div class="partner-card reveal">
+        <i class="fa-solid fa-bullhorn partner-icon"></i>
+        <h3>Duo Brandits</h3>
+        <p>Our trusted marketing partner &#x2014; driving brand awareness, digital presence, and creative strategy for SEPS Management across every platform.</p>
+        <span class="partner-tag">Marketing &amp; Branding</span>
       </div>
     </div>
   </div>
