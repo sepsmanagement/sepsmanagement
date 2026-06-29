@@ -1,693 +1,1330 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="SEPS Management B.V. — Premier shipping agency representing oil tankers, super and mega yachts, and cargo vessels across global ports." />
-  <title>SEPS Management B.V. | Shipping Agency</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --green-deep: #1B3D2A; --green-mid: #2A5C40; --green-light: #3D7A58;
-      --gold: #C9A84C; --gold-light: #E8C96A; --gold-pale: #F5EDD5;
-      --cream: #F5F0E8; --cream-dark: #EDE6D6; --white: #FFFFFF;
-      --text-dark: #1A1A1A; --text-mid: #3D3D3D; --text-muted: #6B6B6B;
-      --font-display: 'Cormorant Garamond', Georgia, serif;
-      --font-body: 'Montserrat', sans-serif;
-      --transition: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; font-size: 16px; }
-    body { font-family: var(--font-body); color: var(--text-dark); background: var(--white); line-height: 1.7; overflow-x: hidden; }
-    h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; line-height: 1.15; }
-    h1 { font-size: clamp(3rem, 6vw, 5.5rem); letter-spacing: -0.01em; }
-    h2 { font-size: clamp(2rem, 4vw, 3.2rem); }
-    h3 { font-size: clamp(1.4rem, 2.5vw, 1.9rem); }
-    p { font-size: 0.95rem; line-height: 1.8; color: var(--text-mid); }
-    a { color: inherit; text-decoration: none; }
-    img { display: block; width: 100%; height: 100%; object-fit: cover; }
-
-    .gold-rule { display: flex; align-items: center; gap: 16px; margin: 1.5rem 0; }
-    .gold-rule::before, .gold-rule::after { content: ''; flex: 1; height: 1.5px; background: linear-gradient(90deg, transparent, #C9A84C, #F0D060, #C9A84C, transparent); }
-    .gold-rule .star { color: var(--gold); font-size: 1rem; line-height: 1; }
-    .section-eyebrow { font-family: var(--font-body); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
-
-    .btn { display: inline-block; font-family: var(--font-body); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; padding: 14px 36px; border: 1.5px solid var(--gold); color: var(--gold); background: transparent; cursor: pointer; transition: var(--transition); position: relative; overflow: hidden; }
-    .btn::after { content: ''; position: absolute; inset: 0; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform var(--transition); z-index: 0; }
-    .btn:hover::after { transform: scaleX(1); }
-    .btn span { position: relative; z-index: 1; transition: color var(--transition); }
-    .btn:hover span { color: var(--green-deep); }
-    .btn-solid { background: var(--gold); color: var(--green-deep); }
-    .btn-solid::after { background: var(--gold-light); }
-    .btn-solid span { color: var(--green-deep); }
-
-    /* ── NAV ── */
-    .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 0 5%; display: flex; align-items: center; justify-content: space-between; height: 80px; transition: background var(--transition), box-shadow var(--transition); }
-    .nav.scrolled { background: rgba(27,61,42,0.97); backdrop-filter: blur(12px); box-shadow: 0 2px 40px rgba(0,0,0,0.25); }
-    .nav-logo { display: flex; align-items: center; gap: 14px; line-height: 1; }
-    .nav-logo .seps { font-family: var(--font-display); font-size: 1.9rem; font-weight: 400; color: var(--white); letter-spacing: 0.05em; }
-    .nav-logo .mgmt { font-family: var(--font-body); font-size: 0.6rem; font-weight: 500; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; margin-top: 2px; }
-    .nav-logo-text { display: flex; flex-direction: column; }
-    .nav-links { display: flex; gap: 32px; list-style: none; }
-    .nav-links a { font-family: var(--font-body); font-size: 0.7rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.85); transition: color var(--transition); position: relative; }
-    .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; right: 0; height: 1px; background: var(--gold); transform: scaleX(0); transition: transform var(--transition); }
-    .nav-links a:hover { color: var(--gold); }
-    .nav-links a:hover::after { transform: scaleX(1); }
-    .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
-    .nav-hamburger span { display: block; width: 24px; height: 1.5px; background: var(--white); transition: var(--transition); }
-
-    /* ── HERO ── */
-    .hero { position: relative; height: 100vh; min-height: 700px; display: flex; align-items: center; overflow: hidden; }
-    .hero-slides { position: absolute; inset: 0; }
-    .hero-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.5s ease; background-size: cover; background-position: center; }
-    .hero-slide.active { opacity: 1; }
-    .hero-slide::after { content: ''; position: absolute; inset: 0; background: linear-gradient(105deg, rgba(27,61,42,0.82) 0%, rgba(27,61,42,0.45) 55%, rgba(0,0,0,0.15) 100%); }
-    .hero-content { position: relative; z-index: 2; padding: 0 5%; max-width: 900px; display: flex; flex-direction: column; align-items: flex-start; }
-
-    /* ── HERO LOGO (big, centered above headline) ── */
-    .hero-logo { margin-bottom: 32px; opacity: 0; transform: translateY(20px); animation: fadeUp 0.9s forwards 0.1s; }
-    .hero-logo svg { width: 320px; height: auto; }
-
-    .hero-eyebrow { font-family: var(--font-body); font-size: 0.68rem; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem; opacity: 0; transform: translateY(20px); animation: fadeUp 0.9s forwards 0.3s; }
-    .hero h1 { color: var(--white); margin-bottom: 1.5rem; opacity: 0; transform: translateY(30px); animation: fadeUp 0.9s forwards 0.55s; }
-    .hero h1 em { font-style: italic; color: var(--gold-light); }
-    .hero-sub { font-size: 0.9rem; color: rgba(255,255,255,0.8); max-width: 520px; margin-bottom: 2.5rem; opacity: 0; transform: translateY(20px); animation: fadeUp 0.9s forwards 0.8s; }
-    .hero-cta { display: flex; gap: 16px; flex-wrap: wrap; opacity: 0; transform: translateY(20px); animation: fadeUp 0.9s forwards 1s; }
-    .hero-scroll { position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%); z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 8px; color: rgba(255,255,255,0.5); font-family: var(--font-body); font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; animation: bounce 2s infinite; }
-    .hero-scroll::after { content: ''; width: 1px; height: 40px; background: var(--gold); opacity: 0.6; }
-    .hero-dots { position: absolute; bottom: 36px; right: 5%; z-index: 2; display: flex; gap: 8px; }
-    .hero-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.35); cursor: pointer; transition: background var(--transition); border: none; }
-    .hero-dot.active { background: var(--gold); }
-
-    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
-    @keyframes bounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(8px); } }
-
-    /* ── STATS ── */
-    .stats-bar { background: var(--green-deep); padding: 36px 5%; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; border-top: 2px solid #C9A84C; }
-    .stat-item { text-align: center; padding: 20px; position: relative; }
-    .stat-item:not(:last-child)::after { content: ''; position: absolute; right: 0; top: 20%; bottom: 20%; width: 1px; background: rgba(184,149,42,0.3); }
-    .stat-number { font-family: var(--font-display); font-size: 2.8rem; font-weight: 300; color: var(--gold); line-height: 1; }
-    .stat-label { font-size: 0.65rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.55); margin-top: 6px; }
-
-    .section { padding: 100px 5%; }
-    .section-inner { max-width: 1200px; margin: 0 auto; }
-
-    /* ── ABOUT ── */
-    .about-intro { background: var(--cream); padding: 100px 5%; }
-    .about-intro-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
-    .about-intro-text h2 { color: var(--green-deep); margin-bottom: 1.5rem; }
-    .about-intro-text p { margin-bottom: 1.2rem; }
-    .about-intro-image { position: relative; height: 500px; }
-    .about-intro-image img { border-radius: 2px; }
-    .about-intro-image::before { content: ''; position: absolute; top: -16px; left: -16px; right: 16px; bottom: 16px; border: 1.5px solid var(--gold); border-radius: 2px; z-index: 0; }
-    .about-intro-image img { position: relative; z-index: 1; }
-
-    /* ── SERVICES ── */
-    .services-section { background: var(--white); }
-    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 60px; background: var(--cream-dark); }
-    .service-card { background: var(--white); padding: 48px 36px; transition: var(--transition); cursor: default; position: relative; overflow: hidden; }
-    .service-card::before { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform var(--transition); }
-    .service-card:hover { background: var(--green-deep); }
-    .service-card:hover .service-icon, .service-card:hover h3, .service-card:hover p { color: var(--white); }
-    .service-card:hover .service-icon { color: var(--gold); }
-    .service-card:hover::before { transform: scaleX(1); }
-    .service-icon { font-size: 2rem; color: var(--green-mid); margin-bottom: 20px; transition: color var(--transition); }
-    .service-card h3 { color: var(--green-deep); margin-bottom: 12px; font-size: 1.35rem; transition: color var(--transition); }
-    .service-card p { font-size: 0.88rem; transition: color var(--transition); }
-
-    /* ── FLEET ── */
-    .fleet-section { background: var(--green-deep); padding: 100px 5%; }
-    .fleet-section .section-eyebrow { color: var(--gold); }
-    .fleet-section h2 { color: var(--white); margin-bottom: 16px; }
-    .fleet-section > .section-inner > p { color: rgba(255,255,255,0.65); max-width: 600px; margin-bottom: 60px; }
-    .fleet-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-    .fleet-card { position: relative; height: 320px; overflow: hidden; cursor: pointer; }
-    .fleet-card img { transition: transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94); }
-    .fleet-card:hover img { transform: scale(1.06); }
-    .fleet-card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(27,61,42,0.92) 0%, rgba(27,61,42,0.1) 60%); display: flex; flex-direction: column; justify-content: flex-end; padding: 28px; }
-    .fleet-card h3 { color: var(--white); font-size: 1.5rem; margin-bottom: 6px; }
-    .fleet-card p { color: rgba(255,255,255,0.65); font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; }
-    .fleet-card .gold-tag { position: absolute; top: 20px; right: 20px; background: var(--gold); color: var(--green-deep); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; padding: 5px 12px; }
-
-    /* ── WHY ── */
-    .why-section { background: var(--cream); }
-    .why-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 48px; margin-top: 60px; }
-    .why-item { display: flex; gap: 24px; }
-    .why-number { font-family: var(--font-display); font-size: 3.5rem; font-weight: 300; color: var(--gold-pale); line-height: 1; min-width: 60px; }
-    .why-item h3 { color: var(--green-deep); margin-bottom: 10px; font-size: 1.25rem; }
-
-    /* ── EXPERIENCES ── */
-    .experiences-section { background: var(--white); padding: 100px 5%; }
-    .experiences-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 60px; }
-    .experience-card { position: relative; border: 1px solid var(--cream-dark); overflow: hidden; transition: var(--transition); }
-    .experience-card:hover { box-shadow: 0 12px 48px rgba(27,61,42,0.12); transform: translateY(-4px); }
-    .experience-card-img { height: 220px; overflow: hidden; }
-    .experience-card-img img { transition: transform 0.8s ease; }
-    .experience-card:hover .experience-card-img img { transform: scale(1.06); }
-    .experience-card-body { padding: 28px; }
-    .experience-tag { display: inline-block; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; padding: 4px 10px; background: var(--gold-pale); color: var(--green-deep); margin-bottom: 12px; }
-    .experience-card-body h3 { color: var(--green-deep); font-size: 1.2rem; margin-bottom: 10px; }
-    .experience-card-body p { font-size: 0.84rem; }
-
-    /* ── PARTNERS ── */
-    .partners-section { background: var(--green-deep); padding: 80px 5%; }
-    .partners-section .section-eyebrow { color: var(--gold); }
-    .partners-section h2 { color: var(--white); margin-bottom: 16px; }
-    .partners-section > .section-inner > p { color: rgba(255,255,255,0.6); max-width: 560px; margin-bottom: 56px; }
-    .partners-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-    .partner-card { background: rgba(255,255,255,0.06); border: 1px solid rgba(184,149,42,0.25); padding: 36px 28px; transition: var(--transition); text-align: center; }
-    .partner-card:hover { background: rgba(184,149,42,0.1); border-color: var(--gold); transform: translateY(-4px); }
-    .partner-icon { font-size: 2.2rem; color: var(--gold); margin-bottom: 16px; }
-    .partner-card h3 { color: var(--white); font-size: 1.25rem; margin-bottom: 10px; }
-    .partner-card p { color: rgba(255,255,255,0.55); font-size: 0.82rem; margin-bottom: 16px; }
-    .partner-tag { display: inline-block; font-size: 0.58rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; padding: 4px 12px; border: 1px solid rgba(184,149,42,0.5); color: var(--gold); }
-
-    /* ── CONTACT ── */
-    .contact-section { background: var(--white); }
-    .contact-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.4fr; gap: 80px; align-items: start; }
-    .contact-info h2 { color: var(--green-deep); margin-bottom: 1.5rem; }
-    .contact-detail { display: flex; gap: 16px; margin-bottom: 28px; align-items: flex-start; }
-    .contact-detail-icon { width: 40px; height: 40px; background: var(--green-deep); display: flex; align-items: center; justify-content: center; color: var(--gold); font-size: 1rem; flex-shrink: 0; }
-    .contact-detail-text strong { display: block; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--green-deep); margin-bottom: 4px; font-family: var(--font-body); }
-    .contact-detail-text span, .contact-detail-text a { font-size: 0.9rem; color: var(--text-mid); }
-    .contact-detail-text a { color: var(--green-mid); transition: color var(--transition); }
-    .contact-detail-text a:hover { color: var(--gold); }
-    .contact-form { display: flex; flex-direction: column; gap: 16px; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    .form-group { display: flex; flex-direction: column; gap: 6px; }
-    .form-group label { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--green-deep); }
-    .form-group input, .form-group select, .form-group textarea { padding: 13px 16px; border: 1px solid #D8D0C0; background: var(--cream); font-family: var(--font-body); font-size: 0.88rem; color: var(--text-dark); outline: none; transition: border-color var(--transition); appearance: none; }
-    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--gold); }
-    .form-group textarea { resize: vertical; min-height: 140px; }
-
-    /* ── WHATSAPP ── */
-    .whatsapp-btn { position: fixed; bottom: 28px; right: 28px; z-index: 999; display: flex; align-items: center; gap: 10px; background: #25D366; color: white; padding: 13px 20px; border-radius: 50px; font-family: var(--font-body); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.05em; box-shadow: 0 4px 20px rgba(37,211,102,0.4); transition: all 0.25s ease; text-decoration: none; animation: wpulse 2s infinite; }
-    .whatsapp-btn:hover { background: #128C7E; transform: scale(1.05); }
-    .whatsapp-btn i { font-size: 1.3rem; }
-    @keyframes wpulse { 0% { box-shadow: 0 0 0 0 rgba(37,211,102,0.5); } 70% { box-shadow: 0 0 0 12px rgba(37,211,102,0); } 100% { box-shadow: 0 0 0 0 rgba(37,211,102,0); } }
-
-    /* ── FOOTER ── */
-    .footer { background: var(--green-deep); border-top: 2px solid #C9A84C; padding: 64px 5% 32px; }
-    .footer-inner { max-width: 1200px; margin: 0 auto; }
-    .footer-top { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 60px; margin-bottom: 48px; }
-    .footer-logo .seps { font-family: var(--font-display); font-size: 2.2rem; color: var(--white); letter-spacing: 0.05em; }
-    .footer-logo .mgmt { font-size: 0.6rem; letter-spacing: 0.3em; color: var(--gold); text-transform: uppercase; font-family: var(--font-body); }
-    .footer-logo p { color: rgba(255,255,255,0.5); font-size: 0.82rem; margin-top: 16px; max-width: 280px; }
-    .footer-col h4 { font-family: var(--font-body); font-size: 0.65rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
-    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-    .footer-col ul li a { color: rgba(255,255,255,0.55); font-size: 0.85rem; transition: color var(--transition); }
-    .footer-col ul li a:hover { color: var(--gold); }
-    .footer-bottom { border-top: 1px solid rgba(184,149,42,0.2); padding-top: 24px; display: flex; justify-content: space-between; align-items: center; }
-    .footer-bottom p { color: rgba(255,255,255,0.3); font-size: 0.75rem; }
-
-    .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.7s ease, transform 0.7s ease; }
-    .reveal.visible { opacity: 1; transform: none; }
-
-    @media (max-width: 1024px) {
-      .stats-bar { grid-template-columns: repeat(2,1fr); }
-      .services-grid { grid-template-columns: repeat(2,1fr); }
-      .fleet-grid { grid-template-columns: repeat(2,1fr); }
-      .about-intro-inner { grid-template-columns: 1fr; gap: 48px; }
-      .about-intro-image { height: 340px; }
-      .contact-inner { grid-template-columns: 1fr; }
-      .footer-top { grid-template-columns: 1fr 1fr; }
-      .experiences-grid { grid-template-columns: repeat(2,1fr); }
-      .partners-grid { grid-template-columns: repeat(2,1fr); }
-    }
-    @media (max-width: 768px) {
-      .nav-links { display: none; }
-      .nav-hamburger { display: flex; }
-      .nav-links.open { display: flex; flex-direction: column; position: fixed; inset: 0; background: var(--green-deep); align-items: center; justify-content: center; gap: 32px; z-index: 999; }
-      .nav-links.open a { font-size: 1.1rem; }
-      .stats-bar { grid-template-columns: repeat(2,1fr); }
-      .services-grid { grid-template-columns: 1fr; }
-      .fleet-grid { grid-template-columns: 1fr; }
-      .why-grid { grid-template-columns: 1fr; }
-      .form-row { grid-template-columns: 1fr; }
-      .footer-top { grid-template-columns: 1fr; gap: 36px; }
-      .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
-      .experiences-grid { grid-template-columns: 1fr; }
-      .partners-grid { grid-template-columns: 1fr; }
-      .hero-logo svg { width: 220px; }
-      .whatsapp-btn span { display: none; }
-      .whatsapp-btn { padding: 14px; border-radius: 50%; }
-    }
-  </style>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="SEPS Management B.V. — Premier maritime shipping agency for oil tankers, superyachts, and cargo vessels. St. Eustatius, Dutch Caribbean."/>
+  <title>SEPS Management B.V. | Maritime Excellence</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+/* ============================================================
+   SEPS MANAGEMENT B.V.
+   Theme: Black Forest Green · Ivory · Gold
+   Layout: Royal Caribbean–level cinematic luxury
+   ============================================================ */
+:root {
+  /* Core brand */
+  --forest:       #0B1F12;   /* near-black forest green – body bg */
+  --forest-deep:  #060E0A;   /* darkest – footer, nav solid */
+  --forest-mid:   #132A1C;   /* cards, panels */
+  --forest-light: #1E4030;   /* hover states, borders */
+  --green-rich:   #1B3D2A;   /* richer green for accents */
+ 
+  /* Ivory touches */
+  --ivory:        #F5F0E6;   /* headings, primary text */
+  --ivory-mid:    #E8E0CF;   /* sub-headings */
+  --ivory-dim:    #B8B0A0;   /* body text */
+  --ivory-ghost:  rgba(245,240,230,0.07); /* subtle card bg */
+ 
+  /* Gold */
+  --gold:         #C9A84C;
+  --gold-light:   #E2C06A;
+  --gold-pale:    #F0DFA8;
+  --gold-glow:    rgba(201,168,76,0.18);
+ 
+  /* Vessel accent colours */
+  --yacht-gold:   #C9A84C;
+  --tanker-amber: #D4922A;
+  --cargo-steel:  #4A9BB8;
+ 
+  /* Utility */
+  --white: #FFFFFF;
+  --black: #040A06;
+}
+ 
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; font-size:16px; }
+body {
+  font-family:'Inter',sans-serif;
+  background:var(--forest);
+  color:var(--ivory-dim);
+  overflow-x:hidden;
+  line-height:1.65;
+}
+img { display:block; width:100%; object-fit:cover; }
+a   { color:inherit; text-decoration:none; }
+ 
+/* ── TYPE ────────────────────────────────────────────────── */
+.display-xl {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(4.5rem,11vw,10rem);
+  line-height:.9;
+  letter-spacing:.025em;
+  color:var(--ivory);
+}
+.display-lg {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(3rem,6.5vw,6rem);
+  line-height:.92;
+  letter-spacing:.02em;
+  color:var(--ivory);
+}
+.display-md {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.7rem,3vw,2.8rem);
+  line-height:1.2;
+  color:var(--ivory);
+}
+.eyebrow {
+  font-size:.62rem;
+  font-weight:600;
+  letter-spacing:.32em;
+  text-transform:uppercase;
+  color:var(--gold);
+}
+.body-lg { font-size:1rem; line-height:1.8; color:var(--ivory-dim); }
+.body-sm { font-size:.875rem; line-height:1.75; color:rgba(184,176,160,.65); }
+ 
+/* ── BUTTONS ─────────────────────────────────────────────── */
+.btn-gold {
+  display:inline-flex; align-items:center; gap:10px;
+  padding:16px 38px;
+  background:var(--gold);
+  color:var(--forest-deep);
+  font-family:'Inter',sans-serif;
+  font-size:.72rem; font-weight:700;
+  letter-spacing:.2em; text-transform:uppercase;
+  border:none; cursor:pointer;
+  transition:all .3s ease;
+  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));
+}
+.btn-gold:hover {
+  background:var(--gold-light);
+  transform:translateY(-2px);
+  box-shadow:0 16px 40px var(--gold-glow);
+}
+.btn-outline {
+  display:inline-flex; align-items:center; gap:10px;
+  padding:15px 36px;
+  background:transparent;
+  color:var(--ivory);
+  font-family:'Inter',sans-serif;
+  font-size:.72rem; font-weight:500;
+  letter-spacing:.18em; text-transform:uppercase;
+  border:1px solid rgba(245,240,230,.25);
+  cursor:pointer; transition:all .3s ease;
+}
+.btn-outline:hover {
+  border-color:var(--gold);
+  color:var(--gold);
+}
+ 
+/* ── NAV ─────────────────────────────────────────────────── */
+.nav {
+  position:fixed; top:0; left:0; right:0;
+  z-index:1000;
+  padding:0 5%;
+  height:78px;
+  display:flex; align-items:center; justify-content:space-between;
+  transition:background .4s ease, box-shadow .4s ease;
+}
+.nav.solid {
+  background:rgba(6,14,10,.97);
+  backdrop-filter:blur(20px);
+  box-shadow:0 2px 0 rgba(201,168,76,.25);
+}
+/* SVG logo in nav */
+.nav-logo { display:flex; align-items:center; }
+.nav-logo svg { height:50px; width:auto; }
+ 
+.nav-links {
+  display:flex; gap:36px; list-style:none; align-items:center;
+}
+.nav-links a {
+  font-size:.68rem; font-weight:500;
+  letter-spacing:.15em; text-transform:uppercase;
+  color:rgba(245,240,230,.65);
+  transition:color .25s;
+  position:relative;
+}
+.nav-links a::after {
+  content:'';
+  position:absolute; bottom:-4px; left:0; right:0;
+  height:1px; background:var(--gold);
+  transform:scaleX(0); transition:transform .3s;
+}
+.nav-links a:hover { color:var(--ivory); }
+.nav-links a:hover::after { transform:scaleX(1); }
+.nav-cta {
+  padding:10px 24px;
+  background:transparent;
+  border:1px solid var(--gold);
+  color:var(--gold);
+  font-size:.64rem; font-weight:700;
+  letter-spacing:.18em; text-transform:uppercase;
+  cursor:pointer; transition:all .25s;
+}
+.nav-cta:hover { background:var(--gold); color:var(--forest-deep); }
+.nav-hamburger {
+  display:none; flex-direction:column; gap:5px;
+  cursor:pointer; background:none; border:none;
+}
+.nav-hamburger span {
+  display:block; width:24px; height:1px;
+  background:var(--ivory); transition:all .3s;
+}
+ 
+/* ── HERO VIDEO ──────────────────────────────────────────── */
+.hero {
+  position:relative;
+  height:100vh; min-height:700px;
+  display:flex; align-items:flex-end;
+  overflow:hidden;
+}
+.hero-video-wrap {
+  position:absolute; inset:0;
+  overflow:hidden;
+}
+.hero-video-wrap video {
+  width:100%; height:100%;
+  object-fit:cover;
+  transform:scale(1.04);
+}
+/* Fallback poster */
+.hero-video-wrap::before {
+  content:'';
+  position:absolute; inset:0; z-index:0;
+  background:url('https://images.unsplash.com/photo-1605281317010-fe5ffe798166?w=1800&q=85')
+    center/cover no-repeat;
+}
+/* Cinematic overlay — dark forest green gradient */
+.hero-video-wrap::after {
+  content:'';
+  position:absolute; inset:0; z-index:1;
+  background:
+    linear-gradient(to top,
+      rgba(6,14,10,.98) 0%,
+      rgba(6,14,10,.55) 45%,
+      rgba(6,14,10,.12) 100%),
+    linear-gradient(to right,
+      rgba(6,14,10,.6) 0%,
+      transparent 60%);
+}
+.hero-content {
+  position:relative; z-index:2;
+  padding:0 6% 9vh;
+  max-width:860px;
+}
+.hero-eyebrow { margin-bottom:22px; }
+.hero-headline { margin-bottom:18px; }
+.hero-headline em {
+  font-family:'Playfair Display',serif;
+  font-style:italic;
+  color:var(--gold);
+}
+.hero-sub { max-width:480px; margin-bottom:38px; }
+.hero-ctas { display:flex; gap:14px; flex-wrap:wrap; }
+ 
+/* scroll indicator */
+.hero-scroll {
+  position:absolute; bottom:36px; right:5%;
+  z-index:2;
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+}
+.hero-scroll span {
+  font-size:.56rem; letter-spacing:.3em; text-transform:uppercase;
+  color:rgba(245,240,230,.3);
+  writing-mode:vertical-rl;
+}
+.scroll-bar {
+  width:1px; height:64px;
+  background:linear-gradient(to bottom, var(--gold), transparent);
+  animation:scrollPulse 2.2s infinite;
+}
+@keyframes scrollPulse {
+  0%  { transform:scaleY(0); transform-origin:top; }
+  50% { transform:scaleY(1); transform-origin:top; }
+  51% { transform:scaleY(1); transform-origin:bottom; }
+  100%{ transform:scaleY(0); transform-origin:bottom; }
+}
+ 
+/* ── VIDEO BADGE (Royal Caribbean style) ─────────────────── */
+.video-badge {
+  position:absolute; bottom:36px; left:5%;
+  z-index:2;
+  display:flex; align-items:center; gap:12px;
+}
+.video-badge-dot {
+  width:8px; height:8px; border-radius:50%;
+  background:var(--gold);
+  animation:livePulse 1.8s infinite;
+}
+@keyframes livePulse {
+  0%,100%{ opacity:1; transform:scale(1); }
+  50%    { opacity:.5; transform:scale(1.5); }
+}
+.video-badge span {
+  font-size:.58rem; letter-spacing:.28em; text-transform:uppercase;
+  color:rgba(245,240,230,.5);
+}
+ 
+/* ── VESSEL SELECTOR ─────────────────────────────────────── */
+.vessel-selector {
+  background:rgba(6,14,10,.88);
+  backdrop-filter:blur(24px);
+  border-top:1px solid rgba(201,168,76,.15);
+  border-bottom:1px solid rgba(245,240,230,.05);
+}
+.vessel-tabs { display:flex; }
+.vessel-tab {
+  flex:1;
+  display:flex; align-items:center; gap:16px;
+  padding:26px 24px;
+  cursor:pointer; border:none; background:transparent;
+  border-bottom:2px solid transparent;
+  color:rgba(245,240,230,.4);
+  text-align:left;
+  transition:all .35s ease;
+}
+.vessel-tab:hover { color:rgba(245,240,230,.72); }
+.vessel-tab.active { color:var(--ivory); }
+.vessel-tab.active[data-vessel="yacht"]  { border-bottom-color:var(--yacht-gold); }
+.vessel-tab.active[data-vessel="tanker"] { border-bottom-color:var(--tanker-amber); }
+.vessel-tab.active[data-vessel="cargo"]  { border-bottom-color:var(--cargo-steel); }
+ 
+.vessel-tab-icon {
+  width:46px; height:46px;
+  display:flex; align-items:center; justify-content:center;
+  border:1px solid currentColor;
+  border-radius:50%;
+  font-size:1rem; flex-shrink:0;
+  transition:all .35s;
+}
+.vessel-tab.active[data-vessel="yacht"]  .vessel-tab-icon { background:var(--yacht-gold);  border-color:var(--yacht-gold);  color:var(--forest-deep); }
+.vessel-tab.active[data-vessel="tanker"] .vessel-tab-icon { background:var(--tanker-amber); border-color:var(--tanker-amber); color:var(--forest-deep); }
+.vessel-tab.active[data-vessel="cargo"]  .vessel-tab-icon { background:var(--cargo-steel);  border-color:var(--cargo-steel);  color:var(--forest-deep); }
+ 
+.vessel-tab-label strong { font-size:.88rem; font-weight:600; display:block; }
+.vessel-tab-label span   { font-size:.6rem; letter-spacing:.15em; text-transform:uppercase; opacity:.5; margin-top:2px; display:block; }
+ 
+/* ── STATS ───────────────────────────────────────────────── */
+.stats-row {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  background:var(--forest-deep);
+  border-bottom:1px solid rgba(201,168,76,.12);
+}
+.stat-item {
+  padding:40px 28px; text-align:center;
+  border-right:1px solid rgba(245,240,230,.05);
+}
+.stat-item:last-child { border-right:none; }
+.stat-num {
+  display:block;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:3.8rem; line-height:1;
+  color:var(--gold);
+}
+.stat-label {
+  display:block;
+  font-size:.6rem; letter-spacing:.22em; text-transform:uppercase;
+  color:rgba(245,240,230,.38);
+  margin-top:7px;
+}
+ 
+/* ── DIVIDER ─────────────────────────────────────────────── */
+.gold-divider {
+  display:flex; align-items:center; gap:14px;
+  margin:18px 0;
+}
+.gold-divider::before,
+.gold-divider::after {
+  content:''; flex:1; height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+}
+.gold-divider .gem {
+  width:7px; height:7px;
+  background:var(--gold); transform:rotate(45deg);
+}
+ 
+/* ── VESSEL FULL-BLEED PANELS ────────────────────────────── */
+.vessel-panel {
+  position:relative;
+  min-height:100vh;
+  display:flex; align-items:center;
+  overflow:hidden;
+}
+.vessel-panel-bg {
+  position:absolute; inset:0;
+  background-size:cover; background-position:center;
+  transform:scale(1.06);
+  transition:transform 9s ease;
+}
+.vessel-panel:hover .vessel-panel-bg { transform:scale(1.0); }
+.yacht-panel  .vessel-panel-overlay { background:linear-gradient(110deg,rgba(6,14,10,.94) 0%,rgba(6,14,10,.52) 52%,rgba(0,0,0,.08) 100%); }
+.tanker-panel .vessel-panel-overlay { background:linear-gradient(110deg,rgba(10,18,10,.94) 0%,rgba(10,18,10,.52) 52%,rgba(0,0,0,.08) 100%); }
+.cargo-panel  .vessel-panel-overlay { background:linear-gradient(110deg,rgba(6,12,18,.94) 0%,rgba(6,12,18,.52) 52%,rgba(0,0,0,.08) 100%); }
+.vessel-panel-overlay { position:absolute; inset:0; }
+.vessel-panel-num {
+  position:absolute; right:5%; top:50%;
+  transform:translateY(-50%);
+  font-family:'Bebas Neue',sans-serif;
+  font-size:12rem; line-height:1;
+  color:rgba(245,240,230,.03);
+  pointer-events:none;
+}
+.vessel-panel-content {
+  position:relative; z-index:2;
+  padding:0 6%;
+  max-width:680px;
+}
+.vessel-panel-content.right {
+  margin-left:auto;
+  padding:0 6% 0 0;
+  text-align:right;
+}
+.service-pills {
+  display:flex; flex-wrap:wrap; gap:9px;
+  margin:24px 0;
+}
+.service-pills.right { justify-content:flex-end; }
+.pill {
+  padding:7px 16px;
+  border:1px solid rgba(245,240,230,.18);
+  font-size:.65rem; letter-spacing:.12em; text-transform:uppercase;
+  color:rgba(245,240,230,.55);
+}
+ 
+/* 24/7 badge inside panel */
+.avail-badge {
+  display:inline-flex; align-items:center; gap:8px;
+  padding:8px 18px;
+  border:1px solid rgba(201,168,76,.35);
+  margin-bottom:20px;
+}
+.avail-dot {
+  width:7px; height:7px; border-radius:50%;
+  background:var(--gold);
+  animation:livePulse 1.8s infinite;
+}
+.avail-badge span {
+  font-size:.62rem; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--gold);
+}
+ 
+/* ── SERVICES GRID ───────────────────────────────────────── */
+.services-section {
+  padding:120px 5%;
+  background:var(--forest-mid);
+}
+.section-inner { max-width:1300px; margin:0 auto; }
+.section-header { margin-bottom:72px; }
+.section-header .eyebrow { margin-bottom:16px; }
+.section-header h2 { margin-bottom:14px; }
+ 
+.feature-grid {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:2px;
+  background:rgba(0,0,0,.3);
+  margin-top:64px;
+}
+.feature-card {
+  background:var(--forest-mid);
+  padding:50px 38px;
+  position:relative; overflow:hidden;
+  transition:background .35s;
+}
+.feature-card::before {
+  content:'';
+  position:absolute; bottom:0; left:0; right:0;
+  height:2px; background:var(--gold);
+  transform:scaleX(0); transform-origin:left;
+  transition:transform .4s ease;
+}
+.feature-card:hover { background:rgba(201,168,76,.05); }
+.feature-card:hover::before { transform:scaleX(1); }
+.fc-icon {
+  width:52px; height:52px;
+  display:flex; align-items:center; justify-content:center;
+  border:1px solid rgba(245,240,230,.1);
+  color:var(--gold); font-size:1.2rem;
+  margin-bottom:24px;
+  transition:all .35s;
+}
+.feature-card:hover .fc-icon {
+  border-color:var(--gold);
+  background:var(--gold-glow);
+}
+.feature-card h3 {
+  font-family:'Playfair Display',serif;
+  font-size:1.22rem; color:var(--ivory);
+  margin-bottom:12px;
+}
+.feature-card p { font-size:.87rem; color:rgba(184,176,160,.65); line-height:1.78; }
+ 
+/* ── ABOUT SPLIT ─────────────────────────────────────────── */
+.split-section {
+  display:grid; grid-template-columns:1fr 1fr;
+  min-height:72vh;
+}
+.split-img { position:relative; overflow:hidden; }
+.split-img img { height:100%; transition:transform 9s ease; }
+.split-section:hover .split-img img { transform:scale(1.04); }
+.split-content {
+  display:flex; align-items:center;
+  padding:80px 64px;
+  background:var(--forest-mid);
+}
+.split-content-inner { max-width:500px; }
+.split-content-inner .eyebrow { margin-bottom:16px; }
+.split-content-inner h2 { margin-bottom:18px; }
+.split-content-inner p  { margin-bottom:14px; }
+ 
+/* ── EXPERIENCES ─────────────────────────────────────────── */
+.exp-section { padding:120px 5%; background:var(--forest); }
+.exp-grid {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:22px; margin-top:64px;
+}
+.exp-card {
+  position:relative; height:500px;
+  overflow:hidden; cursor:pointer;
+}
+.exp-card img { height:100%; transition:transform .9s cubic-bezier(.25,.46,.45,.94); }
+.exp-card:hover img { transform:scale(1.07); }
+.exp-card-overlay {
+  position:absolute; inset:0;
+  background:linear-gradient(to top,rgba(6,14,10,.95) 0%,rgba(6,14,10,.04) 55%);
+  display:flex; flex-direction:column; justify-content:flex-end;
+  padding:32px 28px;
+  transition:background .4s;
+}
+.exp-card:hover .exp-card-overlay {
+  background:linear-gradient(to top,rgba(6,14,10,.98) 0%,rgba(6,14,10,.22) 55%);
+}
+.exp-tag {
+  display:inline-block;
+  padding:5px 12px;
+  background:var(--gold);
+  color:var(--forest-deep);
+  font-size:.58rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase;
+  margin-bottom:12px; width:fit-content;
+}
+.exp-card h3 {
+  font-family:'Playfair Display',serif;
+  font-size:1.4rem; color:var(--ivory);
+  margin-bottom:8px;
+}
+.exp-card p {
+  font-size:.82rem; color:rgba(184,176,160,.6);
+  max-height:0; overflow:hidden; opacity:0;
+  transition:max-height .4s ease,opacity .4s;
+}
+.exp-card:hover p { max-height:80px; opacity:1; }
+ 
+/* ── PARTNERS ────────────────────────────────────────────── */
+.partners-section {
+  padding:100px 5%;
+  background:var(--forest-mid);
+  border-top:1px solid rgba(245,240,230,.04);
+}
+.partners-grid {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:2px; margin-top:56px;
+  background:rgba(0,0,0,.28);
+}
+.partner-card {
+  background:var(--forest-mid);
+  padding:44px 32px; text-align:center;
+  transition:all .35s;
+}
+.partner-card:hover { background:var(--gold-glow); }
+.partner-icon { font-size:2rem; color:var(--gold); margin-bottom:18px; display:block; }
+.partner-card h3 {
+  font-family:'Playfair Display',serif;
+  font-size:1.15rem; color:var(--ivory); margin-bottom:10px;
+}
+.partner-card p { font-size:.83rem; color:rgba(184,176,160,.55); margin-bottom:18px; }
+.partner-tag {
+  display:inline-block;
+  padding:5px 14px;
+  border:1px solid rgba(245,240,230,.12);
+  font-size:.58rem; letter-spacing:.15em; text-transform:uppercase;
+  color:var(--gold);
+}
+ 
+/* ── CONTACT ─────────────────────────────────────────────── */
+.contact-section {
+  padding:120px 5%;
+  background:var(--forest-deep);
+  border-top:1px solid rgba(201,168,76,.1);
+}
+.contact-grid {
+  display:grid; grid-template-columns:1fr 1.45fr;
+  gap:84px; align-items:start;
+  max-width:1280px; margin:0 auto;
+}
+.contact-info h2 { margin-bottom:22px; }
+.contact-detail { display:flex; gap:16px; margin-bottom:26px; align-items:flex-start; }
+.c-icon {
+  width:44px; height:44px;
+  display:flex; align-items:center; justify-content:center;
+  border:1px solid rgba(201,168,76,.28);
+  color:var(--gold); font-size:.9rem; flex-shrink:0;
+}
+.c-text strong {
+  display:block; font-size:.6rem;
+  letter-spacing:.18em; text-transform:uppercase;
+  color:var(--gold); margin-bottom:4px;
+}
+.c-text span, .c-text a { font-size:.9rem; color:rgba(184,176,160,.65); }
+.c-text a:hover { color:var(--gold); }
+ 
+.contact-form { display:flex; flex-direction:column; gap:15px; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:15px; }
+.form-group { display:flex; flex-direction:column; gap:6px; }
+.form-group label {
+  font-size:.58rem; letter-spacing:.2em; text-transform:uppercase;
+  color:rgba(245,240,230,.35);
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding:14px 16px;
+  background:rgba(245,240,230,.04);
+  border:1px solid rgba(245,240,230,.08);
+  color:var(--ivory);
+  font-family:'Inter',sans-serif; font-size:.9rem;
+  outline:none; appearance:none;
+  transition:border-color .3s, background .3s;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color:var(--gold);
+  background:rgba(245,240,230,.07);
+}
+.form-group select option { background:var(--forest-mid); }
+.form-group textarea { resize:vertical; min-height:140px; }
+ 
+/* ── FOOTER ──────────────────────────────────────────────── */
+.footer {
+  background:var(--black);
+  border-top:2px solid rgba(201,168,76,.22);
+  padding:76px 5% 32px;
+}
+.footer-inner { max-width:1300px; margin:0 auto; }
+.footer-top {
+  display:grid; grid-template-columns:1.7fr 1fr 1fr;
+  gap:64px; margin-bottom:56px;
+}
+.footer-brand svg { width:180px; height:auto; margin-bottom:18px; }
+.footer-brand p { font-size:.82rem; color:rgba(184,176,160,.35); line-height:1.75; max-width:280px; }
+.footer-addr { color:rgba(201,168,76,.45); font-size:.78rem; margin-top:12px; }
+.footer-col h4 {
+  font-size:.6rem; letter-spacing:.25em; text-transform:uppercase;
+  color:var(--gold); margin-bottom:20px;
+}
+.footer-col ul { list-style:none; display:flex; flex-direction:column; gap:10px; }
+.footer-col ul li a { font-size:.85rem; color:rgba(184,176,160,.38); transition:color .25s; }
+.footer-col ul li a:hover { color:var(--gold); }
+.footer-bottom {
+  border-top:1px solid rgba(245,240,230,.05);
+  padding-top:24px;
+  display:flex; justify-content:space-between; align-items:center;
+}
+.footer-bottom p { font-size:.72rem; color:rgba(184,176,160,.2); }
+ 
+/* ── WHATSAPP ────────────────────────────────────────────── */
+.wa-btn {
+  position:fixed; bottom:28px; right:28px; z-index:999;
+  display:flex; align-items:center; gap:10px;
+  background:#25D366; color:#fff;
+  padding:13px 20px; border-radius:50px;
+  font-size:.75rem; font-weight:600; letter-spacing:.05em;
+  box-shadow:0 4px 24px rgba(37,211,102,.35);
+  transition:all .25s;
+  animation:waPulse 2.5s infinite;
+}
+.wa-btn:hover { background:#128C7E; transform:scale(1.05); }
+.wa-btn i { font-size:1.2rem; }
+@keyframes waPulse {
+  0%  { box-shadow:0 0 0 0 rgba(37,211,102,.5); }
+  70% { box-shadow:0 0 0 12px rgba(37,211,102,0); }
+  100%{ box-shadow:0 0 0 0 rgba(37,211,102,0); }
+}
+ 
+/* ── REVEAL ──────────────────────────────────────────────── */
+.reveal { opacity:0; transform:translateY(38px); transition:opacity .8s ease,transform .8s ease; }
+.reveal.visible { opacity:1; transform:none; }
+.reveal-left  { opacity:0; transform:translateX(-38px); transition:opacity .8s ease,transform .8s ease; }
+.reveal-left.visible { opacity:1; transform:none; }
+.reveal-right { opacity:0; transform:translateX(38px); transition:opacity .8s ease,transform .8s ease; }
+.reveal-right.visible { opacity:1; transform:none; }
+ 
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media(max-width:1024px){
+  .feature-grid    { grid-template-columns:repeat(2,1fr); }
+  .split-section   { grid-template-columns:1fr; }
+  .split-img       { height:50vh; }
+  .contact-grid    { grid-template-columns:1fr; }
+  .footer-top      { grid-template-columns:1fr 1fr; }
+  .partners-grid   { grid-template-columns:repeat(2,1fr); }
+  .exp-grid        { grid-template-columns:repeat(2,1fr); }
+  .stats-row       { grid-template-columns:repeat(3,1fr); }
+}
+@media(max-width:768px){
+  .nav-links,.nav-cta { display:none; }
+  .nav-hamburger  { display:flex; }
+  .nav-links.open {
+    display:flex; flex-direction:column;
+    position:fixed; inset:0;
+    background:rgba(6,14,10,.98);
+    align-items:center; justify-content:center;
+    gap:32px; z-index:999;
+  }
+  .nav-links.open a { font-size:1rem; letter-spacing:.1em; }
+  .vessel-tabs    { flex-direction:column; }
+  .feature-grid   { grid-template-columns:1fr; }
+  .exp-grid       { grid-template-columns:1fr; }
+  .partners-grid  { grid-template-columns:1fr; }
+  .form-row       { grid-template-columns:1fr; }
+  .footer-top     { grid-template-columns:1fr; gap:36px; }
+  .footer-bottom  { flex-direction:column; gap:12px; text-align:center; }
+  .vessel-panel-num { display:none; }
+  .wa-btn span    { display:none; }
+  .wa-btn         { padding:14px; border-radius:50%; }
+  .stats-row      { grid-template-columns:1fr; }
+  .hero-ctas      { flex-direction:column; }
+}
+</style>
 </head>
 <body>
-
-  <!-- ── NAV ── -->
-  <nav class="nav">
-    <a href="#home" class="nav-logo" aria-label="SEPS Management home">
-      <div class="nav-logo-text">
-        <span class="seps">SEPS</span>
-        <span class="mgmt">Management B.V.</span>
-      </div>
-    </a>
-    <ul class="nav-links" role="list">
-      <li><a href="#home">Home</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#services">Services</a></li>
-      <li><a href="#fleet">Fleet</a></li>
-      <li><a href="#experiences">Experiences</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-    <button class="nav-hamburger" aria-label="Open menu">
-      <span></span><span></span><span></span>
-    </button>
-  </nav>
-
-  <!-- ── HERO ── -->
-  <section id="home" class="hero">
-    <div class="hero-slides" aria-hidden="true">
-      <div class="hero-slide" style="background-image:url('https://images.pexels.com/photos/813011/pexels-photo-813011.jpeg?auto=compress&cs=tinysrgb&w=1800')"></div>
-      <div class="hero-slide" style="background-image:url('https://images.pexels.com/photos/2244829/pexels-photo-2244829.jpeg?auto=compress&cs=tinysrgb&w=1800')"></div>
-      <div class="hero-slide" style="background-image:url('https://images.pexels.com/photos/1554646/pexels-photo-1554646.jpeg?auto=compress&cs=tinysrgb&w=1800')"></div>
-      <div class="hero-slide" style="background-image:url('https://images.pexels.com/photos/3044616/pexels-photo-3044616.jpeg?auto=compress&cs=tinysrgb&w=1800')"></div>
-    </div>
-
-    <div class="hero-content">
-
-      <!-- BIG LOGO ON HERO -->
-      <div class="hero-logo">
-        <svg viewBox="0 0 680 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="SEPS Management logo">
-          <text x="340" y="195" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-size="190" font-weight="400" fill="#FFFFFF" letter-spacing="-2">SEPS</text>
-          <text x="340" y="235" text-anchor="middle" font-family="'Montserrat',sans-serif" font-size="21" font-weight="400" fill="#B8952A" letter-spacing="15">MANAGEMENT</text>
-          <line x1="155" y1="252" x2="308" y2="252" stroke="#B8952A" stroke-width="2.5"/>
-          <line x1="372" y1="252" x2="525" y2="252" stroke="#B8952A" stroke-width="2.5"/>
-          <polygon points="340,243 343,250 350,252 343,254 340,261 337,254 330,252 337,250" fill="#B8952A"/>
-        </svg>
-      </div>
-
-      <p class="hero-eyebrow">Shipping Agency · St. Eustatius, Dutch Caribbean</p>
-      <h1>Navigating <em>Excellence</em><br>Across Every Port</h1>
-      <p class="hero-sub">SEPS Management B.V. provides premier maritime agency services for oil tankers, super and mega yachts, and cargo vessels worldwide — rooted in the Caribbean, trusted globally.</p>
-      <div class="hero-cta">
-        <a href="#services" class="btn"><span>Our Services</span></a>
-        <a href="#contact" class="btn btn-solid"><span>Contact Us</span></a>
-      </div>
-    </div>
-    <div class="hero-scroll" aria-hidden="true">Scroll</div>
-    <div class="hero-dots" role="tablist">
-      <button class="hero-dot active" role="tab" aria-label="Slide 1"></button>
-      <button class="hero-dot" role="tab" aria-label="Slide 2"></button>
-      <button class="hero-dot" role="tab" aria-label="Slide 3"></button>
-      <button class="hero-dot" role="tab" aria-label="Slide 4"></button>
-    </div>
-  </section>
-
-  <!-- ── STATS ── -->
-  <div class="stats-bar">
-    <div class="stat-item reveal">
-      <div class="stat-number" data-count="500" data-suffix="+">0+</div>
-      <div class="stat-label">Vessels Handled</div>
-    </div>
-    <div class="stat-item reveal">
-      <div class="stat-number" data-count="20" data-suffix="+">0+</div>
-      <div class="stat-label">Years Experience</div>
-    </div>
-    <div class="stat-item reveal">
-      <div class="stat-number" data-count="3">0</div>
-      <div class="stat-label">Vessel Categories</div>
-    </div>
-    <div class="stat-item reveal">
-      <div class="stat-number" data-count="24" data-suffix="/7">0/7</div>
-      <div class="stat-label">Port Operations</div>
+ 
+<!-- ════════════════════════════════════
+     NAVIGATION
+════════════════════════════════════ -->
+<nav class="nav" id="nav">
+  <a href="#home" class="nav-logo" aria-label="SEPS Management home">
+    <svg viewBox="0 0 380 165" xmlns="http://www.w3.org/2000/svg">
+      <text x="190" y="105" text-anchor="middle"
+        font-family="Georgia,'Times New Roman',serif"
+        font-size="98" font-weight="400"
+        fill="#F5F0E6" letter-spacing="-1">SEPS</text>
+      <text x="190" y="130" text-anchor="middle"
+        font-family="'Inter',sans-serif"
+        font-size="12" font-weight="500"
+        fill="#C9A84C" letter-spacing="8">MANAGEMENT</text>
+      <line x1="72"  y1="143" x2="170" y2="143" stroke="#C9A84C" stroke-width="1.6"/>
+      <line x1="210" y1="143" x2="308" y2="143" stroke="#C9A84C" stroke-width="1.6"/>
+      <polygon points="190,136 192.8,142.5 199,145 192.8,147.5 190,154 187.2,147.5 181,145 187.2,142.5"
+        fill="#C9A84C"/>
+    </svg>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#fleet">Our Fleet</a></li>
+    <li><a href="#experiences">Experiences</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Request Agency</a>
+  <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+ 
+<!-- ════════════════════════════════════
+     HERO — LIVE VIDEO
+════════════════════════════════════ -->
+<section id="home" class="hero">
+  <div class="hero-video-wrap">
+    <!-- Primary: Pexels free aerial superyacht turquoise water -->
+    <video
+      autoplay muted loop playsinline
+      poster="https://images.unsplash.com/photo-1605281317010-fe5ffe798166?w=1800&q=85">
+      <source src="https://videos.pexels.com/video-files/6346159/6346159-hd_1920_1080_25fps.mp4" type="video/mp4"/>
+      <source src="https://videos.pexels.com/video-files/7333913/7333913-hd_1920_1080_30fps.mp4" type="video/mp4"/>
+    </video>
+  </div>
+ 
+  <div class="hero-content">
+    <p class="eyebrow hero-eyebrow reveal">St. Eustatius · Dutch Caribbean · Maritime Excellence</p>
+    <h1 class="display-xl hero-headline reveal">
+      WHERE THE<br><em>OCEAN</em><br>MEETS MASTERY
+    </h1>
+    <p class="body-lg hero-sub reveal">
+      Premier maritime agency for superyachts, oil tankers, and cargo vessels.<br>
+      Rooted in the Caribbean — trusted across every port on earth.
+    </p>
+    <div class="hero-ctas reveal">
+      <a href="#fleet" class="btn-gold"><span>Explore Our Fleet</span> <i class="fa-solid fa-arrow-right"></i></a>
+      <a href="#contact" class="btn-outline">Request Services</a>
     </div>
   </div>
-
-  <!-- ── ABOUT ── -->
-  <section id="about" class="about-intro">
-    <div class="about-intro-inner">
-      <div class="about-intro-text reveal">
-        <p class="section-eyebrow">About SEPS Management</p>
-        <h2>A Trusted Partner at Every Port of Call</h2>
-        <div class="gold-rule"><span class="star">✦</span></div>
-        <p>SEPS Management B.V. is a dedicated shipping agency headquartered in St. Eustatius, Dutch Caribbean. We act as the essential link between vessel owners, operators, and the complex world of port logistics — ensuring every call is handled with precision, care, and professionalism.</p>
-        <p>From coordinating the arrival of ultra-luxury superyachts to managing the operational requirements of oil tankers at the GTI Terminal, we bring expert knowledge and an unwavering commitment to excellence to every engagement.</p>
-        <p>Our team operates around the clock, across multiple jurisdictions, providing the local expertise and global standards that modern maritime operations demand.</p>
-        <br/>
-        <a href="#contact" class="btn"><span>Work With Us</span></a>
+ 
+  <div class="video-badge">
+    <div class="video-badge-dot"></div>
+    <span>Live — St. Eustatius Operations</span>
+  </div>
+ 
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-bar"></div>
+  </div>
+</section>
+ 
+<!-- ════════════════════════════════════
+     VESSEL SELECTOR
+════════════════════════════════════ -->
+<div class="vessel-selector">
+  <div class="vessel-tabs">
+    <button class="vessel-tab active" data-vessel="yacht"
+      data-bg="https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?w=1800&q=85">
+      <div class="vessel-tab-icon"><i class="fa-solid fa-sailboat"></i></div>
+      <div class="vessel-tab-label">
+        <strong>Super & Mega Yachts</strong>
+        <span>Luxury Vessel Agency</span>
       </div>
-      <div class="about-intro-image reveal">
-        <img src="https://images.pexels.com/photos/906982/pexels-photo-906982.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Oil terminal operations at sea" loading="lazy" />
+    </button>
+    <button class="vessel-tab" data-vessel="tanker"
+      data-bg="https://images.pexels.com/photos/2244829/pexels-photo-2244829.jpeg?auto=compress&cs=tinysrgb&w=1800">
+      <div class="vessel-tab-icon"><i class="fa-solid fa-oil-well"></i></div>
+      <div class="vessel-tab-label">
+        <strong>Oil Tankers</strong>
+        <span>GTI Terminal · St. Eustatius</span>
+      </div>
+    </button>
+    <button class="vessel-tab" data-vessel="cargo"
+      data-bg="https://images.pexels.com/photos/2254736/pexels-photo-2254736.jpeg?auto=compress&cs=tinysrgb&w=1800">
+      <div class="vessel-tab-icon"><i class="fa-solid fa-ship"></i></div>
+      <div class="vessel-tab-label">
+        <strong>Cargo & Container</strong>
+        <span>Commercial Freight Operations</span>
+      </div>
+    </button>
+  </div>
+</div>
+ 
+<!-- ════════════════════════════════════
+     STATS — 3 items
+════════════════════════════════════ -->
+<div class="stats-row">
+  <div class="stat-item reveal">
+    <span class="stat-num" data-count="10000" data-suffix="+">0</span>
+    <span class="stat-label">Vessels Handled</span>
+  </div>
+  <div class="stat-item reveal">
+    <span class="stat-num" data-count="40" data-suffix="+">0</span>
+    <span class="stat-label">Years of Experience</span>
+  </div>
+  <div class="stat-item reveal">
+    <span class="stat-num" data-count="3">0</span>
+    <span class="stat-label">Vessel Categories</span>
+  </div>
+</div>
+ 
+<!-- ════════════════════════════════════
+     FLEET — THREE CINEMATIC PANELS
+════════════════════════════════════ -->
+<div id="fleet">
+ 
+  <!-- ── 01 SUPERYACHTS ── -->
+  <div class="vessel-panel yacht-panel">
+    <div class="vessel-panel-bg" style="background-image:url('https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?w=1800&q=85')"></div>
+    <div class="vessel-panel-overlay"></div>
+    <div class="vessel-panel-num">01</div>
+    <div class="vessel-panel-content">
+      <div class="avail-badge reveal">
+        <div class="avail-dot"></div>
+        <span>24 / 7 · Available Always</span>
+      </div>
+      <p class="eyebrow reveal" style="color:var(--yacht-gold)">Luxury · Discretion · Perfection</p>
+      <h2 class="display-lg reveal" style="margin-bottom:16px">
+        Super &<br>Mega Yachts
+      </h2>
+      <div class="gold-divider reveal" style="max-width:320px"><div class="gem"></div></div>
+      <p class="body-lg reveal" style="margin-bottom:20px">
+        White-glove maritime agency for the world's most discerning vessel owners. Every detail — from customs formalities to private provisioning — handled with absolute precision and discretion.
+      </p>
+      <div class="service-pills reveal">
+        <span class="pill">Port Clearance</span>
+        <span class="pill">Crew Immigration</span>
+        <span class="pill">Provisioning</span>
+        <span class="pill">Fuel Arrangements</span>
+        <span class="pill">Private Transfers</span>
+        <span class="pill">Customs Liaison</span>
+        <span class="pill">Concierge Services</span>
+      </div>
+      <a href="#contact" class="btn-gold reveal" style="margin-top:6px">
+        <span>Enquire Now</span> <i class="fa-solid fa-arrow-right"></i>
+      </a>
+    </div>
+  </div>
+ 
+  <!-- ── 02 OIL TANKERS ── -->
+  <div class="vessel-panel tanker-panel">
+    <div class="vessel-panel-bg" style="background-image:url('https://images.pexels.com/photos/2244829/pexels-photo-2244829.jpeg?auto=compress&cs=tinysrgb&w=1800')"></div>
+    <div class="vessel-panel-overlay"></div>
+    <div class="vessel-panel-num">02</div>
+    <div class="vessel-panel-content right">
+      <div class="avail-badge reveal" style="margin-left:auto;border-color:rgba(212,146,42,.35)">
+        <div class="avail-dot" style="background:var(--tanker-amber)"></div>
+        <span style="color:var(--tanker-amber)">24 / 7 · GTI Terminal Ready</span>
+      </div>
+      <p class="eyebrow reveal" style="color:var(--tanker-amber)">GTI Terminal · St. Eustatius</p>
+      <h2 class="display-lg reveal" style="margin-bottom:16px">Oil<br>Tankers</h2>
+      <div class="gold-divider reveal" style="max-width:300px;--gold:var(--tanker-amber)"><div class="gem" style="background:var(--tanker-amber)"></div></div>
+      <p class="body-lg reveal" style="margin-bottom:20px">
+        Deep-rooted expertise at GTI Terminal — the Caribbean's premier oil storage and transshipment hub. Seamless NOR tendering, berth coordination, and full terminal liaison, around the clock.
+      </p>
+      <div class="service-pills right reveal">
+        <span class="pill">NOR Tendering</span>
+        <span class="pill">GTI Coordination</span>
+        <span class="pill">Berth Planning</span>
+        <span class="pill">Disbursement Accounts</span>
+        <span class="pill">Port Authority Liaison</span>
+        <span class="pill">Flag State Compliance</span>
+      </div>
+      <div style="display:flex;justify-content:flex-end;margin-top:6px" class="reveal">
+        <a href="#contact" class="btn-gold" style="background:var(--tanker-amber)">
+          <span>Enquire Now</span> <i class="fa-solid fa-arrow-right"></i>
+        </a>
       </div>
     </div>
-  </section>
-
-  <!-- ── SERVICES ── -->
-  <section id="services" class="services-section section">
-    <div class="section-inner">
-      <p class="section-eyebrow reveal">What We Do</p>
-      <h2 class="reveal" style="color:var(--green-deep);max-width:600px">Comprehensive Maritime Agency Services</h2>
-      <div class="gold-rule reveal" style="max-width:400px"><span class="star">✦</span></div>
-      <div class="services-grid">
-        <div class="service-card reveal">
-          <div class="service-icon"><i class="fa-solid fa-anchor"></i></div>
-          <h3>Port Agency</h3>
-          <p>Full port agency services covering customs clearance, berth coordination, crew welfare, provisioning arrangements, and all port authority liaison on behalf of vessel operators.</p>
-        </div>
-        <div class="service-card reveal">
-          <div class="service-icon"><i class="fa-solid fa-oil-well"></i></div>
-          <h3>Oil Tanker Operations</h3>
-          <p>Specialized agency support for crude oil and product tankers, including coordination with GTI Terminal at St. Eustatius — one of the Caribbean's premier oil storage and transshipment hubs.</p>
-        </div>
-        <div class="service-card reveal">
-          <div class="service-icon"><i class="fa-solid fa-sailboat"></i></div>
-          <h3>Superyacht & Mega Yacht Agency</h3>
-          <p>Discreet, high-touch agency services tailored to the luxury yacht market. From customs formalities to crew logistics, we ensure an effortless experience for owners and guests.</p>
-        </div>
-        <div class="service-card reveal">
-          <div class="service-icon"><i class="fa-solid fa-ship"></i></div>
-          <h3>Cargo & Container Vessels</h3>
-          <p>Efficient handling of cargo and container ship calls — coordinating stevedores, documentation, cargo operations, and all port formalities to minimize turnaround time.</p>
-        </div>
-        <div class="service-card reveal">
-          <div class="service-icon"><i class="fa-solid fa-file-contract"></i></div>
-          <h3>Documentation & Clearance</h3>
-          <p>Expert management of all maritime documentation including port clearance, bill of lading coordination, crew immigration paperwork, and flag state compliance requirements.</p>
-        </div>
-        <div class="service-card reveal">
-          <div class="service-icon"><i class="fa-solid fa-star"></i></div>
-          <h3>Luxury Liaison & Experiences</h3>
-          <p>Exclusive concierge and liaison services for discerning guests — curating bespoke island experiences, private tours, fine dining, and connections to St. Eustatius's finest offerings.</p>
-        </div>
+  </div>
+ 
+  <!-- ── 03 CARGO ── -->
+  <div class="vessel-panel cargo-panel">
+    <div class="vessel-panel-bg" style="background-image:url('https://images.pexels.com/photos/2254736/pexels-photo-2254736.jpeg?auto=compress&cs=tinysrgb&w=1800')"></div>
+    <div class="vessel-panel-overlay"></div>
+    <div class="vessel-panel-num">03</div>
+    <div class="vessel-panel-content">
+      <p class="eyebrow reveal" style="color:var(--cargo-steel)">Speed · Efficiency · Reliability</p>
+      <h2 class="display-lg reveal" style="margin-bottom:16px">Cargo &<br>Container</h2>
+      <div class="gold-divider reveal" style="max-width:300px;--gold:var(--cargo-steel)"><div class="gem" style="background:var(--cargo-steel)"></div></div>
+      <p class="body-lg reveal" style="margin-bottom:20px">
+        Precision cargo vessel management that minimises turnaround time and maximises operational continuity. Full port formalities, stevedore coordination, and documentation handled end-to-end.
+      </p>
+      <div class="service-pills reveal">
+        <span class="pill">Stevedore Coordination</span>
+        <span class="pill">Bill of Lading</span>
+        <span class="pill">Cargo Documentation</span>
+        <span class="pill">Customs Clearance</span>
+        <span class="pill">Port Authority</span>
+        <span class="pill">Berth Coordination</span>
+      </div>
+      <a href="#contact" class="btn-gold reveal" style="margin-top:6px;background:var(--cargo-steel)">
+        <span>Enquire Now</span> <i class="fa-solid fa-arrow-right"></i>
+      </a>
+    </div>
+  </div>
+ 
+</div><!-- /fleet -->
+ 
+<!-- ════════════════════════════════════
+     SERVICES GRID
+════════════════════════════════════ -->
+<section id="services" class="services-section">
+  <div class="section-inner">
+    <div class="section-header">
+      <p class="eyebrow reveal">What We Do</p>
+      <h2 class="display-md reveal">Comprehensive Maritime<br>Agency Services</h2>
+      <div class="gold-divider reveal" style="max-width:300px"><div class="gem"></div></div>
+      <p class="body-lg reveal" style="max-width:560px">From the moment a vessel approaches port to the moment it departs — we handle every detail so you don't have to.</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-card reveal">
+        <div class="fc-icon"><i class="fa-solid fa-anchor"></i></div>
+        <h3>Port Agency</h3>
+        <p>Full-service port agency — customs clearance, berth coordination, crew welfare, provisioning, and all port authority liaison handled with precision.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="fc-icon"><i class="fa-solid fa-file-contract"></i></div>
+        <h3>Documentation & Clearance</h3>
+        <p>Expert management of all maritime documentation — port clearance, bill of lading, crew immigration paperwork, and flag state compliance requirements.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="fc-icon"><i class="fa-solid fa-star"></i></div>
+        <h3>Luxury Liaison</h3>
+        <p>Exclusive concierge services for superyacht guests — private island tours, fine dining at Coffee on the Rock, water sports, and curated island experiences.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="fc-icon"><i class="fa-solid fa-calculator"></i></div>
+        <h3>Disbursement Accounts</h3>
+        <p>Transparent, accurate port disbursement accounting with full audit trails and timely reconciliation for vessel operators and charterers.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="fc-icon"><i class="fa-solid fa-shield-halved"></i></div>
+        <h3>Compliance & Regulation</h3>
+        <p>Full compliance management under BES port regulations, Caribbean maritime law, and international flag state requirements — zero surprises.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="fc-icon"><i class="fa-solid fa-gauge-high"></i></div>
+        <h3>Crew & Welfare</h3>
+        <p>Crew change coordination, medical assistance, crew welfare, and all immigration formalities — ensuring your crew is looked after at every call.</p>
       </div>
     </div>
-  </section>
-
-  <!-- ── FLEET ── -->
-  <section id="fleet" class="fleet-section">
-    <div class="section-inner">
-      <p class="section-eyebrow">Vessels We Represent</p>
-      <h2>Every Class. Every Call.</h2>
-      <p>From ultra-luxury yachts to the world's largest tankers, we provide expert agency services across all vessel categories.</p>
-      <div class="fleet-grid">
-        <div class="fleet-card reveal">
-          <img src="https://images.pexels.com/photos/813011/pexels-photo-813011.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Luxury superyacht at sea" loading="lazy" />
-          <div class="fleet-card-overlay">
-            <h3>Super & Mega Yachts</h3>
-            <p>Luxury Vessel Agency</p>
-          </div>
-          <span class="gold-tag">Luxury</span>
-        </div>
-        <div class="fleet-card reveal">
-          <img src="https://images.pexels.com/photos/2244829/pexels-photo-2244829.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Oil tanker vessel at sea" loading="lazy" />
-          <div class="fleet-card-overlay">
-            <h3>Oil Tankers</h3>
-            <p>GTI Terminal · St. Eustatius</p>
-          </div>
-          <span class="gold-tag">Energy</span>
-        </div>
-        <div class="fleet-card reveal">
-          <img src="https://images.pexels.com/photos/1554646/pexels-photo-1554646.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Container cargo ship at port" loading="lazy" />
-          <div class="fleet-card-overlay">
-            <h3>Cargo & Container</h3>
-            <p>Commercial Freight Operations</p>
-          </div>
-          <span class="gold-tag">Cargo</span>
+  </div>
+</section>
+ 
+<!-- ════════════════════════════════════
+     ABOUT — SPLIT
+════════════════════════════════════ -->
+<section id="about" class="split-section">
+  <div class="split-img">
+    <img src="https://images.pexels.com/photos/906982/pexels-photo-906982.jpeg?auto=compress&cs=tinysrgb&w=900"
+      alt="GTI Terminal operations St. Eustatius" loading="lazy"/>
+  </div>
+  <div class="split-content">
+    <div class="split-content-inner">
+      <p class="eyebrow reveal">About SEPS Management</p>
+      <h2 class="display-md reveal">A Trusted Partner at Every Port of Call</h2>
+      <div class="gold-divider reveal" style="max-width:240px"><div class="gem"></div></div>
+      <p class="body-lg reveal">SEPS Management B.V. is headquartered in St. Eustatius, Dutch Caribbean — at the heart of one of the region's most strategically important maritime hubs.</p>
+      <p class="body-lg reveal">We are the essential link between vessel owners, operators, and the complex world of port logistics — delivering precision, care, and absolute professionalism on every engagement, for over 40 years.</p>
+      <div class="reveal" style="margin-top:32px">
+        <p class="eyebrow" style="margin-bottom:8px">Our Address</p>
+        <p style="color:rgba(184,176,160,.5);font-size:.9rem;line-height:1.7">
+          Schrupon Rd 1A<br>St. Eustatius, Dutch Caribbean<br>BES Islands
+        </p>
+      </div>
+      <a href="#contact" class="btn-outline reveal" style="margin-top:32px">Work With Us</a>
+    </div>
+  </div>
+</section>
+ 
+<!-- ════════════════════════════════════
+     EXPERIENCES
+════════════════════════════════════ -->
+<section id="experiences" class="exp-section">
+  <div class="section-inner">
+    <div class="section-header">
+      <p class="eyebrow reveal">Beyond The Port</p>
+      <h2 class="display-md reveal">Curated Island Experiences</h2>
+      <div class="gold-divider reveal" style="max-width:300px"><div class="gem"></div></div>
+      <p class="body-lg reveal" style="max-width:520px">For superyacht guests seeking something extraordinary — we connect you with the very best St. Eustatius has to offer.</p>
+    </div>
+    <div class="exp-grid">
+      <div class="exp-card reveal">
+        <img src="https://images.unsplash.com/photo-1548574505-5e239809ee19?w=700&q=80"
+          alt="Private island tours" loading="lazy"/>
+        <div class="exp-card-overlay">
+          <span class="exp-tag">Tours</span>
+          <h3>Private Island Tours</h3>
+          <p>Bespoke guided experiences through St. Eustatius's volcanic landscapes, historical sites, and secluded beaches.</p>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- ── WHY SEPS ── -->
-  <section class="why-section section">
-    <div class="section-inner">
-      <p class="section-eyebrow reveal">Why Choose Us</p>
-      <h2 class="reveal" style="color:var(--green-deep)">The SEPS Difference</h2>
-      <div class="gold-rule reveal" style="max-width:400px"><span class="star">✦</span></div>
-      <div class="why-grid">
-        <div class="why-item reveal">
-          <div class="why-number">01</div>
-          <div><h3>Caribbean Expertise</h3><p>Deep-rooted knowledge of Caribbean port regulations, customs procedures, and maritime authorities built over decades of operations in the region.</p></div>
-        </div>
-        <div class="why-item reveal">
-          <div class="why-number">02</div>
-          <div><h3>GTI Terminal Specialists</h3><p>We have an established, trusted relationship with GTI Terminal in St. Eustatius, ensuring smooth tanker operations at one of the Caribbean's key energy hubs.</p></div>
-        </div>
-        <div class="why-item reveal">
-          <div class="why-number">03</div>
-          <div><h3>Luxury Market Ready</h3><p>Our team understands the discretion and white-glove standards demanded by superyacht owners, captains, and charter managers — and delivers consistently.</p></div>
-        </div>
-        <div class="why-item reveal">
-          <div class="why-number">04</div>
-          <div><h3>Always Available</h3><p>Ships don't operate on business hours, and neither do we. Our team is reachable 24 hours a day, 7 days a week for any operational need or emergency.</p></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── EXPERIENCES ── -->
-  <section id="experiences" class="experiences-section">
-    <div class="section-inner">
-      <p class="section-eyebrow reveal">Luxury Liaison Services</p>
-      <h2 class="reveal" style="color:var(--green-deep);max-width:640px">Curated Experiences for Discerning Guests</h2>
-      <div class="gold-rule reveal" style="max-width:400px"><span class="star">✦</span></div>
-      <p class="reveal" style="max-width:620px">Beyond maritime operations, SEPS Management provides exclusive liaison services connecting superyacht owners, captains, and guests with the very best St. Eustatius has to offer.</p>
-      <div class="experiences-grid">
-        <div class="experience-card reveal">
-          <div class="experience-card-img">
-            <img src="https://images.pexels.com/photos/1271619/pexels-photo-1271619.jpeg?auto=compress&cs=tinysrgb&w=700" alt="Island tour" loading="lazy" />
-          </div>
-          <div class="experience-card-body">
-            <span class="experience-tag">Tours</span>
-            <h3>Private Island Tours</h3>
-            <p>Bespoke guided tours of St. Eustatius's historical sites, volcanic landscapes, and hidden beaches — tailored exclusively for yacht guests seeking an authentic Caribbean experience.</p>
-          </div>
-        </div>
-        <div class="experience-card reveal">
-          <div class="experience-card-img">
-            <img src="https://images.pexels.com/photos/1581384/pexels-photo-1581384.jpeg?auto=compress&cs=tinysrgb&w=700" alt="Fine dining" loading="lazy" />
-          </div>
-          <div class="experience-card-body">
-            <span class="experience-tag">Dining</span>
-            <h3>Fine Dining Arrangements</h3>
-            <p>Reservations at St. Eustatius's premier dining destinations, including the iconic Coffee on the Rock — a breathtaking cliffside experience overlooking the Caribbean Sea.</p>
-          </div>
-        </div>
-        <div class="experience-card reveal">
-          <div class="experience-card-img">
-            <img src="https://images.pexels.com/photos/3278215/pexels-photo-3278215.jpeg?auto=compress&cs=tinysrgb&w=700" alt="Water sports" loading="lazy" />
-          </div>
-          <div class="experience-card-body">
-            <span class="experience-tag">Activities</span>
-            <h3>Water Sports & Diving</h3>
-            <p>Access to St. Eustatius's world-class dive sites, snorkeling excursions, and water sport activities — coordinated seamlessly through SEPS Management.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── PARTNERS ── -->
-  <section id="partners" class="partners-section">
-    <div class="section-inner">
-      <p class="section-eyebrow">Our Partners</p>
-      <h2>Trusted Local Partners</h2>
-      <p>We work with the finest establishments on St. Eustatius to ensure every guest enjoys an unforgettable island experience.</p>
-      <div class="partners-grid">
-        <div class="partner-card reveal">
-          <div class="partner-icon"><i class="fa-solid fa-mug-hot"></i></div>
+      <div class="exp-card reveal">
+        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=700&q=80"
+          alt="Coffee on the Rock dining" loading="lazy"/>
+        <div class="exp-card-overlay">
+          <span class="exp-tag">Dining</span>
           <h3>Coffee on the Rock</h3>
-          <p>St. Eustatius's most iconic dining destination — perched dramatically on the cliffs of the Quill volcano with panoramic views of the Caribbean Sea. A must-visit for every guest.</p>
-          <span class="partner-tag">Dining & Experience</span>
+          <p>Reservations at the island's most iconic cliffside restaurant — panoramic views of the Caribbean Sea at every table.</p>
         </div>
-        <div class="partner-card reveal">
-          <div class="partner-icon"><i class="fa-solid fa-water"></i></div>
-          <h3>GTI Terminal Statia</h3>
-          <p>One of the Caribbean's premier oil storage and transshipment facilities. Our close operational partnership ensures seamless tanker handling and port coordination.</p>
-          <span class="partner-tag">Energy & Port</span>
-        </div>
-        <div class="partner-card reveal">
-          <div class="partner-icon"><i class="fa-solid fa-landmark"></i></div>
-          <h3>St. Eustatius Port Authority</h3>
-          <p>A key institutional partner ensuring all vessel calls meet regulatory requirements and port operations run smoothly for every class of vessel we represent.</p>
-          <span class="partner-tag">Port Authority</span>
+      </div>
+      <div class="exp-card reveal">
+        <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=700&q=80"
+          alt="Diving and water sports" loading="lazy"/>
+        <div class="exp-card-overlay">
+          <span class="exp-tag">Activities</span>
+          <h3>Diving & Water Sports</h3>
+          <p>World-class Caribbean dive sites, snorkelling excursions, and water sport arrangements — all seamlessly coordinated.</p>
         </div>
       </div>
     </div>
-  </section>
-
-  <!-- ── CONTACT ── -->
-  <section id="contact" class="contact-section section">
-    <div class="contact-inner">
-      <div class="contact-info">
-        <p class="section-eyebrow">Get In Touch</p>
-        <h2 style="color:var(--green-deep)">Let's Work Together</h2>
-        <div class="gold-rule" style="max-width:340px"><span class="star">✦</span></div>
-        <p style="margin-bottom:40px">Whether you're planning a port call, need a reliable Caribbean shipping agent, or want to arrange an exclusive island experience, we're ready to assist.</p>
-        <div class="contact-detail">
-          <div class="contact-detail-icon"><i class="fa-solid fa-location-dot"></i></div>
-          <div class="contact-detail-text">
-            <strong>Office Address</strong>
-            <span>Schrupon Rd 1A<br/>St. Eustatius, Dutch Caribbean</span>
-          </div>
-        </div>
-        <div class="contact-detail">
-          <div class="contact-detail-icon"><i class="fa-solid fa-envelope"></i></div>
-          <div class="contact-detail-text">
-            <strong>Email</strong>
-            <a href="mailto:info@sepsmanagement.com">info@sepsmanagement.com</a>
-          </div>
-        </div>
-        <div class="contact-detail">
-          <div class="contact-detail-icon"><i class="fa-brands fa-whatsapp"></i></div>
-          <div class="contact-detail-text">
-            <strong>WhatsApp</strong>
-            <a href="https://wa.me/+5993191609" target="_blank">+5993191609</a>
-          </div>
-        </div>
-        <div class="contact-detail">
-          <div class="contact-detail-icon"><i class="fa-solid fa-clock"></i></div>
-          <div class="contact-detail-text">
-            <strong>Availability</strong>
-            <span>24 hours · 7 days a week</span>
-          </div>
+  </div>
+</section>
+ 
+<!-- ════════════════════════════════════
+     PARTNERS
+════════════════════════════════════ -->
+<section class="partners-section">
+  <div class="section-inner">
+    <div class="section-header">
+      <p class="eyebrow reveal">Trusted Partners</p>
+      <h2 class="display-md reveal">Built on Strong Relationships</h2>
+      <div class="gold-divider reveal" style="max-width:280px"><div class="gem"></div></div>
+    </div>
+    <div class="partners-grid">
+      <div class="partner-card reveal">
+        <i class="fa-solid fa-mug-hot partner-icon"></i>
+        <h3>Coffee on the Rock</h3>
+        <p>St. Eustatius's most iconic destination — dramatically perched on the cliffs of the Quill volcano with sweeping Caribbean views.</p>
+        <span class="partner-tag">Dining & Experience</span>
+      </div>
+      <div class="partner-card reveal">
+        <i class="fa-solid fa-droplet partner-icon"></i>
+        <h3>GTI Terminal Statia</h3>
+        <p>One of the Caribbean's premier oil storage and transshipment facilities — a cornerstone of our tanker operations.</p>
+        <span class="partner-tag">Energy & Port</span>
+      </div>
+      <div class="partner-card reveal">
+        <i class="fa-solid fa-landmark partner-icon"></i>
+        <h3>St. Eustatius Port Authority</h3>
+        <p>Institutional partner ensuring every vessel call meets regulatory requirements and port operations run without friction.</p>
+        <span class="partner-tag">Port Authority</span>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- ════════════════════════════════════
+     CONTACT
+════════════════════════════════════ -->
+<section id="contact" class="contact-section">
+  <div class="contact-grid">
+    <div class="contact-info">
+      <p class="eyebrow reveal">Get In Touch</p>
+      <h2 class="display-md reveal">Let's Navigate<br>This Together</h2>
+      <div class="gold-divider reveal" style="max-width:260px"><div class="gem"></div></div>
+      <p class="body-lg reveal" style="margin-bottom:40px">Whether you're planning a port call, need a Caribbean shipping agent, or want to arrange an exclusive island experience — we're ready.</p>
+      <div class="contact-detail reveal">
+        <div class="c-icon"><i class="fa-solid fa-location-dot"></i></div>
+        <div class="c-text">
+          <strong>Address</strong>
+          <span>Schrupon Rd 1A, St. Eustatius<br>Dutch Caribbean, BES Islands</span>
         </div>
       </div>
-      <form class="contact-form" novalidate>
-        <div class="form-row">
-          <div class="form-group">
-            <label for="name">Full Name</label>
-            <input type="text" id="name" name="name" placeholder="Captain John Smith" required />
-          </div>
-          <div class="form-group">
-            <label for="company">Company / Vessel</label>
-            <input type="text" id="company" name="company" placeholder="MV Example" />
-          </div>
+      <div class="contact-detail reveal">
+        <div class="c-icon"><i class="fa-solid fa-envelope"></i></div>
+        <div class="c-text">
+          <strong>Email</strong>
+          <a href="mailto:info@sepsmanagement.com">info@sepsmanagement.com</a>
         </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label for="email">Email Address</label>
-            <input type="email" id="email" name="email" placeholder="you@company.com" required />
-          </div>
-          <div class="form-group">
-            <label for="phone">Phone / WhatsApp</label>
-            <input type="tel" id="phone" name="phone" placeholder="+1 000 000 0000" />
-          </div>
+      </div>
+      <div class="contact-detail reveal">
+        <div class="c-icon"><i class="fa-brands fa-whatsapp"></i></div>
+        <div class="c-text">
+          <strong>WhatsApp</strong>
+          <a href="https://wa.me/10000000000" target="_blank">+1 (000) 000-0000</a>
+        </div>
+      </div>
+      <div class="contact-detail reveal">
+        <div class="c-icon"><i class="fa-solid fa-clock"></i></div>
+        <div class="c-text">
+          <strong>Availability</strong>
+          <span>24 hours · 7 days a week</span>
+        </div>
+      </div>
+    </div>
+    <form class="contact-form reveal" novalidate>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" placeholder="Captain John Smith"/>
         </div>
         <div class="form-group">
-          <label for="service">Service Required</label>
-          <select id="service" name="service">
-            <option value="" disabled selected>Select a service</option>
-            <option>Port Agency</option>
-            <option>Oil Tanker Operations</option>
-            <option>Superyacht / Mega Yacht Agency</option>
-            <option>Cargo & Container Vessel</option>
-            <option>Documentation & Clearance</option>
-            <option>Luxury Liaison & Experiences</option>
-            <option>Other</option>
-          </select>
+          <label>Company / Vessel</label>
+          <input type="text" placeholder="MV Example"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" placeholder="you@company.com"/>
         </div>
         <div class="form-group">
-          <label for="message">Message</label>
-          <textarea id="message" name="message" placeholder="Please describe your requirements, ETA, vessel details, or any questions…" required></textarea>
-        </div>
-        <button type="submit" class="btn btn-solid" style="align-self:flex-start">
-          <span>Send Message</span>
-        </button>
-      </form>
-    </div>
-  </section>
-
-  <!-- ── FOOTER ── -->
-  <footer class="footer">
-    <div class="footer-inner">
-      <div class="footer-top">
-        <div class="footer-logo">
-          <div class="seps">SEPS</div>
-          <div class="mgmt">Management B.V.</div>
-          <p>Premier shipping agency services for oil tankers, super and mega yachts, and cargo vessels throughout the Caribbean and beyond.</p>
-          <p style="margin-top:8px;color:rgba(184,149,42,0.7);font-size:0.78rem"><i class="fa-solid fa-location-dot" style="margin-right:6px"></i>Schrupon Rd 1A, St. Eustatius, Dutch Caribbean</p>
-        </div>
-        <div class="footer-col">
-          <h4>Navigation</h4>
-          <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About Us</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#fleet">Fleet</a></li>
-            <li><a href="#experiences">Experiences</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h4>Services</h4>
-          <ul>
-            <li><a href="#services">Port Agency</a></li>
-            <li><a href="#services">Oil Tanker Operations</a></li>
-            <li><a href="#services">Superyacht Agency</a></li>
-            <li><a href="#services">Cargo & Container</a></li>
-            <li><a href="#services">Luxury Liaison</a></li>
-            <li><a href="#services">24/7 Support</a></li>
-          </ul>
+          <label>Phone / WhatsApp</label>
+          <input type="tel" placeholder="+1 000 000 0000"/>
         </div>
       </div>
-      <div class="footer-bottom">
-        <p>&copy; 2025 SEPS Management B.V. All rights reserved.</p>
-        <p style="color:rgba(184,149,42,0.4);font-size:0.7rem;letter-spacing:0.1em">ST. EUSTATIUS · DUTCH CARIBBEAN</p>
+      <div class="form-group">
+        <label>Service Required</label>
+        <select>
+          <option value="" disabled selected>Select a service</option>
+          <option>Port Agency</option>
+          <option>Oil Tanker Operations — GTI Terminal</option>
+          <option>Superyacht / Mega Yacht Agency</option>
+          <option>Cargo & Container Vessel</option>
+          <option>Documentation & Clearance</option>
+          <option>Luxury Liaison & Experiences</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea placeholder="Please describe your requirements, ETA, vessel details, or any questions…"></textarea>
+      </div>
+      <button type="submit" class="btn-gold">
+        <span>Send Message</span> <i class="fa-solid fa-paper-plane"></i>
+      </button>
+    </form>
+  </div>
+</section>
+ 
+<!-- ════════════════════════════════════
+     FOOTER
+════════════════════════════════════ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <svg viewBox="0 0 380 165" xmlns="http://www.w3.org/2000/svg">
+          <text x="190" y="105" text-anchor="middle"
+            font-family="Georgia,'Times New Roman',serif"
+            font-size="98" font-weight="400"
+            fill="#F5F0E6" letter-spacing="-1">SEPS</text>
+          <text x="190" y="130" text-anchor="middle"
+            font-family="'Inter',sans-serif"
+            font-size="12" font-weight="500"
+            fill="#C9A84C" letter-spacing="8">MANAGEMENT</text>
+          <line x1="72"  y1="143" x2="170" y2="143" stroke="#C9A84C" stroke-width="1.6"/>
+          <line x1="210" y1="143" x2="308" y2="143" stroke="#C9A84C" stroke-width="1.6"/>
+          <polygon points="190,136 192.8,142.5 199,145 192.8,147.5 190,154 187.2,147.5 181,145 187.2,142.5"
+            fill="#C9A84C"/>
+        </svg>
+        <p>Premier maritime agency services for oil tankers, superyachts, and cargo vessels — throughout the Caribbean and beyond.</p>
+        <p class="footer-addr">
+          <i class="fa-solid fa-location-dot" style="margin-right:6px"></i>
+          Schrupon Rd 1A · St. Eustatius · Dutch Caribbean
+        </p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#fleet">Our Fleet</a></li>
+          <li><a href="#experiences">Experiences</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#fleet">Superyacht Agency</a></li>
+          <li><a href="#fleet">Oil Tanker Operations</a></li>
+          <li><a href="#fleet">Cargo & Container</a></li>
+          <li><a href="#services">Port Agency</a></li>
+          <li><a href="#services">Documentation</a></li>
+          <li><a href="#experiences">Luxury Liaison</a></li>
+        </ul>
       </div>
     </div>
-  </footer>
-
-  <!-- ── WHATSAPP FLOAT ── -->
-  <a href="https://wa.me/+5993191609" target="_blank" class="whatsapp-btn" aria-label="Chat on WhatsApp">
-    <i class="fa-brands fa-whatsapp"></i>
-    <span>Chat on WhatsApp</span>
-  </a>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const nav = document.querySelector('.nav');
-      window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 40); }, { passive: true });
-
-      const hamburger = document.querySelector('.nav-hamburger');
-      const navLinks = document.querySelector('.nav-links');
-      if (hamburger && navLinks) {
-        hamburger.addEventListener('click', () => { navLinks.classList.toggle('open'); document.body.style.overflow = navLinks.classList.contains('open') ? 'hidden' : ''; });
-        navLinks.querySelectorAll('a').forEach(a => { a.addEventListener('click', () => { navLinks.classList.remove('open'); document.body.style.overflow = ''; }); });
-      }
-
-      const slides = document.querySelectorAll('.hero-slide');
-      const dots = document.querySelectorAll('.hero-dot');
-      let current = 0, timer = null;
-      const goTo = (idx) => { slides[current].classList.remove('active'); dots[current] && dots[current].classList.remove('active'); current = (idx + slides.length) % slides.length; slides[current].classList.add('active'); dots[current] && dots[current].classList.add('active'); };
-      const autoplay = () => { timer = setInterval(() => goTo(current + 1), 6000); };
-      dots.forEach((dot, i) => { dot.addEventListener('click', () => { clearInterval(timer); goTo(i); autoplay(); }); });
-      if (slides.length) { slides[0].classList.add('active'); dots[0] && dots[0].classList.add('active'); autoplay(); }
-
-      const revealEls = document.querySelectorAll('.reveal');
-      const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); } }); }, { threshold: 0.12 });
-      revealEls.forEach(el => observer.observe(el));
-
-      const counters = document.querySelectorAll('[data-count]');
-      const counterObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (!entry.isIntersecting) return;
-          const el = entry.target, end = parseInt(el.dataset.count, 10), suffix = el.dataset.suffix || '';
-          let start = 0;
-          const step = Math.ceil(end / 60);
-          const tick = () => { start = Math.min(start + step, end); el.textContent = start + suffix; if (start < end) requestAnimationFrame(tick); };
-          requestAnimationFrame(tick);
-          counterObserver.unobserve(el);
-        });
-      }, { threshold: 0.5 });
-      counters.forEach(el => counterObserver.observe(el));
-
-      const form = document.querySelector('.contact-form');
-      if (form) {
-        form.addEventListener('submit', (e) => {
-          e.preventDefault();
-          const btn = form.querySelector('button[type="submit"]');
-          const span = btn.querySelector('span');
-          span.textContent = 'Message Sent ✓';
-          btn.disabled = true;
-          setTimeout(() => { span.textContent = 'Send Message'; btn.disabled = false; form.reset(); }, 4000);
-        });
-      }
+    <div class="footer-bottom">
+      <p>&copy; 2025 SEPS Management B.V. · All rights reserved.</p>
+      <p style="color:rgba(201,168,76,.2);font-size:.62rem;letter-spacing:.15em">
+        ST. EUSTATIUS · DUTCH CARIBBEAN · BES ISLANDS
+      </p>
+    </div>
+  </div>
+</footer>
+ 
+<!-- WhatsApp -->
+<a href="https://wa.me/10000000000" target="_blank" class="wa-btn" aria-label="Chat on WhatsApp">
+  <i class="fa-brands fa-whatsapp"></i>
+  <span>Chat on WhatsApp</span>
+</a>
+ 
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+ 
+  /* ── Nav solid on scroll ─────────────────────────────── */
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('solid', window.scrollY > 60);
+  }, {passive:true});
+ 
+  /* ── Mobile menu ─────────────────────────────────────── */
+  const ham     = document.getElementById('hamburger');
+  const navList = document.getElementById('navLinks');
+  ham.addEventListener('click', () => {
+    navList.classList.toggle('open');
+    document.body.style.overflow = navList.classList.contains('open') ? 'hidden' : '';
+  });
+  navList.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      navList.classList.remove('open');
+      document.body.style.overflow = '';
     });
-  </script>
+  });
+ 
+  /* ── Vessel tabs ─────────────────────────────────────── */
+  const tabs = document.querySelectorAll('.vessel-tab');
+  const panelMap = {
+    yacht:  document.querySelector('.yacht-panel'),
+    tanker: document.querySelector('.tanker-panel'),
+    cargo:  document.querySelector('.cargo-panel'),
+  };
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const panel = panelMap[tab.dataset.vessel];
+      if (panel) panel.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+ 
+  /* ── Scroll reveal ───────────────────────────────────── */
+  const revealEls = document.querySelectorAll('.reveal,.reveal-left,.reveal-right');
+  const ro = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); }
+    });
+  }, {threshold:.1});
+  revealEls.forEach(el => ro.observe(el));
+ 
+  /* ── Animated counters ───────────────────────────────── */
+  const counters = document.querySelectorAll('[data-count]');
+  const co = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el  = e.target;
+      const end = parseInt(el.dataset.count);
+      const sfx = el.dataset.suffix || '';
+      let cur = 0;
+      const duration = 1800;
+      const startTime = performance.now();
+      const tick = (now) => {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        // Ease out cubic
+        const eased = 1 - Math.pow(1 - progress, 3);
+        cur = Math.floor(eased * end);
+        el.textContent = cur.toLocaleString() + sfx;
+        if (progress < 1) requestAnimationFrame(tick);
+        else el.textContent = end.toLocaleString() + sfx;
+      };
+      requestAnimationFrame(tick);
+      co.unobserve(el);
+    });
+  }, {threshold:.5});
+  counters.forEach(el => co.observe(el));
+ 
+  /* ── Contact form ────────────────────────────────────── */
+  const form = document.querySelector('.contact-form');
+  if (form) {
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const btn  = form.querySelector('button[type="submit"]');
+      const span = btn.querySelector('span');
+      span.textContent = 'Message Sent ✓';
+      btn.disabled = true;
+      setTimeout(() => {
+        span.textContent = 'Send Message';
+        btn.disabled = false;
+        form.reset();
+      }, 4000);
+    });
+  }
+ 
+  /* ── Subtle parallax on vessel panel bgs ────────────── */
+  const panelBgs = document.querySelectorAll('.vessel-panel-bg');
+  window.addEventListener('scroll', () => {
+    panelBgs.forEach(bg => {
+      const rect = bg.parentElement.getBoundingClientRect();
+      if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+      const offset = (window.scrollY - bg.parentElement.offsetTop) * 0.18;
+      bg.style.transform = `translateY(${offset}px) scale(1.08)`;
+    });
+  }, {passive:true});
+ 
+});
+</script>
 </body>
 </html>
+ 
