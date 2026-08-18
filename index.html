@@ -33,14 +33,14 @@ html { scroll-behavior: smooth; }
 body { font-family: 'Inter', sans-serif; background: var(--forest); color: var(--ivory-dim); overflow-x: hidden; line-height: 1.7; }
 a { color: inherit; text-decoration: none; }
 img { display: block; width: 100%; object-fit: cover; }
- 
+
 /* ── TYPE ── */
 .display-xl { font-family: 'Bebas Neue', sans-serif; font-size: clamp(5rem,12vw,11rem); line-height: .88; letter-spacing: .02em; color: var(--ivory); }
 .display-lg { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3.2rem,7vw,6.5rem); line-height: .9; color: var(--ivory); }
 .display-md { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem,3vw,2.8rem); line-height: 1.2; color: var(--ivory); }
 .eyebrow    { font-size: .62rem; font-weight: 600; letter-spacing: .32em; text-transform: uppercase; color: var(--gold); }
 .body-lg    { font-size: 1rem; line-height: 1.85; color: rgba(245,240,230,.6); }
- 
+
 /* ── BUTTONS ── */
 .btn-gold {
   display: inline-flex; align-items: center; gap: 10px;
@@ -59,7 +59,7 @@ img { display: block; width: 100%; object-fit: cover; }
   border: 1px solid rgba(245,240,230,.2); cursor: pointer; transition: all .3s;
 }
 .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
- 
+
 /* ── NAV ── */
 .nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
@@ -76,23 +76,34 @@ img { display: block; width: 100%; object-fit: cover; }
 .nav-cta:hover { background: var(--gold); color: var(--forest-deep); }
 .nav-burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; }
 .nav-burger span { display: block; width: 24px; height: 1px; background: var(--ivory); }
- 
+
 /* ── HERO VIDEO ── */
 .hero {
   position: relative; height: 100vh; min-height: 680px;
   display: flex; align-items: flex-end; overflow: hidden;
 }
 .hero-video {
-  position: absolute; inset: 0;
+  position: absolute; inset: 0; background: var(--forest-deep);
 }
 .hero-video video {
+  position: absolute; inset: 0;
   width: 100%; height: 100%; object-fit: cover;
+  opacity: 0; transition: opacity 1.8s ease;
 }
+.hero-video video.active { opacity: 1; }
 .hero-video::after {
   content: '';
-  position: absolute; inset: 0;
+  position: absolute; inset: 0; z-index: 1;
   background: linear-gradient(to top, rgba(6,14,10,.96) 0%, rgba(6,14,10,.4) 50%, rgba(6,14,10,.08) 100%);
 }
+.hero-label {
+  position: absolute; left: 8%; bottom: calc(10vh + 92px); z-index: 2;
+  display: flex; align-items: center; gap: 10px;
+  opacity: 0; transition: opacity .6s ease;
+}
+.hero-label.active { opacity: 1; }
+.hero-label span { font-size: .62rem; font-weight: 600; letter-spacing: .28em; text-transform: uppercase; color: var(--ivory); }
+.hero-label::before { content: ''; width: 26px; height: 1px; background: var(--gold); }
 .hero-body {
   position: relative; z-index: 2;
   padding: 0 8% 10vh;
@@ -103,7 +114,7 @@ img { display: block; width: 100%; object-fit: cover; }
 .hero-body h1 em { font-family: 'Playfair Display', serif; font-style: italic; color: var(--gold); }
 .hero-body p { margin-bottom: 40px; max-width: 440px; }
 .hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
- 
+
 /* scroll cue */
 .scroll-cue {
   position: absolute; bottom: 40px; right: 6%; z-index: 2;
@@ -112,7 +123,7 @@ img { display: block; width: 100%; object-fit: cover; }
 .scroll-cue span { font-size: .56rem; letter-spacing: .3em; text-transform: uppercase; color: rgba(245,240,230,.25); writing-mode: vertical-rl; }
 .scroll-line { width: 1px; height: 56px; background: linear-gradient(to bottom, var(--gold), transparent); animation: pulse 2.2s infinite; }
 @keyframes pulse { 0%{transform:scaleY(0);transform-origin:top} 50%{transform:scaleY(1);transform-origin:top} 51%{transform:scaleY(1);transform-origin:bottom} 100%{transform:scaleY(0);transform-origin:bottom} }
- 
+
 /* ── VESSEL TABS ── */
 .vessel-bar { background: rgba(6,14,10,.92); backdrop-filter: blur(20px); border-top: 1px solid rgba(201,168,76,.12); }
 .vessel-tabs { display: flex; }
@@ -137,19 +148,19 @@ img { display: block; width: 100%; object-fit: cover; }
 .vtab.active.cargo  .vtab-icon { background: var(--cargo);  border-color: var(--cargo);  color: var(--forest-deep); }
 .vtab-text strong { display: block; font-size: .88rem; font-weight: 600; }
 .vtab-text span { display: block; font-size: .6rem; letter-spacing: .15em; text-transform: uppercase; opacity: .45; margin-top: 2px; }
- 
+
 /* ── STATS ── */
 .stats { display: grid; grid-template-columns: repeat(3,1fr); background: var(--forest-deep); border-bottom: 1px solid rgba(201,168,76,.1); }
 .stat { padding: 44px 32px; text-align: center; border-right: 1px solid rgba(245,240,230,.04); }
 .stat:last-child { border-right: none; }
 .stat-n { display: block; font-family: 'Bebas Neue', sans-serif; font-size: 4rem; line-height: 1; color: var(--gold); }
 .stat-l { display: block; font-size: .6rem; letter-spacing: .22em; text-transform: uppercase; color: rgba(245,240,230,.3); margin-top: 6px; }
- 
+
 /* ── DIVIDER ── */
 .divider { display: flex; align-items: center; gap: 14px; margin: 20px 0; }
 .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
 .gem { width: 6px; height: 6px; background: var(--gold); transform: rotate(45deg); }
- 
+
 /* ── VESSEL PANELS ── */
 .panel {
   position: relative; min-height: 100vh;
@@ -189,7 +200,7 @@ img { display: block; width: 100%; object-fit: cover; }
 .panel-pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0; }
 .panel-body.right .panel-pills { justify-content: flex-end; }
 .pill { padding: 7px 16px; border: 1px solid rgba(245,240,230,.15); font-size: .63rem; letter-spacing: .1em; text-transform: uppercase; color: rgba(245,240,230,.45); }
- 
+
 /* ── SERVICES ── */
 .services { padding: 120px 8%; background: var(--forest-mid); }
 .section-hdr { max-width: 1200px; margin: 0 auto 64px; }
@@ -211,7 +222,7 @@ img { display: block; width: 100%; object-fit: cover; }
 .svc:hover .svc-icon { border-color: var(--gold); background: var(--gold-glow); }
 .svc h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--ivory); margin-bottom: 10px; }
 .svc p { font-size: .87rem; color: rgba(184,176,160,.6); line-height: 1.75; }
- 
+
 /* ── ABOUT SPLIT ── */
 .about { display: grid; grid-template-columns: 1fr 1fr; min-height: 70vh; }
 .about-img { position: relative; overflow: hidden; }
@@ -222,7 +233,7 @@ img { display: block; width: 100%; object-fit: cover; }
 .about-inner .eyebrow { margin-bottom: 16px; display: block; }
 .about-inner h2 { margin-bottom: 16px; }
 .about-inner p { margin-bottom: 12px; }
- 
+
 /* ── EXPERIENCES ── */
 .exp-section { padding: 120px 8%; background: var(--forest); }
 .exp-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; max-width: 1200px; margin: 64px auto 0; }
@@ -240,7 +251,7 @@ img { display: block; width: 100%; object-fit: cover; }
 .exp-card h3 { font-family: 'Playfair Display', serif; font-size: 1.35rem; color: var(--ivory); margin-bottom: 8px; }
 .exp-card p { font-size: .82rem; color: rgba(184,176,160,.55); max-height: 0; overflow: hidden; opacity: 0; transition: max-height .4s, opacity .4s; }
 .exp-card:hover p { max-height: 80px; opacity: 1; }
- 
+
 /* ── PARTNERS ── */
 .partners { padding: 100px 8%; background: var(--forest-mid); border-top: 1px solid rgba(245,240,230,.04); }
 .partners-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; max-width: 1200px; margin: 56px auto 0; background: rgba(0,0,0,.25); }
@@ -250,7 +261,7 @@ img { display: block; width: 100%; object-fit: cover; }
 .partner h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--ivory); margin-bottom: 9px; }
 .partner p { font-size: .82rem; color: rgba(184,176,160,.5); margin-bottom: 16px; line-height: 1.65; }
 .partner-tag { display: inline-block; padding: 4px 12px; border: 1px solid rgba(245,240,230,.1); font-size: .57rem; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); }
- 
+
 /* ── CONTACT ── */
 .contact { padding: 120px 8%; background: var(--forest-deep); border-top: 1px solid rgba(201,168,76,.1); }
 .contact-inner { display: grid; grid-template-columns: 1fr 1.4fr; gap: 80px; align-items: start; max-width: 1200px; margin: 0 auto; }
@@ -274,7 +285,7 @@ img { display: block; width: 100%; object-fit: cover; }
 .fg input:focus, .fg select:focus, .fg textarea:focus { border-color: var(--gold); background: rgba(245,240,230,.07); }
 .fg select option { background: var(--forest-mid); }
 .fg textarea { resize: vertical; min-height: 130px; }
- 
+
 /* ── FOOTER ── */
 .footer { background: var(--black); border-top: 2px solid rgba(201,168,76,.18); padding: 72px 8% 32px; }
 .footer-inner { max-width: 1200px; margin: 0 auto; }
@@ -288,7 +299,7 @@ img { display: block; width: 100%; object-fit: cover; }
 .footer-col ul li a:hover { color: var(--gold); }
 .footer-bottom { border-top: 1px solid rgba(245,240,230,.04); padding-top: 22px; display: flex; justify-content: space-between; align-items: center; }
 .footer-bottom p { font-size: .72rem; color: rgba(184,176,160,.18); }
- 
+
 /* ── WA FLOAT ── */
 .wa {
   position: fixed; bottom: 28px; right: 28px; z-index: 999;
@@ -302,11 +313,11 @@ img { display: block; width: 100%; object-fit: cover; }
 .wa:hover { background: #128C7E; transform: scale(1.05); }
 .wa i { font-size: 1.2rem; }
 @keyframes wap { 0%{box-shadow:0 0 0 0 rgba(37,211,102,.45)} 70%{box-shadow:0 0 0 12px rgba(37,211,102,0)} 100%{box-shadow:0 0 0 0 rgba(37,211,102,0)} }
- 
+
 /* ── REVEAL ── */
 .r { opacity: 0; transform: translateY(36px); transition: opacity .8s ease, transform .8s ease; }
 .r.on { opacity: 1; transform: none; }
- 
+
 /* ── RESPONSIVE ── */
 @media(max-width:1024px) {
   .services-grid { grid-template-columns: repeat(2,1fr); }
@@ -336,7 +347,7 @@ img { display: block; width: 100%; object-fit: cover; }
 </style>
 </head>
 <body>
- 
+
 <!-- NAV -->
 <nav class="nav" id="nav">
   <a href="#home" class="nav-logo" aria-label="SEPS Management">
@@ -359,16 +370,25 @@ img { display: block; width: 100%; object-fit: cover; }
   <a href="#contact" class="nav-cta">Request Agency</a>
   <button class="nav-burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
- 
+
 <!-- HERO VIDEO -->
 <section id="home" class="hero">
-  <div class="hero-video">
-    <video autoplay muted loop playsinline
-      poster="https://images.unsplash.com/photo-1605281317010-fe5ffe798166?auto=format&fit=crop&w=1800&q=80">
-      <source src="https://videos.pexels.com/video-files/6346159/6346159-hd_1920_1080_25fps.mp4" type="video/mp4"/>
-      <source src="https://videos.pexels.com/video-files/13525313/13525313-hd_1920_1080_25fps.mp4" type="video/mp4"/>
+  <div class="hero-video" id="heroVideo">
+    <video class="active" data-label="Super & Mega Yachts" autoplay muted loop playsinline
+      poster="https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&w=1800&q=80">
+      <source src="https://videos.pexels.com/video-files/7333913/7333913-hd_1920_1080_30fps.mp4" type="video/mp4"/>
+      <source src="https://videos.pexels.com/video-files/11864823/11864823-hd_1920_1080_60fps.mp4" type="video/mp4"/>
+    </video>
+    <video data-label="Cargo & Container Operations" autoplay muted loop playsinline>
+      <source src="https://assets.mixkit.co/videos/4012/4012-720.mp4" type="video/mp4"/>
+      <source src="https://assets.mixkit.co/videos/31094/31094-360.mp4" type="video/mp4"/>
+    </video>
+    <video data-label="Oil Tanker Operations" autoplay muted loop playsinline>
+      <source src="https://videos.pexels.com/video-files/4911815/4911815-uhd_2732_1440_24fps.mp4" type="video/mp4"/>
+      <source src="https://videos.pexels.com/video-files/9654558/9654558-uhd_2560_1440_24fps.mp4" type="video/mp4"/>
     </video>
   </div>
+  <div class="hero-label active" id="heroLabel"><span>Super & Mega Yachts</span></div>
   <div class="hero-body">
     <div class="hero-btns r">
       <a href="#fleet" class="btn-gold"><span>Explore Fleet</span> <i class="fa-solid fa-arrow-right"></i></a>
@@ -377,7 +397,7 @@ img { display: block; width: 100%; object-fit: cover; }
   </div>
   <div class="scroll-cue"><span>Scroll</span><div class="scroll-line"></div></div>
 </section>
- 
+
 <!-- VESSEL TABS -->
 <div class="vessel-bar">
   <div class="vessel-tabs">
@@ -395,17 +415,17 @@ img { display: block; width: 100%; object-fit: cover; }
     </button>
   </div>
 </div>
- 
+
 <!-- STATS -->
 <div class="stats">
   <div class="stat r"><span class="stat-n" data-count="10000" data-suffix="+">0</span><span class="stat-l">Vessels Handled</span></div>
   <div class="stat r"><span class="stat-n" data-count="40" data-suffix="+">0</span><span class="stat-l">Years of Experience</span></div>
   <div class="stat r"><span class="stat-n" data-count="3">0</span><span class="stat-l">Vessel Categories</span></div>
 </div>
- 
+
 <!-- FLEET PANELS -->
 <div id="fleet">
- 
+
   <!-- SUPERYACHT -->
   <div class="panel yacht-panel" id="yachtPanel">
     <div class="panel-bg" style="background-image:url('https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&w=1800&q=80')"></div>
@@ -424,7 +444,7 @@ img { display: block; width: 100%; object-fit: cover; }
       <a href="#contact" class="btn-gold r"><span>Enquire Now</span> <i class="fa-solid fa-arrow-right"></i></a>
     </div>
   </div>
- 
+
   <!-- OIL TANKER -->
   <div class="panel tanker-panel" id="tankerPanel">
     <div class="panel-bg" style="background-image:url('https://images.unsplash.com/photo-1518527989017-5baca7a58d3c?auto=format&fit=crop&w=1800&q=80')"></div>
@@ -445,7 +465,7 @@ img { display: block; width: 100%; object-fit: cover; }
       </div>
     </div>
   </div>
- 
+
   <!-- CARGO -->
   <div class="panel cargo-panel" id="cargoPanel">
     <div class="panel-bg" style="background-image:url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1800&q=80')"></div>
@@ -463,9 +483,9 @@ img { display: block; width: 100%; object-fit: cover; }
       <a href="#contact" class="btn-gold r" style="background:var(--cargo)"><span>Enquire Now</span> <i class="fa-solid fa-arrow-right"></i></a>
     </div>
   </div>
- 
+
 </div>
- 
+
 <!-- SERVICES -->
 <section id="services" class="services">
   <div class="section-hdr">
@@ -482,7 +502,7 @@ img { display: block; width: 100%; object-fit: cover; }
     <div class="svc r"><div class="svc-icon"><i class="fa-solid fa-users"></i></div><h3>Crew & Welfare</h3><p>Crew change coordination, medical assistance, and all immigration formalities — ensuring your crew is looked after at every call.</p></div>
   </div>
 </section>
- 
+
 <!-- ABOUT -->
 <section id="about" class="about">
   <div class="about-img">
@@ -503,7 +523,7 @@ img { display: block; width: 100%; object-fit: cover; }
     </div>
   </div>
 </section>
- 
+
 <!-- EXPERIENCES -->
 <section id="experiences" class="exp-section">
   <div class="section-hdr" style="max-width:1200px;margin:0 auto 0">
@@ -527,7 +547,7 @@ img { display: block; width: 100%; object-fit: cover; }
     </div>
   </div>
 </section>
- 
+
 <!-- PARTNERS -->
 <section class="partners">
   <div style="max-width:1200px;margin:0 auto">
@@ -542,7 +562,7 @@ img { display: block; width: 100%; object-fit: cover; }
     <div class="partner r"><i class="fa-solid fa-bullhorn"></i><h3>Duo Brandits</h3><p>Our trusted marketing partner — driving brand awareness, digital presence, and creative strategy for SEPS Management.</p><span class="partner-tag">Marketing & Branding</span></div>
   </div>
 </section>
- 
+
 <!-- CONTACT -->
 <section id="contact" class="contact">
   <div class="contact-inner">
@@ -583,7 +603,7 @@ img { display: block; width: 100%; object-fit: cover; }
     </form>
   </div>
 </section>
- 
+
 <!-- FOOTER -->
 <footer class="footer">
   <div class="footer-inner">
@@ -628,20 +648,41 @@ img { display: block; width: 100%; object-fit: cover; }
     </div>
   </div>
 </footer>
- 
+
 <!-- WhatsApp -->
 <a href="https://wa.me/10000000000" target="_blank" class="wa" aria-label="WhatsApp">
   <i class="fa-brands fa-whatsapp"></i>
   <span>Chat on WhatsApp</span>
 </a>
- 
+
 <script>
 document.addEventListener('DOMContentLoaded', () => {
- 
+
+  /* Hero video crossfade — cycles yacht / cargo / tanker footage */
+  const heroVideos = Array.from(document.querySelectorAll('#heroVideo video'));
+  const heroLabel = document.getElementById('heroLabel');
+  if (heroVideos.length) {
+    let heroIndex = 0;
+    heroVideos.forEach(v => { v.play().catch(() => {}); });
+    setInterval(() => {
+      const next = (heroIndex + 1) % heroVideos.length;
+      heroVideos[heroIndex].classList.remove('active');
+      heroVideos[next].classList.add('active');
+      if (heroLabel) {
+        heroLabel.classList.remove('active');
+        setTimeout(() => {
+          heroLabel.querySelector('span').textContent = heroVideos[next].dataset.label;
+          heroLabel.classList.add('active');
+        }, 350);
+      }
+      heroIndex = next;
+    }, 7000);
+  }
+
   /* Nav */
   const nav = document.getElementById('nav');
   window.addEventListener('scroll', () => nav.classList.toggle('solid', window.scrollY > 60), {passive:true});
- 
+
   /* Mobile menu */
   const burger = document.getElementById('burger');
   const navLinks = document.getElementById('navLinks');
@@ -653,7 +694,7 @@ document.addEventListener('DOMContentLoaded', () => {
     navLinks.classList.remove('open');
     document.body.style.overflow = '';
   }));
- 
+
   /* Vessel tabs — scroll to panel */
   const panels = { yacht: document.getElementById('yachtPanel'), tanker: document.getElementById('tankerPanel'), cargo: document.getElementById('cargoPanel') };
   document.querySelectorAll('.vtab').forEach(tab => {
@@ -664,13 +705,13 @@ document.addEventListener('DOMContentLoaded', () => {
       if (p) p.scrollIntoView({behavior:'smooth', block:'start'});
     });
   });
- 
+
   /* Scroll reveal */
   const ro = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); ro.unobserve(e.target); } });
   }, {threshold:.1});
   document.querySelectorAll('.r').forEach(el => ro.observe(el));
- 
+
   /* Counters */
   const co = new IntersectionObserver(entries => {
     entries.forEach(e => {
@@ -688,7 +729,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }, {threshold:.5});
   document.querySelectorAll('[data-count]').forEach(el => co.observe(el));
- 
+
   /* Contact form */
   const form = document.querySelector('.form');
   if (form) form.addEventListener('submit', e => {
@@ -697,7 +738,7 @@ document.addEventListener('DOMContentLoaded', () => {
     span.textContent = 'Message Sent ✓'; btn.disabled = true;
     setTimeout(() => { span.textContent = 'Send Message'; btn.disabled = false; form.reset(); }, 4000);
   });
- 
+
   /* Gentle parallax on panel backgrounds */
   const bgs = document.querySelectorAll('.panel-bg');
   window.addEventListener('scroll', () => {
@@ -707,9 +748,8 @@ document.addEventListener('DOMContentLoaded', () => {
       bg.style.transform = `translateY(${(window.scrollY - bg.parentElement.offsetTop) * 0.15}px) scale(1.08)`;
     });
   }, {passive:true});
- 
+
 });
 </script>
 </body>
 </html>
- 
