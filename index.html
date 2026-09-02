@@ -331,7 +331,7 @@ img { display: block; width: 100%; object-fit: cover; }
 }
 @media(max-width:768px) {
   .nav-links, .nav-cta { display: none; }
-  .nav-burger { display: flex; }
+  .nav-burger { display: flex; padding: 10px; margin: -10px; }
   .nav-links.open { display: flex; flex-direction: column; position: fixed; inset: 0; background: rgba(6,14,10,.98); align-items: center; justify-content: center; gap: 32px; z-index: 999; }
   .nav-links.open a { font-size: 1rem; }
   .vessel-tabs { flex-direction: column; }
@@ -343,6 +343,12 @@ img { display: block; width: 100%; object-fit: cover; }
   .wa span { display: none; }
   .wa { padding: 14px; border-radius: 50%; }
   .stats { grid-template-columns: 1fr; }
+  .services, .exp-section, .contact { padding: 72px 6%; }
+  .partners { padding: 64px 6%; }
+  .section-hdr { margin-bottom: 40px; }
+  .about-body { padding: 56px 24px; }
+  .exp-card { height: 340px; }
+  .fg input, .fg select, .fg textarea { font-size: 16px; }
 }
 </style>
 </head>
@@ -576,18 +582,18 @@ img { display: block; width: 100%; object-fit: cover; }
       <div class="cdetail r"><div class="cicon"><i class="fa-brands fa-whatsapp"></i></div><div class="ctext"><strong>WhatsApp</strong><a href="https://wa.me/10000000000" target="_blank">+1 (000) 000-0000</a></div></div>
       <div class="cdetail r"><div class="cicon"><i class="fa-solid fa-clock"></i></div><div class="ctext"><strong>Availability</strong><span>24 hours · 7 days a week</span></div></div>
     </div>
-    <form class="form r" novalidate>
+    <form class="form r">
       <div class="form-row">
-        <div class="fg"><label>Full Name</label><input type="text" placeholder="Captain John Smith"/></div>
+        <div class="fg"><label>Full Name</label><input type="text" placeholder="Captain John Smith" required/></div>
         <div class="fg"><label>Company / Vessel</label><input type="text" placeholder="MV Example"/></div>
       </div>
       <div class="form-row">
-        <div class="fg"><label>Email</label><input type="email" placeholder="you@company.com"/></div>
+        <div class="fg"><label>Email</label><input type="email" placeholder="you@company.com" required/></div>
         <div class="fg"><label>Phone / WhatsApp</label><input type="tel" placeholder="+1 000 000 0000"/></div>
       </div>
       <div class="fg">
         <label>Service Required</label>
-        <select>
+        <select required>
           <option value="" disabled selected>Select a service</option>
           <option>Port Agency</option>
           <option>Oil Tanker Operations — GTI Terminal</option>
@@ -598,7 +604,7 @@ img { display: block; width: 100%; object-fit: cover; }
           <option>Other</option>
         </select>
       </div>
-      <div class="fg"><label>Message</label><textarea placeholder="Describe your requirements, ETA, vessel details or questions…"></textarea></div>
+      <div class="fg"><label>Message</label><textarea placeholder="Describe your requirements, ETA, vessel details or questions…" required></textarea></div>
       <button type="submit" class="btn-gold"><span>Send Message</span> <i class="fa-solid fa-paper-plane"></i></button>
     </form>
   </div>
