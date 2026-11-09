@@ -53,3 +53,7 @@ Keep this URL private — share only with your team.
 
 ---
 Built for SEPS Management B.V. · St. Eustatius, Caribbean Netherlands
+
+## Staff cargo scanner
+
+The receiving workspace is at `/scanner/`. Follow [Supabase setup](supabase/SETUP.md) before launch. It uses invite-only staff accounts, server-enforced receiving counts, shared session history, and PDF reports. The public website remains static on GitHub Pages.

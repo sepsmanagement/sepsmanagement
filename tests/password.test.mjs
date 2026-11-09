@@ -1,0 +1,12 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import vm from 'node:vm';
+import {readFile} from 'node:fs/promises';
+const source=await readFile(new URL('../scanner/password.js',import.meta.url),'utf8');
+function fixture(url,{active=true,verified=true}={}){const nodes=new Map();const get=id=>{if(!nodes.has(id))nodes.set(id,{hidden:id==='password-form',textContent:'',value:'',addEventListener(type,fn){this[type]=fn}});return nodes.get(id)};let stripped,redirect,updates=[],tokens;
+ const client={auth:{setSession:async args=>(tokens=args,{error:null}),verifyOtp:async()=>({error:null}),exchangeCodeForSession:async()=>({error:null}),getUser:async()=>({data:{user:verified?{id:'id1',email:'staff@example.com'}:null},error:null}),updateUser:async args=>(updates.push(args),{error:null})},from(){return{select(){return this},eq(){return this},async maybeSingle(){return{data:{active},error:null}}}}};
+ const ctx=vm.createContext({window:{sepsClient:client,location:{href:url,pathname:'/scanner/auth.html',replace:u=>redirect=u},history:{replaceState:(a,b,path)=>stripped=path}},document:{getElementById:get},URL,URLSearchParams});
+ return{run:()=>vm.runInContext(source,ctx),get,get stripped(){return stripped},get redirect(){return redirect},get updates(){return updates},get tokens(){return tokens}};
+}
+test('invitation tokens are removed from address bar; password is validated before saving',async()=>{const f=fixture('https://sepsmanagement.com/scanner/auth.html#access_token=access&refresh_token=refresh&type=invite');await f.run();assert.equal(f.stripped,'/scanner/auth.html');assert.equal(f.tokens.access_token,'access');assert.equal(f.get('password-form').hidden,false);f.get('new-password').value='short';f.get('confirm-password').value='short';await f.get('password-form').submit({preventDefault(){}});assert.equal(f.updates.length,0);f.get('new-password').value='long-correct-password';f.get('confirm-password').value='long-correct-password';await f.get('password-form').submit({preventDefault(){}});assert.equal(f.updates.length,1);assert.equal(f.redirect,'./');});
+test('inactive or expired invitations cannot open the password form',async()=>{for(const options of [{active:false},{verified:false}]){const f=fixture('https://sepsmanagement.com/scanner/auth.html',options);await f.run();assert.equal(f.get('password-form').hidden,true);assert(f.get('message').textContent.length>0);}});
