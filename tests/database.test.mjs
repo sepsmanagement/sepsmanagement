@@ -10,7 +10,7 @@ test('database enforces staff access, roles, receiving counts and permanent corr
    create table auth.users(id uuid primary key,email text,invited_at timestamptz);
    create function auth.uid() returns uuid language sql stable as $$ select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid $$;
    grant usage on schema public,auth to anon,authenticated;`);
-  await db.exec(await readFile(new URL('../supabase/migrations/202611090001_scanner.sql',import.meta.url),'utf8'));
+  await db.exec(await readFile(new URL('../supabase/migrations/20261110001400_seps_staff_scanner.sql',import.meta.url),'utf8'));
   await db.query(`insert into auth.users values($1,'ryan@sepsmanagement.com',now()),($2,'staff@example.com',now()),($3,'other@example.com',now()),($4,'stranger@example.com',null)`,[ids.admin,ids.staff,ids.other,ids.stranger]);
   await db.exec(await readFile(new URL('../supabase/bootstrap-admin.sql',import.meta.url),'utf8'));
   async function asUser(id,fn,role='authenticated'){return db.transaction(async tx=>{await tx.exec('set local role '+role);await tx.query(`select set_config('request.jwt.claim.sub',$1,true)`,[id||'']);return fn(tx);});}

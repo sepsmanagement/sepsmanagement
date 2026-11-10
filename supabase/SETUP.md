@@ -3,10 +3,14 @@
 The scanner code is prepared for project `lchywfpncbeqruaunvht`.
 The public URL and publishable key are in `scanner/config.js`. No service key belongs in GitHub or browser files.
 
+## Current setup status
+
+The database migration `seps_staff_scanner` is applied to the connected project, and the `invite-staff` Edge Function is deployed. All four tables have row-level security enabled; anonymous reads and direct client writes are denied. Ryan has not been invited yet. The connector does not expose Auth dashboard settings, so redirect URLs, sign-up policy, email delivery and the initial invitation still need the dashboard steps below.
+
 ## 1. Create the database and access rules
 
 Open this project in Supabase → SQL Editor → New query.
-Paste all of `migrations/202611090001_scanner.sql` and click **Run** once.
+For a new project only, paste all of `migrations/20261110001400_seps_staff_scanner.sql` and click **Run** once. This is already installed in the connected SEPS project; do not run it again.
 It creates staff, container sessions, shipments, and permanent scan events, enables row-level security, and installs the server functions that validate each write.
 
 No cargo records are public. Active staff can review shared receiving records. Only administrators can change staff roles or disable access. Staff may correct their own receipts; administrators may correct any receipt. The last administrator cannot be removed accidentally.
@@ -51,19 +55,7 @@ supabase functions deploy invite-staff --no-verify-jwt
 
 Alternatively create the **invite-staff** Edge Function in the Supabase dashboard using `functions/invite-staff/index.ts` and disable its legacy gateway JWT verification. The handler independently validates the caller with Supabase Auth and requires an active administrator membership.
 
-For private testing, add these Edge Function secrets/settings:
-
-```text
-SCANNER_SITE_URL=https://seps-scanner-review.glossyhatch.chatgpt.site
-SCANNER_ALLOWED_ORIGINS=https://sepsmanagement.com,https://www.sepsmanagement.com
-```
-
-For production, change them to:
-
-```text
-SCANNER_SITE_URL=https://sepsmanagement.com
-SCANNER_ALLOWED_ORIGINS=https://www.sepsmanagement.com
-```
+The deployed function already permits the production domain, www domain, and the private review domain. It selects the invitation callback from that verified request origin, so requests from the private review page link back to its `/scanner/auth.html`, and requests from the production site link back to production. The destination must still be added to Supabase Auth's redirect allowlist above. Unknown origins are rejected. No additional Edge Function settings are required for these three known domains.
 
 Supabase supplies `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` to Edge Functions automatically. Leave them server-side. No service key needs to be shared in chat.
 
@@ -104,7 +96,7 @@ The scanner requires a network connection. Failed writes are never treated as co
 After the Supabase setup and account tests pass:
 
 1. Merge the website pull request. GitHub Pages will serve `/scanner/` and `/scanner/auth.html`.
-2. Change the Site URL and Edge Function `SCANNER_SITE_URL` to production as above.
+2. Change the Auth Site URL to production as above. The function already recognizes production invitations.
 3. The public website footer's **Staff portal** link opens the protected scanner.
 4. Ryan opens **Staff access**, enters a staff member's work email, and presses **Send invitation**. Use **Disable** to revoke access or **Make admin** to assign another administrator.
 
@@ -121,3 +113,7 @@ npm test
 Tests execute the migration in PostgreSQL via PGlite and cover denied anonymous/uninvited/disabled access, server counters, idempotent requests, immutable audit events, correction permissions, administrator role checks, last-admin protection, invitation-service authorization, and password-link handling.
 
 Full email delivery, actual Supabase configuration, live cross-device use, and visual browser QA require the connected project and an invited account. They are not claimed complete by unit tests.
+
+## Reviewed Supabase advisory
+
+Supabase flags authenticated `SECURITY DEFINER` functions for review. These six entry points are intentional: each mutation checks active staff or administrator membership, has a fixed empty search path, and is the only client write path. Direct table writes and anonymous execution are denied. [Supabase advisory explanation](https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable).

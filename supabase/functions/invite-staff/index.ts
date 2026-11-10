@@ -4,8 +4,8 @@ import { createClient } from 'npm:@supabase/supabase-js@2.49.8';
 
 const siteUrl = Deno.env.get('SCANNER_SITE_URL') || 'https://sepsmanagement.com';
 const extraOrigins = (Deno.env.get('SCANNER_ALLOWED_ORIGINS') || '').split(',').filter(Boolean);
-const allowedOrigins = new Set([siteUrl, ...extraOrigins]);
-const appUrl = new URL('/scanner/auth.html', siteUrl).href;
+const allowedOrigins = new Set([siteUrl, 'https://sepsmanagement.com', 'https://www.sepsmanagement.com',
+ 'https://seps-scanner-review.glossyhatch.chatgpt.site', ...extraOrigins]);
 function respond(request: Request, status: number, body: unknown) {
  const origin = request.headers.get('Origin') || '';
  return new Response(JSON.stringify(body), {status, headers: {
@@ -35,6 +35,7 @@ Deno.serve(async (request: Request) => {
  catch {return respond(request,400,{error:'Invalid request'});}
  if(email.length>254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return respond(request,400,{error:'Enter a valid staff email'});
  // Never accept role, redirect URL, membership ID, or service credentials from the browser.
+ const appUrl = new URL('/scanner/auth.html', origin && allowedOrigins.has(origin) ? origin : siteUrl).href;
  const {data,error}=await admin.auth.admin.inviteUserByEmail(email,{redirectTo:appUrl});
  if(error) return respond(request,400,{error:error.message});
  // The auth.users invitation trigger creates an ordinary staff membership.
