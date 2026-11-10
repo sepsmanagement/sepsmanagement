@@ -121,3 +121,7 @@ Supabase flags authenticated `SECURITY DEFINER` functions for review. These six 
 ## Discreet staff route rollout
 
 Before enabling invitations for the new route, add the `/operations/auth.html` URLs above to Auth redirect URLs and update Site URL. The currently deployed invitation function and old preview callback may still use `/scanner/auth.html` until that switch is complete. Keep the old preview callback temporarily so existing invitation/reset links continue to work; remove it after the transition. Then deploy the updated invite-staff function and use `/operations/` for staff bookmarks.
+
+## Live receiving updates
+
+Migration `20261110020623_enable_receiving_live_updates.sql` enables Postgres Changes for scan events, container sessions, and staff memberships. Existing SELECT privileges and RLS still authorize every subscriber. After sign-in the scanner subscribes automatically; a confirmed receipt or correction refreshes the shared counts and history on other open devices. Reconnects trigger a catch-up read, and a timed fallback refresh runs about every five seconds while the live connection is unavailable. The status line shows whether live updates are connected. Refreshes are serialized and scan bursts are coalesced; scanner input, filters and the selected container remain in place.
