@@ -1,0 +1,1 @@
+{"name":"seps-staff-scanner","private":true,"type":"module","scripts":{"test":"node --test tests/*.test.mjs","check":"node --check operations/app.js && node --check operations/auth.js && node --check operations/password.js && node --check operations/auth-client.js"},"devDependencies":{"@electric-sql/pglite":"0.3.14"}}

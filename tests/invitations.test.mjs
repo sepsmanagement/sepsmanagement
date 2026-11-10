@@ -1,0 +1,25 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import vm from 'node:vm';
+import {stripTypeScriptTypes} from 'node:module';
+import {readFile} from 'node:fs/promises';
+test('invitation service validates identity, administrator membership, origin and redirect',async()=>{
+ const source=await readFile(new URL('../supabase/functions/invite-staff/index.ts',import.meta.url),'utf8');
+ const code=stripTypeScriptTypes(source.replace(/^import .*?;$/m,''));let handler,invites=[],role='staff',active=true,validUser=true;
+ const env={SUPABASE_URL:'https://example.supabase.co',SUPABASE_SERVICE_ROLE_KEY:'server-only-test-value'};
+ const client={auth:{getUser:async token=>({data:{user:validUser&&token==='real-session'?{id:'user1'}:null},error:null}),admin:{inviteUserByEmail:async(email,options)=>{invites.push({email,...options});return {data:{user:{email}},error:null};}}},from(){return {select(){return this},eq(){return this},async maybeSingle(){return {data:{role,active},error:null}}}}};
+ vm.runInNewContext(code,{Deno:{env:{get:k=>env[k]},serve:fn=>handler=fn},createClient:()=>client,Request,Response,URL,Set,JSON});
+ const request=(body={},token='real-session',origin='https://sepsmanagement.com')=>new Request('https://example.supabase.co/functions/v1/invite-staff',{method:'POST',headers:{Origin:origin,'Content-Type':'application/json',...(token?{Authorization:'Bearer '+token}:{})},body:JSON.stringify(body)});
+ assert.equal((await handler(request({email:'staff@example.com'},null))).status,401);
+ assert.equal((await handler(request({email:'staff@example.com'},'forged-token'))).status,401);
+ assert.equal((await handler(request({email:'staff@example.com'}))).status,403,'ordinary staff cannot invite');
+ role='admin';active=false;assert.equal((await handler(request({email:'staff@example.com'}))).status,403,'disabled admins cannot invite');
+ active=true;assert.equal((await handler(request({email:'staff@example.com'},'real-session','https://other.example'))).status,403);
+ assert.equal((await handler(request({email:'invalid'}))).status,400);
+ assert.equal(invites.length,0);
+ const response=await handler(request({email:' STAFF@example.com ',role:'admin',redirectTo:'https://attacker.example'}));assert.equal(response.status,200);
+ assert.deepEqual(invites,[{email:'staff@example.com',redirectTo:'https://sepsmanagement.com/operations/auth.html'}]);
+ assert.equal(response.headers.get('Access-Control-Allow-Origin'),'https://sepsmanagement.com');
+ const previewResponse=await handler(request({email:'preview@example.com'},'real-session','https://seps-scanner-review.glossyhatch.chatgpt.site'));assert.equal(previewResponse.status,200);assert.equal(invites[1].redirectTo,'https://seps-scanner-review.glossyhatch.chatgpt.site/operations/auth.html');
+ assert(!JSON.stringify(await response.json()).includes('server-only-test-value'));
+});

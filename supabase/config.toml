@@ -1,0 +1,6 @@
+project_id = "lchywfpncbeqruaunvht"
+
+[functions.invite-staff]
+# The handler verifies the user's token with Supabase Auth and checks active admin membership.
+# This supports the supplied sb_publishable key rather than the legacy gateway JWT check.
+verify_jwt = false
