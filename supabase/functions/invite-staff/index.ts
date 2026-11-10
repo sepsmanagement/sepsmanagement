@@ -35,7 +35,7 @@ Deno.serve(async (request: Request) => {
  catch {return respond(request,400,{error:'Invalid request'});}
  if(email.length>254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return respond(request,400,{error:'Enter a valid staff email'});
  // Never accept role, redirect URL, membership ID, or service credentials from the browser.
- const appUrl = new URL('/scanner/auth.html', origin && allowedOrigins.has(origin) ? origin : siteUrl).href;
+ const appUrl = new URL('/operations/auth.html', origin && allowedOrigins.has(origin) ? origin : siteUrl).href;
  const {data,error}=await admin.auth.admin.inviteUserByEmail(email,{redirectTo:appUrl});
  if(error) return respond(request,400,{error:error.message});
  // The auth.users invitation trigger creates an ordinary staff membership.

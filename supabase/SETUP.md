@@ -1,7 +1,7 @@
 # Set up SEPS staff login and receiving
 
 The scanner code is prepared for project `lchywfpncbeqruaunvht`.
-The public URL and publishable key are in `scanner/config.js`. No service key belongs in GitHub or browser files.
+The public URL and publishable key are in `operations/config.js`. No service key belongs in GitHub or browser files.
 
 ## Current setup status
 
@@ -28,15 +28,15 @@ Uninvited accounts have no database membership even if sign-ups are accidentally
 
 In Authentication → URL Configuration, add these exact redirect URLs:
 
-- `https://sepsmanagement.com/scanner/auth.html`
-- `https://www.sepsmanagement.com/scanner/auth.html` if staff can access the www domain
-- `https://seps-scanner-review.glossyhatch.chatgpt.site/scanner/auth.html` for private owner testing
+- `https://sepsmanagement.com/operations/auth.html`
+- `https://www.sepsmanagement.com/operations/auth.html` if staff can access the www domain
+- `https://seps-scanner-review.glossyhatch.chatgpt.site/operations/auth.html` for private owner testing
 
 For the first test, set Site URL to:
-`https://seps-scanner-review.glossyhatch.chatgpt.site/scanner/auth.html`
+`https://seps-scanner-review.glossyhatch.chatgpt.site/operations/auth.html`
 
 After launch, set Site URL to:
-`https://sepsmanagement.com/scanner/auth.html`
+`https://sepsmanagement.com/operations/auth.html`
 
 Do not send production invitations until their redirect page is deployed. Invitation links are single-use; request another invite or password reset if one expires or an email scanner consumes it.
 
@@ -55,7 +55,7 @@ supabase functions deploy invite-staff --no-verify-jwt
 
 Alternatively create the **invite-staff** Edge Function in the Supabase dashboard using `functions/invite-staff/index.ts` and disable its legacy gateway JWT verification. The handler independently validates the caller with Supabase Auth and requires an active administrator membership.
 
-The deployed function already permits the production domain, www domain, and the private review domain. It selects the invitation callback from that verified request origin, so requests from the private review page link back to its `/scanner/auth.html`, and requests from the production site link back to production. The destination must still be added to Supabase Auth's redirect allowlist above. Unknown origins are rejected. No additional Edge Function settings are required for these three known domains.
+The deployed function already permits the production domain, www domain, and the private review domain. It selects the invitation callback from that verified request origin, so requests from the private review page link back to its `/operations/auth.html`, and requests from the production site link back to production. The destination must still be added to Supabase Auth's redirect allowlist above. Unknown origins are rejected. No additional Edge Function settings are required for these three known domains.
 
 Supabase supplies `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` to Edge Functions automatically. Leave them server-side. No service key needs to be shared in chat.
 
@@ -74,7 +74,7 @@ If this email already exists as a self-registered account, do not delete it blin
 ## 5. Test before merging the website change
 
 The private owner preview is:
-`https://seps-scanner-review.glossyhatch.chatgpt.site/scanner/`
+`https://seps-scanner-review.glossyhatch.chatgpt.site/operations/`
 It has a separate ChatGPT access gate; production staff will not need ChatGPT accounts.
 
 - Test invited login, wrong passwords, sign-out, and password reset.
@@ -95,9 +95,9 @@ The scanner requires a network connection. Failed writes are never treated as co
 
 After the Supabase setup and account tests pass:
 
-1. Merge the website pull request. GitHub Pages will serve `/scanner/` and `/scanner/auth.html`.
+1. Merge the website pull request. GitHub Pages will serve `/operations/` and `/operations/auth.html`.
 2. Change the Auth Site URL to production as above. The function already recognizes production invitations.
-3. The public website footer's **Staff portal** link opens the protected scanner.
+3. Share `https://sepsmanagement.com/operations/` directly with staff to bookmark. There is no public menu or footer link. Operations pages include `noindex, nofollow, noarchive` metadata.
 4. Ryan opens **Staff access**, enters a staff member's work email, and presses **Send invitation**. Use **Disable** to revoke access or **Make admin** to assign another administrator.
 
 ## Validation already performed
@@ -117,3 +117,7 @@ Full email delivery, actual Supabase configuration, live cross-device use, and v
 ## Reviewed Supabase advisory
 
 Supabase flags authenticated `SECURITY DEFINER` functions for review. These six entry points are intentional: each mutation checks active staff or administrator membership, has a fixed empty search path, and is the only client write path. Direct table writes and anonymous execution are denied. [Supabase advisory explanation](https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable).
+
+## Discreet staff route rollout
+
+Before enabling invitations for the new route, add the `/operations/auth.html` URLs above to Auth redirect URLs and update Site URL. The currently deployed invitation function and old preview callback may still use `/scanner/auth.html` until that switch is complete. Keep the old preview callback temporarily so existing invitation/reset links continue to work; remove it after the transition. Then deploy the updated invite-staff function and use `/operations/` for staff bookmarks.

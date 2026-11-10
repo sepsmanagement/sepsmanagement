@@ -1,5 +1,5 @@
 -- Run AFTER inviting ryan@sepsmanagement.com in Authentication → Users → Invite user.
--- Change the invitation redirect to https://sepsmanagement.com/scanner/auth.html
+-- Change the invitation redirect to https://sepsmanagement.com/operations/auth.html
 -- This is intentionally tied to one exact email; it never promotes the first person to sign up.
 begin;
 do $$

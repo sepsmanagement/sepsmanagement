@@ -18,8 +18,8 @@ test('invitation service validates identity, administrator membership, origin an
  assert.equal((await handler(request({email:'invalid'}))).status,400);
  assert.equal(invites.length,0);
  const response=await handler(request({email:' STAFF@example.com ',role:'admin',redirectTo:'https://attacker.example'}));assert.equal(response.status,200);
- assert.deepEqual(invites,[{email:'staff@example.com',redirectTo:'https://sepsmanagement.com/scanner/auth.html'}]);
+ assert.deepEqual(invites,[{email:'staff@example.com',redirectTo:'https://sepsmanagement.com/operations/auth.html'}]);
  assert.equal(response.headers.get('Access-Control-Allow-Origin'),'https://sepsmanagement.com');
- const previewResponse=await handler(request({email:'preview@example.com'},'real-session','https://seps-scanner-review.glossyhatch.chatgpt.site'));assert.equal(previewResponse.status,200);assert.equal(invites[1].redirectTo,'https://seps-scanner-review.glossyhatch.chatgpt.site/scanner/auth.html');
+ const previewResponse=await handler(request({email:'preview@example.com'},'real-session','https://seps-scanner-review.glossyhatch.chatgpt.site'));assert.equal(previewResponse.status,200);assert.equal(invites[1].redirectTo,'https://seps-scanner-review.glossyhatch.chatgpt.site/operations/auth.html');
  assert(!JSON.stringify(await response.json()).includes('server-only-test-value'));
 });

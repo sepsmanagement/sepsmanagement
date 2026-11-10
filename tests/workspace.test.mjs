@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import {readFile} from 'node:fs/promises';
-const source=await readFile(new URL('../scanner/app.js',import.meta.url),'utf8');
+const source=await readFile(new URL('../operations/app.js',import.meta.url),'utf8');
 test('workspace starts locked, shows authenticated data, reconstructs date totals and clears data on logout',async()=>{
  const nodes=new Map();function node(){return {set id(value){nodes.set(value,this)},value:'',_text:'',get textContent(){return this._text+this.children.map(child=>child.textContent).join('')},set textContent(value){this._text=String(value);this.children=[]},hidden:false,children:[],classList:{toggle(){},add(){},remove(){}},append(...items){for(const x of items){this.children.push(x);if(x.value&&!this.value)this.value=x.value}},replaceChildren(){this.children=[];this._text='';this.value=''},setAttribute(){},addEventListener(){},focus(){}};}
  const get=id=>{if(!nodes.has(id))nodes.set(id,node());return nodes.get(id);};let prints=0;
