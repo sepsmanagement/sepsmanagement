@@ -36,6 +36,10 @@ After launch, set Site URL to:
 
 Do not send production invitations until their redirect page is deployed. Invitation links are single-use; request another invite or password reset if one expires or an email scanner consumes it.
 
+### Invitation email delivery
+
+Before inviting staff outside the Supabase project team, configure a mail provider under Authentication → Email / SMTP Settings. Supabase's built-in mail service is limited to test delivery and authorized recipients; it is not a general staff mail service. Enter the provider's SMTP host, port, sender address (for example a verified SEPS sender), username and password directly in Supabase. Verify the sender/domain with the provider. Do not commit SMTP credentials or paste them into chat. Send a test invitation and password reset before rollout.
+
 ## 3. Deploy the staff invitation service
 
 From this checkout, after authenticating the Supabase CLI:
