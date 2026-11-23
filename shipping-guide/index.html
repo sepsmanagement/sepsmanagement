@@ -13,8 +13,7 @@ body{margin:0;background:#f5f5f2;color:var(--ink);font-family:Georgia,'Times New
 .top{display:flex;align-items:flex-start;justify-content:space-between;gap:22px}
 h1{font-size:40px;line-height:1.07;margin:5px 0 5px;letter-spacing:.2px;color:var(--green)}
 .sub{font-size:15px;color:#606961;font-weight:bold}.intro{font-size:18px;margin:25px 0 34px;color:#6a736c}
-.logo{background:var(--green);color:#fff;text-align:center;width:183px;min-width:183px;padding:7px 7px 9px;border-bottom:3px solid var(--gold);line-height:1}
-.logo b{display:block;font-size:51px;font-weight:normal;letter-spacing:-4px}.logo small{display:block;font-size:13px;letter-spacing:4px;color:var(--gold);margin-top:5px}
+.logo{display:flex;align-items:center;justify-content:center;background:var(--green);width:183px;min-width:183px;height:96px;padding:5px 7px 8px;border-bottom:3px solid var(--gold);text-decoration:none}.logo svg{display:block;width:100%;height:auto}
 .rule{height:3px;background:var(--gold);margin-bottom:12px}
 .step{display:grid;grid-template-columns:61px 1fr;column-gap:13px;margin-bottom:20px}
 .number{background:var(--green);color:white;font-size:18px;font-weight:bold;text-align:center;padding:9px 4px;align-self:start;min-height:55px}
@@ -30,13 +29,19 @@ p{margin:0;color:#6d756e;font-size:16px;line-height:1.36}
 .deadlines strong{display:block}.deadlines span{display:block;font-size:14px;line-height:1.4}
 .contact{font-weight:bold;color:var(--green);margin-top:13px;font-size:16px}
 footer{margin-top:110px;text-align:center;font-size:12px;font-weight:bold;letter-spacing:.6px;color:#6c746e}
-@media(max-width:650px){.sheet{padding:25px 19px 40px}.top{align-items:center}h1{font-size:30px}.sub{font-size:11px}.logo{width:112px;min-width:112px}.logo b{font-size:32px}.logo small{font-size:8px;letter-spacing:2px}.intro{margin:24px 0}.step{grid-template-columns:45px 1fr;gap:12px}.number{min-height:46px}h2{font-size:18px}p{font-size:15px}.deadlines{grid-template-columns:1fr}.deadlines>div:nth-child(2){order:2}.deadlines>div:nth-child(3){order:1}.deadlines>div:nth-child(4){order:3}footer{margin-top:55px}.contact{font-size:14px}}
+@media(max-width:650px){.sheet{padding:25px 19px 40px}.top{align-items:center}h1{font-size:30px}.sub{font-size:11px}.logo{width:112px;min-width:112px;height:65px;padding:3px 4px}.intro{margin:24px 0}.step{grid-template-columns:45px 1fr;gap:12px}.number{min-height:46px}h2{font-size:18px}p{font-size:15px}.deadlines{grid-template-columns:1fr}.deadlines>div:nth-child(2){order:2}.deadlines>div:nth-child(3){order:1}.deadlines>div:nth-child(4){order:3}footer{margin-top:55px}.contact{font-size:14px}}
 @media print{body{background:white}.sheet{box-shadow:none;max-width:none;min-height:0}footer{margin-top:70px}}
 </style>
 </head>
 <body>
 <main class="sheet">
-<div class="top"><div><h1>SHIPPING GUIDE</h1><div class="sub">TROPICAL SHIPPING / SEPS MANAGEMENT B.V.</div></div><div class="logo" aria-label="SEPS Management"><b>SEPS</b><small>MANAGEMENT</small></div></div>
+<div class="top"><div><h1>SHIPPING GUIDE</h1><div class="sub">TROPICAL SHIPPING / SEPS MANAGEMENT B.V.</div></div><a class="logo" href="/" aria-label="SEPS Management home"><svg viewBox="0 0 380 165" xmlns="http://www.w3.org/2000/svg">
+      <text x="190" y="105" text-anchor="middle" font-family="Georgia,serif" font-size="98" fill="#F5F0E6" letter-spacing="-1">SEPS</text>
+      <text x="190" y="130" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="500" fill="#C9A84C" letter-spacing="8">MANAGEMENT</text>
+      <line x1="72" y1="143" x2="170" y2="143" stroke="#C9A84C" stroke-width="1.6"/>
+      <line x1="210" y1="143" x2="308" y2="143" stroke="#C9A84C" stroke-width="1.6"/>
+      <polygon points="190,136 193,142.5 199,145 193,147.5 190,154 187,147.5 181,145 187,142.5" fill="#C9A84C"/>
+    </svg></a></div>
 <p class="intro">A simple guide to shipping from Miami to St. Eustatius.</p>
 <div class="rule"></div>
 <section aria-label="Steps to ship">
@@ -45,7 +50,7 @@ footer{margin-top:110px;text-align:center;font-size:12px;font-weight:bold;letter
 <div class="step"><div class="number">3</div><div><h2>Log in to your account</h2><p>Sign in to eServices using your email and password.</p></div></div>
 <div class="step"><div class="number">4</div><div><h2>Find your TropBox number</h2><p>In eServices, go to My Account → Addresses and TropBox. Copy your TropBox number.</p></div></div>
 <h2 class="address-title">05 &nbsp; Use this Miami shipping address</h2>
-<div class="address"><div><strong>NAME</strong> Your full name c/o Tropical Shipping</div><div><strong>ADDRESS LINE 1</strong> 9505 NW 108th Ave</div><div><strong>ADDRESS LINE 2</strong> Your TropBox number</div><div><strong>CITY / STATE / ZIP</strong> Medley, FL 33178</div><div><strong>COUNTRY</strong> United States</div></div>
+<div class="address"><div><strong>NAME</strong> Your full name c/o STE</div><div><strong>ADDRESS LINE 1</strong> 9505 NW 108th Ave</div><div><strong>ADDRESS LINE 2</strong> Your TropBox number</div><div><strong>CITY / STATE / ZIP</strong> Medley, FL 33178</div><div><strong>COUNTRY</strong> United States</div></div>
 <div class="step"><div class="number">6</div><div><h2>Upload your invoices</h2><p>Once your cargo is delivered and appears in eServices, upload an invoice for every shipment by the cutoff below.</p></div></div>
 <div class="step"><div class="number">7</div><div><h2>Check the EEI requirement</h2><p>If any single invoice exceeds US$2,500, contact Mr. Ryan Rouse before the deadline for guidance on EEI filing.</p></div></div>
 </section>
