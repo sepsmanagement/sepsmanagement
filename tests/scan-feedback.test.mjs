@@ -15,7 +15,7 @@ test('announces the confirmed owner only after the beep ends; errors never annou
  const tones=[],spoken=[],cancelled=[];
  class AudioContext{constructor(){this.state='running';this.currentTime=0;this.destination={}}createOscillator(){const o={frequency:{setValueAtTime(){}},connect(){},disconnect(){},start(){tones.push(o)},stop(){}};return o}createGain(){return{gain:{setValueAtTime(){},linearRampToValueAtTime(){}},connect(){},disconnect(){}}}}
  class Utterance{constructor(text){this.text=text}}
- const ctx=vm.createContext({setTimeout,clearTimeout,AudioContext,SpeechSynthesisUtterance:Utterance,speechSynthesis:{getVoices:()=>[],speak:u=>spoken.push(u.text),cancel:()=>cancelled.push(true)}});vm.runInContext(source,ctx);const feedback=ctx.createSepsScanFeedback();await feedback.unlock();
+ const ctx=vm.createContext({setTimeout,clearTimeout,AudioContext,SpeechSynthesisUtterance:Utterance,speechSynthesis:{getVoices:()=>[],speak:u=>{if(u.volume!==0)spoken.push(u.text)},cancel:()=>cancelled.push(true)}});vm.runInContext(source,ctx);const feedback=ctx.createSepsScanFeedback();await feedback.unlock();
  feedback.accepted('MITCHELL, HADAKI');assert.deepEqual(spoken,[]);tones[0].onended();assert.deepEqual(spoken,['MITCHELL, HADAKI']);
  feedback.accepted('MARTIS, MONIQUE');tones[1].onended();assert.deepEqual(spoken,['MITCHELL, HADAKI','MARTIS, MONIQUE']);
  feedback.rejected();tones[2].onended();tones[3].onended();assert.equal(spoken.length,2);
@@ -28,8 +28,16 @@ test('native media plays during the click, queues tones and announces only after
  const plays=[],spoken=[];let player;
  class Audio{constructor(){player=this}play(){plays.push(this.src);return Promise.resolve()}pause(){}}
  class Utterance{constructor(text){this.text=text}}
- const ctx=vm.createContext({Audio,URL,location:{href:'https://www.sepsmanagement.com/operations/'},SpeechSynthesisUtterance:Utterance,speechSynthesis:{speak:u=>spoken.push(u.text),cancel(){},getVoices:()=>[]},setTimeout,clearTimeout});vm.runInContext(source,ctx);const feedback=ctx.createSepsScanFeedback();
+ const ctx=vm.createContext({Audio,URL,location:{href:'https://www.sepsmanagement.com/operations/'},SpeechSynthesisUtterance:Utterance,speechSynthesis:{speak:u=>{if(u.volume!==0)spoken.push(u.text)},cancel(){},getVoices:()=>[]},setTimeout,clearTimeout});vm.runInContext(source,ctx);const feedback=ctx.createSepsScanFeedback();
  const first=feedback.accepted('First owner');assert.equal(plays.length,1,'starts synchronously in the user gesture');assert.equal(await first,true);assert.deepEqual(spoken,[]);
  feedback.accepted('Second owner');assert.equal(plays.length,1,'does not interrupt the first beep');player.onended();assert.deepEqual(spoken,['First owner']);assert.equal(plays.length,2);player.onended();assert.deepEqual(spoken,['First owner','Second owner']);
  feedback.rejected();assert(plays[2].endsWith('audio/rejected.wav'));player.onended();assert.equal(spoken.length,2);feedback.stop();
+});
+test('speech warms silently once and owner announcement is prepared before the beep ends',async()=>{
+ const spoken=[],created=[],tones=[];let voiceReads=0;
+ const localVoice={name:'Device English',lang:'en-US',localService:true};
+ class Utterance{constructor(text){this.text=text;created.push(this)}}
+ class AudioContext{constructor(){this.state='running';this.currentTime=0;this.destination={}}createOscillator(){const o={frequency:{setValueAtTime(){}},connect(){},disconnect(){},start(){tones.push(o)},stop(){}};return o}createGain(){return{gain:{setValueAtTime(){},linearRampToValueAtTime(){}},connect(){},disconnect(){}}}}
+ const ctx=vm.createContext({setTimeout,clearTimeout,AudioContext,SpeechSynthesisUtterance:Utterance,speechSynthesis:{getVoices(){voiceReads++;return[localVoice]},speak:u=>spoken.push(u),cancel(){}}});vm.runInContext(source,ctx);const feedback=ctx.createSepsScanFeedback();await feedback.unlock();await feedback.unlock();assert.equal(spoken.length,1);assert.equal(spoken[0].volume,0,'speech engine is warmed without audible words');
+ feedback.accepted('Owner name');assert.equal(created.at(-1).text,'Owner name');assert.equal(spoken.length,1,'name still waits for beep');const readsBeforeEnd=voiceReads;tones[0].onended();assert.equal(spoken.at(-1).text,'Owner name');assert.equal(spoken.at(-1).voice,localVoice);assert.equal(voiceReads,readsBeforeEnd,'beep completion does not wait for voice discovery');feedback.stop();
 });
