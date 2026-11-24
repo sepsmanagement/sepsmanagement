@@ -26,8 +26,9 @@ test('camera auto-receives, blocks repeated frames, rearms after removal and sen
  for(let i=0;i<5;i++)await tick();assert.equal(receipts.length,1,'held tag cannot create duplicate receipts');assert.equal(get('camera-video').hidden,false);
  number='';text='unreadable tag';for(let i=0;i<4;i++)await tick();number='87654321';text=null;await tick();await tick();assert.equal(receipts.length,1,'misread frames do not rearm');
  number='';for(let i=0;i<3;i++)await tick();number='87654321';await tick();await tick();assert.equal(receipts.length,2,'removing tag rearms for another piece with same number');
- number='11111111';await tick();await tick();assert.deepEqual(receipts.at(-1),['11111111','session1'],'unknown numbers use normal server error flow');await tick();await tick();assert.equal(receipts.length,3,'rejected tag does not repeatedly submit');
- session={dbId:'other',rows:[]};await tick();assert.equal(receipts.length,3);assert(stopped>=1);assert.equal(get('camera-panel').hidden,true);scanner.close();
+ number='12345678';await tick();await tick();assert.deepEqual(receipts.at(-1),['12345678','session1'],'next different tag submits automatically without buttons');
+ number='11111111';await tick();await tick();assert.deepEqual(receipts.at(-1),['11111111','session1'],'unknown numbers use normal server error flow');await tick();await tick();assert.equal(receipts.length,4,'rejected tag does not repeatedly submit');
+ session={dbId:'other',rows:[]};await tick();assert.equal(receipts.length,4);assert(stopped>=1);assert.equal(get('camera-panel').hidden,true);scanner.close();
 });
 test('joins eight spaced digits or OCR fragments and rejects other lengths',()=>{
  const words='1 4 9 4 9 3 8 9'.split(' ').map((d,i)=>({...word(d,80),bbox:{x0:i*35,x1:i*35+30,y0:0,y1:80}}));
