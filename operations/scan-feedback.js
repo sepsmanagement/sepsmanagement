@@ -3,13 +3,37 @@
 globalThis.createSepsScanFeedback = function createSepsScanFeedback() {
  let context=null,generation=0;const pendingSpeech=new Set();
  function speechAvailable(){return typeof globalThis.SpeechSynthesisUtterance==='function'&&typeof globalThis.speechSynthesis?.speak==='function';}
- function available(){return typeof(globalThis.AudioContext||globalThis.webkitAudioContext)==='function';}
+ function available(){return mediaAvailable()||typeof(globalThis.AudioContext||globalThis.webkitAudioContext)==='function';}
  async function unlock(){
   try{const Audio=globalThis.AudioContext||globalThis.webkitAudioContext;if(!Audio)return false;
    if(!context||context.state==='closed')context=new Audio();
-   if(context.state!=='running')await context.resume();
+   if(context.state!=='running'){let timeout;try{await Promise.race([context.resume(),new Promise(resolve=>{timeout=setTimeout(resolve,1500)})]);}finally{clearTimeout(timeout);}}
    return context.state==='running';
   }catch{return false;}
+ }
+ let media=null,currentMedia=null;const mediaQueue=[];
+ function mediaAvailable(){return typeof globalThis.Audio==='function';}
+ function getMedia(){
+  if(!media){media=globalThis.document?.getElementById('scan-audio-player')||new globalThis.Audio();media.preload='auto';media.playsInline=true;}
+  return media;
+ }
+ function playMedia(kind,after){
+  if(!mediaAvailable())return null;
+  return new Promise(resolve=>{mediaQueue.push({kind,after,resolve,version:generation});pumpMedia();});
+ }
+ function pumpMedia(){
+  if(currentMedia||!mediaQueue.length)return;
+  const job=mediaQueue.shift();if(job.version!==generation){job.resolve(false);pumpMedia();return;}
+  currentMedia=job;let timer=null,finished=false,fallingBack=false;
+  const finish=()=>{if(finished)return;finished=true;job.resolve(true);clearTimeout(timer);if(currentMedia===job)currentMedia=null;if(job.version===generation){try{job.after?.();}catch{}}pumpMedia();};
+  const fallback=()=>{if(finished||fallingBack)return;fallingBack=true;clearTimeout(timer);try{media.pause();}catch{}void unlock().then(ready=>{if(finished)return;job.resolve(ready);if(job.version!==generation){finish();return;}if(ready)tone(job.kind,finish);else finish();});};
+  job.cancel=()=>{finished=true;clearTimeout(timer);job.resolve(false);};
+  try{const player=getMedia();player.onended=finish;player.onerror=fallback;player.volume=1;player.muted=false;
+   player.src=new URL('audio/'+job.kind+'.wav',globalThis.location.href).href;
+   timer=setTimeout(fallback,4000);
+   const started=player.play();
+   Promise.resolve(started).then(()=>{if(!finished)job.resolve(true);}).catch(fallback);
+  }catch{fallback();}
  }
  function tone(kind,after){
   const finish=()=>{try{after?.();}catch{}};
@@ -28,9 +52,9 @@ globalThis.createSepsScanFeedback = function createSepsScanFeedback() {
    pendingSpeech.add(utterance);utterance.onend=utterance.onerror=()=>pendingSpeech.delete(utterance);try{speech.speak(utterance);}catch{pendingSpeech.delete(utterance);}
   }catch{}
  }
- function accepted(ownerName=''){const version=generation,after=()=>announce(ownerName,version);if(context?.state==='running')tone('accepted',after);else void unlock().then(ready=>{if(version!==generation)return;if(ready)tone('accepted',after);else after();});}
- function stop(){generation++;pendingSpeech.clear();try{globalThis.speechSynthesis?.cancel();}catch{}}
+ function accepted(ownerName=''){const version=generation,after=()=>announce(ownerName,version);const native=playMedia('accepted',after);if(native)return native;if(context?.state==='running'){tone('accepted',after);return Promise.resolve(true);}return unlock().then(ready=>{if(version!==generation)return false;if(ready)tone('accepted',after);else after();return ready;});}
+ function stop(){generation++;if(currentMedia){currentMedia.cancel?.();currentMedia=null;}for(const job of mediaQueue.splice(0))job.resolve(false);if(media){try{media.pause();}catch{}media.onended=media.onerror=null;}pendingSpeech.clear();try{globalThis.speechSynthesis?.cancel();}catch{}}
 
- function rejected(){try{globalThis.navigator?.vibrate?.([140,70,140]);}catch{}if(context?.state==='running')tone('rejected');else void unlock().then(ready=>{if(ready)tone('rejected');});}
+ function rejected(){try{globalThis.navigator?.vibrate?.([140,70,140]);}catch{}if(playMedia('rejected'))return;if(context?.state==='running')tone('rejected');else void unlock().then(ready=>{if(ready)tone('rejected');});}
  return {available,speechAvailable,unlock,accepted,rejected,stop};
 };
