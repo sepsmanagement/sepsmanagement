@@ -33,11 +33,16 @@ test('native media plays during the click, queues tones and announces only after
  feedback.accepted('Second owner');assert.equal(plays.length,1,'does not interrupt the first beep');player.onended();assert.deepEqual(spoken,['First owner']);assert.equal(plays.length,2);player.onended();assert.deepEqual(spoken,['First owner','Second owner']);
  feedback.rejected();assert(plays[2].endsWith('audio/rejected.wav'));player.onended();assert.equal(spoken.length,2);feedback.stop();
 });
-test('speech warms silently once and owner announcement is prepared before the beep ends',async()=>{
+test('phone speech unlock speaks directly from a tap and prepares owner before beep ends',async()=>{
  const spoken=[],created=[],tones=[];let voiceReads=0;
  const localVoice={name:'Device English',lang:'en-US',localService:true};
  class Utterance{constructor(text){this.text=text;created.push(this)}}
  class AudioContext{constructor(){this.state='running';this.currentTime=0;this.destination={}}createOscillator(){const o={frequency:{setValueAtTime(){}},connect(){},disconnect(){},start(){tones.push(o)},stop(){}};return o}createGain(){return{gain:{setValueAtTime(){},linearRampToValueAtTime(){}},connect(){},disconnect(){}}}}
- const ctx=vm.createContext({setTimeout,clearTimeout,AudioContext,SpeechSynthesisUtterance:Utterance,speechSynthesis:{getVoices(){voiceReads++;return[localVoice]},speak:u=>spoken.push(u),cancel(){}}});vm.runInContext(source,ctx);const feedback=ctx.createSepsScanFeedback();await feedback.unlock();await feedback.unlock();assert.equal(spoken.length,1);assert.equal(spoken[0].volume,0,'speech engine is warmed without audible words');
+ const ctx=vm.createContext({setTimeout,clearTimeout,AudioContext,SpeechSynthesisUtterance:Utterance,speechSynthesis:{getVoices(){voiceReads++;return[localVoice]},speak:u=>spoken.push(u),cancel(){}}});vm.runInContext(source,ctx);const feedback=ctx.createSepsScanFeedback();await feedback.unlock();assert.equal(spoken.length,0,'silent warm-up cannot block the mobile speech queue');feedback.enableAnnouncements();assert.equal(spoken.length,1);assert.equal(spoken[0].text,'Ready to scan');assert.equal(spoken[0].volume,1,'mobile unlock is audible');feedback.enableAnnouncements();assert.equal(spoken.length,1,'does not repeat readiness on every camera scan');
  feedback.accepted('Owner name');assert.equal(created.at(-1).text,'Owner name');assert.equal(spoken.length,1,'name still waits for beep');const readsBeforeEnd=voiceReads;tones[0].onended();assert.equal(spoken.at(-1).text,'Owner name');assert.equal(spoken.at(-1).voice,localVoice);assert.equal(voiceReads,readsBeforeEnd,'beep completion does not wait for voice discovery');feedback.stop();
+});
+test('blocked phone announcements report the problem and can be unlocked by another tap',()=>{
+ const spoken=[],errors=[];class Utterance{constructor(text){this.text=text}}
+ const ctx=vm.createContext({setTimeout,clearTimeout,SpeechSynthesisUtterance:Utterance,speechSynthesis:{getVoices:()=>[],speak:u=>spoken.push(u),cancel(){}}});vm.runInContext(source,ctx);const feedback=ctx.createSepsScanFeedback({onSpeechError:error=>errors.push(error)});
+ assert.equal(feedback.enableAnnouncements(),true);spoken[0].onerror({error:'not-allowed'});assert.deepEqual(errors,['not-allowed']);feedback.enableAnnouncements();assert.equal(spoken.length,2,'another direct tap retries speech');feedback.stop();
 });

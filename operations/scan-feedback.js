@@ -1,18 +1,22 @@
 'use strict';
 // One audio context per page. Audio/vibration failures must never affect receiving.
-globalThis.createSepsScanFeedback = function createSepsScanFeedback() {
+globalThis.createSepsScanFeedback = function createSepsScanFeedback({onSpeechError=()=>{}}={}) {
  let context=null,generation=0,speechPrimed=false,cachedVoices=[];const pendingSpeech=new Set();
  function speechAvailable(){return typeof globalThis.SpeechSynthesisUtterance==='function'&&typeof globalThis.speechSynthesis?.speak==='function';}
  function available(){return mediaAvailable()||typeof(globalThis.AudioContext||globalThis.webkitAudioContext)==='function';}
  function loadVoices(){try{cachedVoices=globalThis.speechSynthesis?.getVoices?.()||[];}catch{}}
  loadVoices();globalThis.speechSynthesis?.addEventListener?.('voiceschanged',loadVoices);
  function primeSpeech(){
-  if(!speechAvailable())return;
-  try{const speech=globalThis.speechSynthesis;loadVoices();if(speech.paused)speech.resume?.();if(speechPrimed)return;
-   const warm=new globalThis.SpeechSynthesisUtterance('.');warm.volume=0;warm.rate=10;warm.lang='en-US';
-   const voice=cachedVoices.find(v=>v.localService&&/^en/i.test(v.lang));if(voice)warm.voice=voice;
-   pendingSpeech.add(warm);warm.onend=warm.onerror=()=>pendingSpeech.delete(warm);speech.speak(warm);speechPrimed=true;
-  }catch{}
+  try{loadVoices();if(globalThis.speechSynthesis?.paused)globalThis.speechSynthesis.resume?.();}catch{}
+ }
+ // Mobile browsers need an audible utterance started directly by a tap.
+ // A silent warm-up can be blocked or remain pending and hold later names behind it.
+ function enableAnnouncements(force=false){
+  if(!speechAvailable())return false;
+  primeSpeech();if(speechPrimed&&!force)return true;
+  try{if(!pendingSpeech.size)globalThis.speechSynthesis.cancel?.();const ready=prepareAnnouncement('Ready to scan');if(!ready)return false;
+   announce(ready,generation);speechPrimed=true;return true;
+  }catch{return false;}
  }
  async function unlock(){
   primeSpeech();
@@ -63,12 +67,12 @@ globalThis.createSepsScanFeedback = function createSepsScanFeedback() {
  function announce(utterance,version){
   if(!utterance||version!==generation)return;
   try{const speech=globalThis.speechSynthesis;if(speech.paused)speech.resume?.();
-   pendingSpeech.add(utterance);utterance.onend=utterance.onerror=()=>pendingSpeech.delete(utterance);try{speech.speak(utterance);}catch{pendingSpeech.delete(utterance);}
+   pendingSpeech.add(utterance);utterance.onend=()=>pendingSpeech.delete(utterance);utterance.onerror=event=>{pendingSpeech.delete(utterance);if(version!==generation||['canceled','interrupted'].includes(event?.error))return;speechPrimed=false;try{onSpeechError(event?.error||'unavailable');}catch{}};try{speech.speak(utterance);}catch{pendingSpeech.delete(utterance);}
   }catch{}
  }
  function accepted(ownerName=''){const version=generation,utterance=prepareAnnouncement(ownerName),after=()=>announce(utterance,version);const native=playMedia('accepted',after);if(native)return native;if(context?.state==='running'){tone('accepted',after);return Promise.resolve(true);}return unlock().then(ready=>{if(version!==generation)return false;if(ready)tone('accepted',after);else after();return ready;});}
  function stop(){generation++;speechPrimed=false;if(currentMedia){currentMedia.cancel?.();currentMedia=null;}for(const job of mediaQueue.splice(0))job.resolve(false);if(media){try{media.pause();}catch{}media.onended=media.onerror=null;}pendingSpeech.clear();try{globalThis.speechSynthesis?.cancel();}catch{}}
 
  function rejected(){try{globalThis.navigator?.vibrate?.([140,70,140]);}catch{}if(playMedia('rejected'))return;if(context?.state==='running')tone('rejected');else void unlock().then(ready=>{if(ready)tone('rejected');});}
- return {available,speechAvailable,unlock,accepted,rejected,stop};
+ return {available,speechAvailable,unlock,enableAnnouncements,accepted,rejected,stop};
 };

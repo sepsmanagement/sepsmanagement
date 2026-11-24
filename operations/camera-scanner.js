@@ -20,7 +20,7 @@ function sepsCameraCandidate(data,rows){
  if(candidates.some(w=>w.text.trim()!==number&&(w.bbox.y1-w.bbox.y0)>=height*.85))return null;
  return {number,confidence:top.confidence,row:rows.find(r=>String(r.id)===number)||null};
 }
-function createSepsCameraScanner({getSession,onReceive}){
+function createSepsCameraScanner({getSession,onReceive,onStart}){
  const $=id=>document.getElementById(id),panel=$('camera-panel');
  if(!panel)return {close(){}};
  // Cached portal HTML may still contain controls from the manual camera flow.
@@ -37,7 +37,7 @@ function createSepsCameraScanner({getSession,onReceive}){
   if(at!==generation){await created.terminate();throw new Error('Camera closed.');}worker=created;
   await worker.setParameters({tessedit_char_whitelist:'0123456789',tessedit_pageseg_mode:'7'});return worker;
  }
- async function open(){close();const session=getSession();if(!session)return;panel.hidden=false;sessionId=session.dbId;const at=generation;status('Opening camera…');const readerReady=engine(at);void readerReady.catch(()=>{});$('camera-photo').hidden=true;$('camera-video').hidden=false;
+ async function open(){close();const session=getSession();if(!session)return;onStart?.();panel.hidden=false;sessionId=session.dbId;const at=generation;status('Opening camera…');const readerReady=engine(at);void readerReady.catch(()=>{});$('camera-photo').hidden=true;$('camera-video').hidden=false;
   try{if(!navigator.mediaDevices?.getUserMedia)throw new Error('Camera access requires HTTPS and a supported browser.');const opened=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'},width:{ideal:1920},height:{ideal:1080}},audio:false});if(at!==generation){opened.getTracks().forEach(t=>t.stop());return;}stream=opened;$('camera-video').srcObject=stream;await $('camera-video').play();if(at!==generation)return;status('Starting automatic reader…');await readerReady;if(at!==generation)return;reading=true;status('Scanning automatically. Hold the eight digits horizontally in the guide.');void scanFrame(at);}
   catch(error){if(at===generation){generation++;tracksOff();const old=worker;worker=null;if(old)void old.terminate();status(error.name==='NotAllowedError'?'Camera permission was denied. Allow camera access in your browser, then reopen the camera.':error.message);}}
  }

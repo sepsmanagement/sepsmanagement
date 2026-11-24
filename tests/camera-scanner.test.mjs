@@ -18,12 +18,12 @@ test('rejects ambiguous or low-confidence printed numbers',()=>{
 });
 test('camera auto-receives, blocks repeated frames, rearms after removal and sends unknown numbers to validation',async()=>{
  const nodes=new Map();const get=id=>{if(!nodes.has(id))nodes.set(id,{hidden:false,disabled:false,textContent:'',videoWidth:1000,videoHeight:500,play:async()=>{},getContext:()=>({drawImage(){}})});return nodes.get(id);};
- let clock=0;let tick=null,stopped=0,number='87654321',confidence=90,text=null,finish=null;
+ let started=false;let clock=0;let tick=null,stopped=0,number='87654321',confidence=90,text=null,finish=null;
  const receipts=[];let session={dbId:'session1',rows:[{id:'87654321',name:'Owner'},{id:'22222222',name:'Second owner'}]};
  const local=vm.createContext({Date:{now:()=>clock},setTimeout(fn,delay){clock+=delay;tick=fn;return 1},clearTimeout(){tick=null},document:{getElementById:get,addEventListener(){}},window:{addEventListener(){}},navigator:{mediaDevices:{getUserMedia:async()=>({getTracks:()=>[{stop(){stopped++}}]})}},URL,location:{href:'https://example.com/operations/'},Tesseract:{createWorker:async()=>({setParameters:async()=>{},recognize:async()=>({data:{text:text??number,blocks:[{paragraphs:[{lines:[{words:number?[word(number,90,confidence)]:[]}]}]}]}}),terminate:async()=>{}})}});
- vm.runInContext(source,local);const scanner=local.createSepsCameraScanner({getSession:()=>session,onReceive:async(code,id)=>{receipts.push([code,id]);if(finish==='wait')await new Promise(resolve=>finish=resolve);return code==='87654321';}});
+ vm.runInContext(source,local);const scanner=local.createSepsCameraScanner({onStart:()=>{started=true},getSession:()=>session,onReceive:async(code,id)=>{receipts.push([code,id]);if(finish==='wait')await new Promise(resolve=>finish=resolve);return code==='87654321';}});
  assert.equal(get('camera-confirm').hidden,true,'cached manual controls are hidden');assert.equal(get('camera-read').hidden,true);
- await get('camera-open').onclick();await new Promise(resolve=>setImmediate(resolve));assert.equal(receipts.length,0);finish='wait';const saving=tick();await new Promise(resolve=>setImmediate(resolve));assert.equal(receipts.length,1,'second consistent read automatically submits');finish();await saving;
+ await get('camera-open').onclick();assert.equal(started,true,'camera start unlocks speech from the user tap');await new Promise(resolve=>setImmediate(resolve));assert.equal(receipts.length,0);finish='wait';const saving=tick();await new Promise(resolve=>setImmediate(resolve));assert.equal(receipts.length,1,'second consistent read automatically submits');finish();await saving;
  for(let i=0;i<5;i++)await tick();assert.equal(receipts.length,1,'held tag cannot create duplicate receipts');assert.equal(get('camera-video').hidden,false);
  number='';text='unreadable tag';for(let i=0;i<4;i++)await tick();number='87654321';text=null;await tick();await tick();assert.equal(receipts.length,1,'misread frames do not rearm');
  number='';for(let i=0;i<16;i++)await tick();number='87654321';await tick();await tick();assert.equal(receipts.length,2,'removing tag rearms for another piece with same number');
