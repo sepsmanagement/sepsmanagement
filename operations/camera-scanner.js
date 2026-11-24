@@ -23,6 +23,9 @@ function sepsCameraCandidate(data,rows){
 function createSepsCameraScanner({getSession,onReceive}){
  const $=id=>document.getElementById(id),panel=$('camera-panel');
  if(!panel)return {close(){}};
+ // Cached portal HTML may still contain controls from the manual camera flow.
+ // Remove them before binding the automatic reader.
+ for(const id of ['camera-confirm','camera-read']){const legacy=$(id);if(legacy){legacy.hidden=true;legacy.onclick=null;legacy.remove?.();}}
  let stream=null,worker=null,generation=0,sessionId=null,blockedNumber=null,clearFrames=0,busy=false,loading=null,timer=null,reading=false,lastNumber=null,stable=0;
  const status=text=>$('camera-status').textContent=text;
  function tracksOff(){stream?.getTracks().forEach(t=>t.stop());stream=null;$('camera-video').srcObject=null;}

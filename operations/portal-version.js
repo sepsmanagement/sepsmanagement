@@ -1,6 +1,6 @@
 /* Check cached HTML on entry and when restored from the browser back/forward cache. */
 (()=>{
- const version='automatic-16';let checking=false;
+ const version='automatic-17';let checking=false;
  async function check(){
   if(checking)return;checking=true;
   try{
