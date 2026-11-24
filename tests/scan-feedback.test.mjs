@@ -11,3 +11,16 @@ test('accepted scans beep, rejected scans buzz and supported devices vibrate',as
 test('blocked or unavailable audio and vibration do not throw or interrupt scanning',async()=>{
  for(const AudioContext of [undefined,class{constructor(){throw Error('Audio blocked')}}]){const ctx=vm.createContext({AudioContext,navigator:{vibrate(){throw Error('Unsupported')}}});vm.runInContext(source,ctx);const feedback=ctx.createSepsScanFeedback();assert.equal(await feedback.unlock(),false);assert.doesNotThrow(()=>feedback.accepted());assert.doesNotThrow(()=>feedback.rejected());}
 });
+test('announces the confirmed owner only after the beep ends; errors never announce a name',async()=>{
+ const tones=[],spoken=[],cancelled=[];
+ class AudioContext{constructor(){this.state='running';this.currentTime=0;this.destination={}}createOscillator(){const o={frequency:{setValueAtTime(){}},connect(){},disconnect(){},start(){tones.push(o)},stop(){}};return o}createGain(){return{gain:{setValueAtTime(){},linearRampToValueAtTime(){}},connect(){},disconnect(){}}}}
+ class Utterance{constructor(text){this.text=text}}
+ const ctx=vm.createContext({AudioContext,SpeechSynthesisUtterance:Utterance,speechSynthesis:{getVoices:()=>[],speak:u=>spoken.push(u.text),cancel:()=>cancelled.push(true)}});vm.runInContext(source,ctx);const feedback=ctx.createSepsScanFeedback();await feedback.unlock();
+ feedback.accepted('MITCHELL, HADAKI');assert.deepEqual(spoken,[]);tones[0].onended();assert.deepEqual(spoken,['MITCHELL, HADAKI']);
+ feedback.accepted('MARTIS, MONIQUE');tones[1].onended();assert.deepEqual(spoken,['MITCHELL, HADAKI','MARTIS, MONIQUE']);
+ feedback.rejected();tones[2].onended();tones[3].onended();assert.equal(spoken.length,2);
+ feedback.accepted('Private owner');feedback.stop();tones[4].onended();assert.equal(spoken.length,2,'sign-out cancels names waiting for a beep');assert.equal(cancelled.length,1);
+});
+test('missing or blocked text-to-speech cannot interrupt receiving sounds',async()=>{
+ for(const Utterance of [undefined,class{constructor(text){this.text=text}}]){const ctx=vm.createContext({SpeechSynthesisUtterance:Utterance,speechSynthesis:{speak(){throw Error('Speech blocked')}}});vm.runInContext(source,ctx);const feedback=ctx.createSepsScanFeedback();assert.equal(feedback.speechAvailable(),typeof Utterance==='function');assert.doesNotThrow(()=>feedback.accepted('Owner name'));await Promise.resolve();}
+});
