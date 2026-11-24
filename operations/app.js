@@ -4,7 +4,6 @@ const scanFeedback=createSepsScanFeedback();
 function prepareScanSound(){void scanFeedback.unlock();}
 document.addEventListener('pointerdown',prepareScanSound,{capture:true,passive:true});
 document.addEventListener('keydown',prepareScanSound,{capture:true});
-$('enable-sounds').onclick=async()=>{$('sound-status').textContent='Starting test audio…';$('enable-sounds').disabled=true;try{const ready=await scanFeedback.accepted('Scan ready');$('sound-status').textContent=ready?'Test playback started. If silent, unmute the Chrome tab and check device volume and audio output.':scanFeedback.available()?'Playback was blocked. Press Play on the audio player below, or allow sound in Chrome site settings.':'Audio is unavailable in this browser.';}catch{$('sound-status').textContent='Audio could not start. Try the audio player below and check Chrome sound settings.';}finally{$('enable-sounds').disabled=false;}};
 let profile=null,sessions=[],current=-1,selected=-1,epoch=0,scanPaused=false,scanQueue=Promise.resolve(),saving=false;
 let liveConnected=false,lastSyncAt=0,lastSyncAttempt=0,syncPending=0,syncTail=Promise.resolve();
 const liveSync=createSepsLiveSync({client,isActive:()=>!!profile&&!document.hidden,refresh:()=>syncAll(),onConnection:connected=>{liveConnected=connected;paintSyncStatus();},onError:handleBackgroundError});
