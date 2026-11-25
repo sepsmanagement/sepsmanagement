@@ -1,6 +1,7 @@
 'use strict';
 window.SEPS_AUTH = (() => {
- const client=window.sepsClient;
+ const client=window.sepsClient;let loginAttempt=0;
+ window.addEventListener('pagehide',()=>{loginAttempt++;});
  const status=document.getElementById('auth-status');
  function message(text){if(status)status.textContent=text;}
  const callbackUrl=()=>new URL('auth.html',window.location.href).href;
@@ -13,6 +14,7 @@ window.SEPS_AUTH = (() => {
   return data;
  }
  async function signOut(){
+  loginAttempt++;
   // Supabase may be offline: always clear this device's session, and never leave records visible.
   window.dispatchEvent(new CustomEvent('seps:locked'));
   const {error}=await client.auth.signOut({scope:'local'});
@@ -20,13 +22,13 @@ window.SEPS_AUTH = (() => {
   message('Signed out.');return true;
  }
  document.getElementById('login-form')?.addEventListener('submit',async event=>{
-  event.preventDefault();const button=document.getElementById('enter');button.disabled=true;message('Signing in…');
+  event.preventDefault();const attempt=++loginAttempt;const button=document.getElementById('enter');button.disabled=true;message('Signing in…');
   try{
    const {error}=await client.auth.signInWithPassword({email:document.getElementById('email').value.trim(),password:document.getElementById('password').value});
-   if(error)throw error;
-   const profile=await membership();document.getElementById('password').value='';
+   if(attempt!==loginAttempt)return;if(error)throw error;
+   const profile=await membership();if(attempt!==loginAttempt)return;document.getElementById('password').value='';
    window.dispatchEvent(new CustomEvent('seps:authenticated',{detail:profile}));
-  }catch(error){message(error.message);window.dispatchEvent(new CustomEvent('seps:locked'));}
+  }catch(error){if(attempt!==loginAttempt)return;message(error.message);window.dispatchEvent(new CustomEvent('seps:locked'));}
   finally{button.disabled=false;}
  });
  document.getElementById('forgot')?.addEventListener('click',async()=>{

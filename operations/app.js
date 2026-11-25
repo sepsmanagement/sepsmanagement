@@ -88,4 +88,6 @@ document.querySelectorAll('nav button').forEach(button=>button.onclick=()=>tab(b
 // Revoked memberships stop reading and writing immediately in the database. The UI also clears on its next check.
 setInterval(()=>{if(!profile||document.hidden||saving||syncPending)return;const interval=liveConnected?30000:5000;if(Date.now()-lastSyncAttempt>=interval)syncAll().catch(handleBackgroundError);},1000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&profile)syncAll().catch(handleBackgroundError);});
-(async()=>{lock();try{const {data:{session}}=await client.auth.getSession();if(session)await activate(await SEPS_AUTH.membership());else SEPS_AUTH.message('Sign in with your invited staff account.');}catch(error){SEPS_AUTH.message(error.message);}})();
+// Staff must explicitly sign in on every page entry; never reopen a saved session.
+lock();SEPS_AUTH.message('Sign in with your invited staff account.');
+window.addEventListener('pagehide',lock);

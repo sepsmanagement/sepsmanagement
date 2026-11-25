@@ -24,7 +24,7 @@
   event.preventDefault();const password=document.getElementById('new-password').value,confirm=document.getElementById('confirm-password').value;
   if(password.length<12||password!==confirm){message.textContent='Use at least 12 characters and enter the same password twice.';return;}
   const button=document.getElementById('save-password');button.disabled=true;
-  try{const {error}=await client.auth.updateUser({password});if(error)throw error;message.textContent='Password saved. Opening your workspace…';window.location.replace('./');}
+  try{const {error}=await client.auth.updateUser({password});if(error)throw error;message.textContent='Password saved. Sign in with your new password…';window.location.replace('./');}
   catch(error){message.textContent=error.message;button.disabled=false;}
  });
 })();
